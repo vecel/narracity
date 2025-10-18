@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
+
+  static final log = Logger('WelcomeScreen');
 
   @override
   Widget build(BuildContext context) {
@@ -10,7 +13,7 @@ class WelcomeScreen extends StatelessWidget {
         children: [
           const Placeholder(),
           ElevatedButton(
-            onPressed: () => print('Welcome'), 
+            onPressed: () => log.info('Welcome'),
             child: Text('Create an account')
           ),
           const Placeholder()
