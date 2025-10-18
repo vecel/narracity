@@ -10,7 +10,7 @@ This is an application with city games. City games are scenarios where you play 
 3. Patrol tests
 4. Firebase Authorization
 5. CI/CD
-6. Platform channel (localization)
+6. Platform channel (device localization)
 7. Local data persistance
 
 **User Stories**
