@@ -21,9 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'City Games',
-      home: Scaffold(
-        body: WelcomeScreen(),
-      )
+      home: WelcomeScreen()
     );
   }
 }
