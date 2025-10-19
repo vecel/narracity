@@ -8,13 +8,14 @@ This is an application with city games. City games are scenarios where you play 
 1. Unit tests
 2. Wdiget tests
 3. Patrol tests
-4. Firebase Authorization
+4. Firebase Authorization (maybe)
 5. CI/CD
 6. Platform channel (device localization)
 7. Local data persistance
+8. Web target (maybe)
 
 **User Stories**
-1. As a user, I can create an account.
+1. As a user, I can create an account. (maybe)
 2. As a user, I can see list of available scenarios.
 3. As a user, I can start a scenario.
 4. As a user, I can download the scenario to use it offline.
