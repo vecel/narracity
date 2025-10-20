@@ -1,3 +1,5 @@
+import 'package:city_games/ui/core/ui/base_app_bar.dart';
+import 'package:city_games/ui/scenario/widgets/scenario_screen.dart';
 import 'package:city_games/ui/scenario_selection/view_model/scenario_selection_view_model.dart';
 import 'package:city_games/ui/scenario_selection/widgets/scenario_description_screen.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +21,8 @@ class ScenarioSelectionScreen extends StatelessWidget {
             viewModel.currentScenario = viewModel.scenarios[index];
             Navigator.push(
               context, 
-              MaterialPageRoute(builder: (context) => ScenarioDescriptionScreen(viewModel: viewModel))
+              // MaterialPageRoute(builder: (context) => ScenarioDescriptionScreen(viewModel: viewModel))
+              MaterialPageRoute(builder: (context) => ScenarioScreen())
             );
           },
           child: Container(
@@ -30,13 +33,7 @@ class ScenarioSelectionScreen extends StatelessWidget {
       );
 
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context), 
-          icon: Icon(Icons.arrow_back)
-        ),
-        title: Text('Choose Scenario'),
-      ),
+      appBar: BaseAppBar(title: 'Choose Scenario'),
       body: scenariosList
     );
   }
