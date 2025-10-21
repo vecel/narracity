@@ -14,6 +14,7 @@ A Narracity is an application that enhace sightseeing experience. It offers vari
 5. CI/CD
 6. Platform channel (device localization)
 7. Local data persistance
+8. Internalization
 
 **User Stories**
 1. As a user, I can see list of available scenarios.
@@ -22,5 +23,7 @@ A Narracity is an application that enhace sightseeing experience. It offers vari
 4. As a user, I can play the scenario. This includes:
 - I can answer story teller's questions.
 - My location is being updated on the map.
+
+---
 
 *This is a project created for Flutter Course at Warsaw University of Technology 2025/26.*
