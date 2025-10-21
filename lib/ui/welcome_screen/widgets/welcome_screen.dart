@@ -14,7 +14,6 @@ class WelcomeScreen extends StatelessWidget {
       backgroundColor: Theme.of(context).colorScheme.primary,
       body: Center(
         child: Column(
-          // mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(height: 96),
             Icon(
