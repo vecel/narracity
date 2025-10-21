@@ -1,8 +1,10 @@
-# City Games
+# Narracity
 
 ## Description
 
-This is an application with city games. City games are scenarios where you play the main role. They involve outdoor activity often combined with riddles, puzzles, choices and challenges. Such games are a great option to enhace sightseeing, teach you history of the place or have fun while on walk.
+A Narracity is an application that enhace sightseeing experience. It offers various narrator-leaded scenarios. It includes two types of scenarios:
+1. Guided tours through the city, where you can read about the history and culture of the place you are visiting.
+2. Role played games with riddles and puzzles, where you are the main character.
 
 **Optional Requirements**
 1. Unit tests

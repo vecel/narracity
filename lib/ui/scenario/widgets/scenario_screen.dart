@@ -1,4 +1,4 @@
-import 'package:city_games/ui/core/ui/base_app_bar.dart';
+import 'package:narracity/ui/core/ui/base_app_bar.dart';
 import 'package:flutter/material.dart';
 
 class ScenarioScreen extends StatelessWidget {

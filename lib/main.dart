@@ -1,6 +1,7 @@
 import 'dart:developer' as developer;
 
-import 'package:city_games/ui/welcome_screen/widgets/welcome_screen.dart';
+import 'package:narracity/ui/scenario_selection/widgets/scenario_list_item.dart';
+import 'package:narracity/ui/welcome_screen/widgets/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Color.fromRGBO(30, 170, 200, 1))
       ),
       home: WelcomeScreen()
+      // home: ScenarioListItem()
     );
   }
 }

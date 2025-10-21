@@ -1,5 +1,5 @@
-import 'package:city_games/ui/core/ui/base_app_bar.dart';
-import 'package:city_games/ui/scenario_selection/view_model/scenario_selection_view_model.dart';
+import 'package:narracity/ui/core/ui/base_app_bar.dart';
+import 'package:narracity/ui/scenario_selection/view_model/scenario_selection_view_model.dart';
 import 'package:flutter/material.dart';
 
 class ScenarioDescriptionScreen extends StatelessWidget {

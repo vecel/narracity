@@ -1,7 +1,7 @@
-import 'package:city_games/ui/core/ui/base_app_bar.dart';
-import 'package:city_games/ui/scenario/widgets/scenario_screen.dart';
-import 'package:city_games/ui/scenario_selection/view_model/scenario_selection_view_model.dart';
-import 'package:city_games/ui/scenario_selection/widgets/scenario_description_screen.dart';
+import 'package:narracity/ui/core/ui/base_app_bar.dart';
+import 'package:narracity/ui/scenario/widgets/scenario_screen.dart';
+import 'package:narracity/ui/scenario_selection/view_model/scenario_selection_view_model.dart';
+import 'package:narracity/ui/scenario_selection/widgets/scenario_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
@@ -15,7 +15,8 @@ class ScenarioSelectionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scenariosList = ListView.builder(
-        itemCount: viewModel.scenarios.length,
+        // itemCount: viewModel.scenarios.length,
+        itemCount: 1,
         itemBuilder: (context, index) => GestureDetector(
           onTap: () { 
             viewModel.currentScenario = viewModel.scenarios[index];
@@ -25,10 +26,7 @@ class ScenarioSelectionScreen extends StatelessWidget {
               MaterialPageRoute(builder: (context) => ScenarioScreen())
             );
           },
-          child: Container(
-            color: index.isEven ? Colors.lightBlue : null,
-            padding: EdgeInsets.all(16),
-            child: Text('$index: ${viewModel.scenarios[index]}')),
+          child: ScenarioListItem()
         ),
       );
 
