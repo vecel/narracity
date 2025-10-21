@@ -11,35 +11,36 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.primary,
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          // mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Icon(Icons.home),
+            SizedBox(height: 96),
+            Icon(
+              Icons.map, 
+              size: 96,
+              color: Theme.of(context).colorScheme.onPrimary
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: FilledButton(
-                onPressed: () => log.info('Welcome'),
-                child: Text('Create an account')
+            Text(
+              'Narracity',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onPrimary,
+                fontSize: 24
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: FilledButton.tonal(
-                onPressed: () {
-                  Navigator.push(
-                    context, 
-                    MaterialPageRoute(
-                      builder: (context) => ScenarioSelectionScreen(viewModel: ScenarioSelectionViewModel())
-                    ) 
-                  );
-                }, 
-                child: Text('Continue as guest')
-              ),
-            )
+            SizedBox(height: 160),
+            FilledButton.tonal(
+              onPressed: () {
+                Navigator.push(
+                  context, 
+                  MaterialPageRoute(
+                    builder: (context) => ScenarioSelectionScreen(viewModel: ScenarioSelectionViewModel())
+                  ) 
+                );
+              }, 
+              child: Text("Let's Explore")
+            ),
           ],
         ),
       ),
