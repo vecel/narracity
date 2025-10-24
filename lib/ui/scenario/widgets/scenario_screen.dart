@@ -1,13 +1,16 @@
 import 'package:narracity/ui/core/ui/base_app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:narracity/ui/scenario/view_model/scenario_view_model.dart';
 
 class ScenarioScreen extends StatelessWidget {
-  const ScenarioScreen({super.key});
+  const ScenarioScreen({super.key, required this.viewModel});
+
+  final ScenarioViewModel viewModel;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BaseAppBar(title: 'Your Scenario'),
+      appBar: BaseAppBar(title: viewModel.scenario.title),
       bottomNavigationBar: NavigationBar(
         destinations: [
           NavigationDestination(
