@@ -1,21 +1,19 @@
+import 'package:narracity/domain/models/scenario.dart';
+
 class ScenarioSelectionViewModel {
 
   ScenarioSelectionViewModel() : scenarios = [
-    'Scenario 1',
-    'Scenario 2',
-    'Fake Scenario',
-    'Scenario 3',
-    'Scenario 4',
-    'Scenario 5',
-    'Scenario 6',
-    'Scenario 7',
-    'Scenario 8',
-    'Scenario 9',
-    'Scenario 10',
-    'Scenario 11',
-    'Scenario 12',
+    Scenario(
+      title: 'Example', 
+      description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also", 
+      location: 'Warsaw', 
+      distance: '4 km', 
+      duration: '1 h'
+    )
   ];
 
-  final List<String> scenarios;
-  String? currentScenario;
+  final List<Scenario> scenarios;
+  int? index;
+
+  Scenario? get currentScenario => index == null ? null : scenarios[index!];
 }

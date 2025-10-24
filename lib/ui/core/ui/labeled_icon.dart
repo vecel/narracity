@@ -8,7 +8,7 @@ class LabeledIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Row(
       children: [
         Icon(icon),
         Text(label, style: TextStyle(fontSize: 12))

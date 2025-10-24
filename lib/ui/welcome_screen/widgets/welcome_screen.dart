@@ -25,17 +25,20 @@ class WelcomeScreen extends StatelessWidget {
                 fontSize: 24
               ),
             ),
-            SizedBox(height: 160),
-            FilledButton.tonal(
-              onPressed: () {
-                Navigator.push(
-                  context, 
-                  MaterialPageRoute(
-                    builder: (context) => ScenarioSelectionScreen(viewModel: ScenarioSelectionViewModel())
-                  ) 
-                );
-              }, 
-              child: Text("Let's Explore")
+            Expanded(
+              child: Center(
+                child: FilledButton.tonal(
+                  onPressed: () {
+                    Navigator.push(
+                      context, 
+                      MaterialPageRoute(
+                        builder: (context) => ScenarioSelectionScreen(viewModel: ScenarioSelectionViewModel())
+                      ) 
+                    );
+                  }, 
+                  child: Text("Let's Explore")
+                ),
+              ),
             ),
           ],
         ),
