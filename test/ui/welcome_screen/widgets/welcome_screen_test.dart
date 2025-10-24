@@ -8,8 +8,17 @@ void main() {
       home: WelcomeScreen(),
     ));
 
+    final buttonFinder = find.byType(FilledButton);
+
     expect(find.byIcon(Icons.map), findsOneWidget);
     expect(find.text('Narracity'), findsOneWidget);
-    expect(find.byType(FilledButton), findsOneWidget);
+    expect(buttonFinder, findsOneWidget);
+    expect(
+      find.descendant(
+        of: buttonFinder,
+        matching: find.text("Let's Explore"),
+      ),
+      findsOneWidget,
+    );
   });
 }
