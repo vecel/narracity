@@ -1,4 +1,5 @@
 import 'package:narracity/domain/models/scenario.dart';
+import 'package:narracity/domain/models/node.dart';
 
 class ScenarioSelectionViewModel {
 
@@ -9,7 +10,8 @@ class ScenarioSelectionViewModel {
       image: 'assets/cat.webp',
       location: 'Warsaw', 
       distance: '4 km', 
-      duration: '1 h'
+      duration: '1 h',
+      startNode: exampleNode
     )
   ];
 

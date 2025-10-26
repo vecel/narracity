@@ -1,3 +1,5 @@
+import 'package:narracity/domain/models/node.dart';
+
 class Scenario {
 
   Scenario({
@@ -7,6 +9,7 @@ class Scenario {
     required this.location,
     required this.distance,
     required this.duration,
+    required this.startNode
   });
 
   final String title;
@@ -15,4 +18,5 @@ class Scenario {
   final String location;
   final String distance;
   final String duration;
+  final ScenarioNode startNode;
 }
