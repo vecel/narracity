@@ -1,3 +1,4 @@
+import 'package:narracity/data/repositiories/scenarios_repository.dart';
 import 'package:narracity/ui/scenario_selection/view_model/scenario_selection_view_model.dart';
 import 'package:narracity/ui/scenario_selection/widgets/scenario_selection_screen.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,10 @@ class WelcomeScreen extends StatelessWidget {
                     Navigator.push(
                       context, 
                       MaterialPageRoute(
-                        builder: (context) => ScenarioSelectionScreen(viewModel: ScenarioSelectionViewModel())
+                        builder: (context) => ScenarioSelectionScreen(
+                          viewModel: ScenarioSelectionViewModel(
+                            scenariosRepository: ScenariosRepository()
+                          ))
                       ) 
                     );
                   }, 

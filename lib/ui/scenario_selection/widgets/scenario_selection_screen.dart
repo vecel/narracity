@@ -14,14 +14,17 @@ class ScenarioSelectionScreen extends StatelessWidget {
     return Scaffold(
       appBar: BaseAppBar(title: 'Choose Scenario'),
       body: ListView.builder(
-        itemCount: viewModel.scenarios.length,
-        itemBuilder: (context, index) => GestureDetector(
-          onTap: () => Navigator.push(
-              context, 
-              MaterialPageRoute(builder: (context) => ScenarioDescriptionScreen(scenario: viewModel.scenarios[index]))
-          ),
-          child: ScenarioListItem()
-        ),
+        itemCount: viewModel.scenariosCount,
+        itemBuilder: (context, index) {
+          final scenario = viewModel.getScenario(index);
+          return GestureDetector(
+            onTap: () => Navigator.push(
+                context, 
+                MaterialPageRoute(builder: (context) => ScenarioDescriptionScreen(scenario: scenario))
+            ),
+            child: ScenarioListItem(scenario: scenario)
+          );
+        }
       )
     );
   }

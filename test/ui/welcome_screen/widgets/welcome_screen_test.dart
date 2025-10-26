@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:narracity/ui/welcome_screen/widgets/welcome_screen.dart';
 
 void main() {
-  testWidgets('Welcome screen has icon, title and button', (tester) async {
+  testWidgets('WelcomeScreen', (tester) async {
     await tester.pumpWidget(MaterialApp(
       home: WelcomeScreen(),
     ));

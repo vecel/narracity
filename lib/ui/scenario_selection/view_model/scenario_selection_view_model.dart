@@ -1,20 +1,16 @@
+import 'package:narracity/data/repositiories/scenarios_repository.dart';
 import 'package:narracity/domain/models/scenario.dart';
-import 'package:narracity/domain/models/node.dart';
 
 class ScenarioSelectionViewModel {
 
-  ScenarioSelectionViewModel() : scenarios = [
-    Scenario(
-      title: 'Example', 
-      description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also", 
-      image: 'assets/cat.webp',
-      location: 'Warsaw', 
-      distance: '4 km', 
-      duration: '1 h',
-      startNode: exampleNode
-    )
-  ];
+  ScenarioSelectionViewModel({
+    required ScenariosRepository scenariosRepository
+  }) : 
+    _scenariosRepository = scenariosRepository;
 
-  final List<Scenario> scenarios;
+
+  final ScenariosRepository _scenariosRepository;
   
+  int get scenariosCount => _scenariosRepository.scenarios.length;
+  Scenario getScenario(int index) => _scenariosRepository.scenarios[index];
 }

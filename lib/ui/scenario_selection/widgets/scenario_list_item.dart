@@ -1,8 +1,11 @@
+import 'package:narracity/domain/models/scenario.dart';
 import 'package:narracity/ui/core/ui/labeled_icon.dart';
 import 'package:flutter/material.dart';
 
 class ScenarioListItem extends StatelessWidget {
-  const ScenarioListItem({super.key});
+  const ScenarioListItem({super.key, required this.scenario});
+
+  final Scenario scenario;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +23,7 @@ class ScenarioListItem extends StatelessWidget {
             SizedBox.square(
               dimension: 96,
               child: Image(
-                image: AssetImage('assets/cat.webp'),
+                image: AssetImage('assets/cat.webp'), // TODO
                 fit: BoxFit.cover,
               ),
             ),
@@ -30,11 +33,11 @@ class ScenarioListItem extends StatelessWidget {
                 children: [
                   SizedBox(
                     height: 24, 
-                    child: Text('Title', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
+                    child: Text(scenario.title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
                   SizedBox(
                     height: 40,
                     child: Text(
-                      'Lorem ipsum dolor set amet dis ans duz equat los dew on color dupa set fry fru lgoaf andir adni.',
+                      scenario.description,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -44,9 +47,9 @@ class ScenarioListItem extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        LabeledIcon(icon: Icons.location_on, label: 'Warszawa'),
-                        LabeledIcon(icon: Icons.access_time, label: '30 min'),
-                        LabeledIcon(icon: Icons.directions_walk, label: '2 km')
+                        LabeledIcon(icon: Icons.location_on, label: scenario.location),
+                        LabeledIcon(icon: Icons.access_time, label: scenario.duration),
+                        LabeledIcon(icon: Icons.directions_walk, label: scenario.distance)
                       ],
                     ),
                   )
