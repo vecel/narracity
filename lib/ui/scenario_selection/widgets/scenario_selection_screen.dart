@@ -22,7 +22,13 @@ class ScenarioSelectionScreen extends StatelessWidget {
                 context, 
                 MaterialPageRoute(builder: (context) => ScenarioDescriptionScreen(scenario: scenario))
             ),
-            child: ScenarioListItem(scenario: scenario)
+            child: ScenarioListItem(
+              title: scenario.title,
+              description: scenario.description,
+              distance: scenario.distance,
+              duration: scenario.duration,
+              location: scenario.location,
+            )
           );
         }
       )

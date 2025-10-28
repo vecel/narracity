@@ -1,11 +1,21 @@
-import 'package:narracity/domain/models/scenario.dart';
 import 'package:narracity/ui/core/ui/labeled_icon.dart';
 import 'package:flutter/material.dart';
 
 class ScenarioListItem extends StatelessWidget {
-  const ScenarioListItem({super.key, required this.scenario});
+  const ScenarioListItem({
+    super.key, 
+    required this.title, 
+    required this.description, 
+    required this.location, 
+    required this.duration, 
+    required this.distance
+  });
 
-  final Scenario scenario;
+  final String title;
+  final String description;
+  final String location;
+  final String duration;
+  final String distance;
 
   @override
   Widget build(BuildContext context) {
@@ -33,11 +43,11 @@ class ScenarioListItem extends StatelessWidget {
                 children: [
                   SizedBox(
                     height: 24, 
-                    child: Text(scenario.title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
+                    child: Text(title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
                   SizedBox(
                     height: 40,
                     child: Text(
-                      scenario.description,
+                      description,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -47,9 +57,9 @@ class ScenarioListItem extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        LabeledIcon(icon: Icons.location_on, label: scenario.location),
-                        LabeledIcon(icon: Icons.access_time, label: scenario.duration),
-                        LabeledIcon(icon: Icons.directions_walk, label: scenario.distance)
+                        LabeledIcon(icon: Icons.location_on, label: location),
+                        LabeledIcon(icon: Icons.access_time, label: duration),
+                        LabeledIcon(icon: Icons.directions_walk, label: distance)
                       ],
                     ),
                   )
