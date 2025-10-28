@@ -21,8 +21,8 @@ class EmptyNode extends ScenarioNode {}
 
 final choice = ChoiceNode(
   text: 'Choose wisely',
-  labelA: 'A',
-  labelB: 'B', 
+  labelA: 'Choice A',
+  labelB: 'Choice B', 
   choiceA: TextNode(text: 'Success', next: EmptyNode()), 
   choiceB: TextNode(text: 'Failure', next: EmptyNode())
 );

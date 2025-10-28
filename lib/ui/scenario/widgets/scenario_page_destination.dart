@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class ScenarioPage extends StatelessWidget {
-  const ScenarioPage({super.key, required this.icon, required this.label, required this.notification, this.enabled = true});
+class ScenarioPageDestination extends StatelessWidget {
+  const ScenarioPageDestination({super.key, required this.icon, required this.label, required this.notification, this.enabled = true});
 
   final IconData icon;
   final String label;

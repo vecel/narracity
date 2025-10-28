@@ -17,7 +17,6 @@ class ScenarioViewModel extends ChangeNotifier {
   int selectedPageIndex = 0;
   bool storyPageNotification = false;
   bool mapPageNotification = false;
-  bool displayProceedButton = true;
   
   UnmodifiableListView<ScenarioNode> get scenarioProgress => UnmodifiableListView(_scenarioProgress);
 
