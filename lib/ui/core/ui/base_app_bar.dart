@@ -13,6 +13,8 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
         icon: Icon(Icons.arrow_back)
       ),
       title: Text(title),
+      backgroundColor: Theme.of(context).colorScheme.primary,
+      foregroundColor: Theme.of(context).colorScheme.onPrimary,
     );
   }
   

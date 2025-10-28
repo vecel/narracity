@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:narracity/data/repositiories/scenarios_repository.dart';
 import 'package:narracity/domain/models/scenario.dart';
 
@@ -12,5 +14,5 @@ class ScenarioSelectionViewModel {
   final ScenariosRepository _scenariosRepository;
   
   int get scenariosCount => _scenariosRepository.scenarios.length;
-  Scenario getScenario(int index) => _scenariosRepository.scenarios[index];
+  UnmodifiableListView<Scenario> get scenarios => UnmodifiableListView(_scenariosRepository.scenarios); 
 }

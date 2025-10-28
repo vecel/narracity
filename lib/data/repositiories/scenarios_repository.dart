@@ -13,6 +13,16 @@ class ScenariosRepository {
       duration: '1 h',
       startNode: exampleNode
     ));
+
+    _scenarios.add(Scenario(
+      title: 'Mystery Road', 
+      description: "This is fabular scenario that you play on the roads of Warsaw. It requires flair and lateral thinking. Can you cope?", 
+      image: 'assets/cat.webp',
+      location: 'Warsaw', 
+      distance: '20 km', 
+      duration: '5 h',
+      startNode: exampleNode
+    ));
   }
 
   final List<Scenario> _scenarios = List.empty(growable: true);

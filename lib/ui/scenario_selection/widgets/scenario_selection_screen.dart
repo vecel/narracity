@@ -13,10 +13,11 @@ class ScenarioSelectionScreen extends StatelessWidget {
   Widget build(BuildContext context) { 
     return Scaffold(
       appBar: BaseAppBar(title: 'Choose Scenario'),
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
       body: ListView.builder(
         itemCount: viewModel.scenariosCount,
         itemBuilder: (context, index) {
-          final scenario = viewModel.getScenario(index);
+          final scenario = viewModel.scenarios[index];
           return GestureDetector(
             onTap: () => Navigator.push(
                 context, 

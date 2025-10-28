@@ -23,18 +23,28 @@ class ScenarioListItem extends StatelessWidget {
       height: 128,
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(8)),
-          color: Theme.of(context).colorScheme.primaryContainer,
+          // borderRadius: BorderRadius.all(Radius.circular(8)),
+          boxShadow: [
+            BoxShadow(
+              color: Theme.of(context).colorScheme.surfaceContainerHighest,
+              spreadRadius: 2,
+              blurRadius: 1
+            )
+          ],
+          color: Theme.of(context).colorScheme.surface
         ),
         padding: const EdgeInsets.all(8.0),
-        margin: const EdgeInsets.all(8.0),
+        margin: const EdgeInsets.all(4.0),
         child: Row(
           children: [
             SizedBox.square(
               dimension: 96,
-              child: Image(
-                image: AssetImage('assets/cat.webp'), // TODO
-                fit: BoxFit.cover,
+              child: ClipRRect(
+                borderRadius: BorderRadiusGeometry.all(Radius.circular(8)),
+                child: Image(
+                  image: AssetImage('assets/cat.webp'), // TODO
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             SizedBox(width: 8),
@@ -55,10 +65,12 @@ class ScenarioListItem extends StatelessWidget {
                   SizedBox(
                     height: 32,
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         LabeledIcon(icon: Icons.location_on, label: location),
+                        Expanded(child: Container()),
                         LabeledIcon(icon: Icons.access_time, label: duration),
+                        SizedBox(width: 8),
                         LabeledIcon(icon: Icons.directions_walk, label: distance)
                       ],
                     ),
