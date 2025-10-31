@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:narracity/features/scenario/models/node.dart';
 
+// TODO: Should move this file to progress feature
+
 class NodeWidgetFactory {
   static Widget create(ScenarioNode node) {
     return switch(node) {
