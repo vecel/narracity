@@ -1,6 +1,5 @@
 import 'dart:developer' as developer;
 
-import 'package:narracity/ui/scenario_selection/widgets/scenario_list_item.dart';
 import 'package:narracity/ui/welcome_screen/widgets/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
