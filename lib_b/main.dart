@@ -1,8 +1,8 @@
 import 'dart:developer' as developer;
 
+import 'ui/welcome_screen/widgets/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
-import 'package:narracity/features/home/welcome_screen.dart';
 
 void main() {
 

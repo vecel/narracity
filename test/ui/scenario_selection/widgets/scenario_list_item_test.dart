@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:narracity/ui/core/ui/labeled_icon.dart';
-import 'package:narracity/ui/scenario_selection/widgets/scenario_list_item.dart';
+import 'package:narracity/features/catalog/presentation/catalog_list_item.dart';
+import 'package:narracity/shared_widgets/labeled_icon.dart';
 
 void main() {
   testWidgets('ScenarioListItem', (tester) async {
@@ -12,7 +12,7 @@ void main() {
     final duration = '5h';
 
     await tester.pumpWidget(MaterialApp(
-      home: ScenarioListItem(
+      home: CatalogListItem(
         title: title,
         description: description,
         distance: distance,

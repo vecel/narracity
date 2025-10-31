@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:narracity/ui/welcome_screen/widgets/welcome_screen.dart';
+import 'package:narracity/features/home/welcome_screen.dart';
+
 
 void main() {
   testWidgets('WelcomeScreen', (tester) async {
