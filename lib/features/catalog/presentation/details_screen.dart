@@ -33,7 +33,7 @@ class DetailsScreen extends StatelessWidget {
         FilledButton(
           onPressed: () => Navigator.push(
             context, 
-            MaterialPageRoute(builder: (context) => ScenarioScreen(viewModel: ScenarioViewModel()))
+            MaterialPageRoute(builder: (context) => ScenarioScreen(viewModel: ScenarioViewModel(title: scenario.title)))
           ),
           child: Text('Play')
         )

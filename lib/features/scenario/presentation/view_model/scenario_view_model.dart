@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:logging/logging.dart';
 
 class ScenarioViewModel extends ChangeNotifier {
 
-  static final Logger logger = Logger('ScenarioViewModel');
-
-  ScenarioViewModel();
-
-  // final ScenariosRepository _scenariosRepository;
+  ScenarioViewModel({required this.title});
   
+  final String title;
+
   int selectedPageIndex = 0;
   bool storyPageNotification = false;
   bool mapPageNotification = false;
-  
-  // UnmodifiableListView<ScenarioNode> get scenarioProgress => UnmodifiableListView(_scenarioProgress);
 
   void selectPage(int index) {
     selectedPageIndex = index;
@@ -24,12 +19,6 @@ class ScenarioViewModel extends ChangeNotifier {
     }
     notifyListeners();
   }
-
-  // void proceed(ScenarioNode node) {
-  //   _scenarioProgress.add(node);
-  //   // do something
-  //   notifyListeners();
-  // }
 
   void _onStoryPageSelected() => storyPageNotification = false;
   void _onMapPageSelected() => mapPageNotification = false;
