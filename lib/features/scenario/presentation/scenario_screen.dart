@@ -24,7 +24,7 @@ class ScenarioScreen extends StatelessWidget {
           journalNotification: false,
         ),
         body: [
-          StoryScreen(viewModel: StoryViewModel()),
+          StoryScreen(viewModel: viewModel.storyViewModel),
           Center(child: Text('Map')),
           Center(child: Text('Journal')),
         ][viewModel.selectedPageIndex],

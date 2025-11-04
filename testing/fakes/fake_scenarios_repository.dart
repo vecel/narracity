@@ -1,6 +1,6 @@
 import 'package:narracity/features/catalog/data/scenarios_repository.dart';
-import 'package:narracity/features/scenario/models/node.dart';
-import 'package:narracity/features/scenario/models/scenario.dart';
+import 'package:narracity/features/scenario/domain/node.dart';
+import 'package:narracity/features/scenario/domain/scenario.dart';
 
 class FakeScenariosRepository implements ScenariosRepository{
   final List<Scenario> _scenarios = [

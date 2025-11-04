@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:narracity/features/scenario/models/scenario.dart';
+import 'package:narracity/features/scenario/domain/scenario.dart';
 import 'package:narracity/features/scenario/presentation/scenario_screen.dart';
 import 'package:narracity/features/scenario/presentation/view_model/scenario_view_model.dart';
 import 'package:narracity/shared_widgets/base_app_bar.dart';
@@ -33,7 +33,7 @@ class DetailsScreen extends StatelessWidget {
         FilledButton(
           onPressed: () => Navigator.push(
             context, 
-            MaterialPageRoute(builder: (context) => ScenarioScreen(viewModel: ScenarioViewModel(title: scenario.title)))
+            MaterialPageRoute(builder: (context) => ScenarioScreen(viewModel: ScenarioViewModel(title: scenario.title, node: scenario.startNode)))
           ),
           child: Text('Play')
         )

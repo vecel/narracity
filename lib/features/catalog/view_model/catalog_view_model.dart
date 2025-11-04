@@ -1,7 +1,7 @@
 import 'dart:collection';
 
 import 'package:narracity/features/catalog/data/scenarios_repository.dart';
-import 'package:narracity/features/scenario/models/scenario.dart';
+import 'package:narracity/features/scenario/domain/scenario.dart';
 
 class CatalogViewModel {
 
