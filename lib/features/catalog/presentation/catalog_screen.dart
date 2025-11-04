@@ -1,4 +1,4 @@
-import 'package:narracity/features/catalog/view_model/catalog_view_model.dart';
+import 'package:narracity/features/catalog/presentation/view_model/catalog_view_model.dart';
 import 'package:narracity/shared_widgets/base_app_bar.dart';
 
 import 'details_screen.dart';

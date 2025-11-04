@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:narracity/features/catalog/data/scenarios_repository.dart';
 import 'package:narracity/features/catalog/presentation/catalog_screen.dart';
-import 'package:narracity/features/catalog/view_model/catalog_view_model.dart';
+import 'package:narracity/features/catalog/presentation/view_model/catalog_view_model.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
