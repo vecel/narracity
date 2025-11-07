@@ -8,7 +8,7 @@ import 'package:narracity/features/catalog/presentation/view_model/catalog_view_
 import '../../../../testing/fakes/fake_scenarios_repository.dart';
 
 void main() {
-  group('CatalogScreen', () {
+  group('CatalogScreen Widget Tests', () {
     late CatalogViewModel fakeViewModel;
 
     setUp(() {
@@ -79,6 +79,7 @@ void main() {
     });
 
     testWidgets('should handle scenario selection on tap', (tester) async {
+      // TODO: move to integration tests
       await tester.pumpWidget(
         MaterialApp(
           home: CatalogScreen(viewModel: fakeViewModel),
