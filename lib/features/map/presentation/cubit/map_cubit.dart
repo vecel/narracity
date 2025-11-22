@@ -17,27 +17,24 @@ class MapCubit extends Cubit<MapState> {
   final Stream<Position> _positionStream;
   final Stream<ServiceStatus> _locationServiceStream;
 
-  void askForPermission() async {
+  void init() async {
     LocationPermission permission;
 
     _log.info('Checking location permission');
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
-      _log.info('Permission denied, requesting it');
       permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.deniedForever) {
+        _log.info('Permission denied forever');
+        emit(MapPermissionDeniedForever());
+        return;
+      }
+      if (permission == LocationPermission.denied) {
+        _log.info('Permission denied');
+        emit(MapPermissionDenied());
+        return;
+      }
     }
-
-    if (permission == LocationPermission.denied) {
-      _log.info('Permission denied');
-      emit(MapPermissionDenied());
-      return;
-    }
-    
-    if (permission == LocationPermission.deniedForever) {
-      _log.info('Permission denied forever');
-      emit(MapPermissionDeniedForever());
-      return;
-    } 
 
     _log.info('Permission granted, resolving position');
     try {
@@ -48,6 +45,28 @@ class MapCubit extends Cubit<MapState> {
       _log.info('Location service request rejected');
       emit(MapLocationServiceRequestRejected());
     }
+  }
+
+  void openLocationSettings() async {
+    await Geolocator.openLocationSettings();
+  }
+
+  void openAppSettings() async {
+    await Geolocator.openAppSettings();
+  }
+
+  Future<void> _getPosition() async {
+    Position? position;
+    _log.info('Checking last known position');
+    position = await Geolocator.getLastKnownPosition();
+    if (position != null) {
+      emit(MapPermissionGranted(position));
+    }
+    // Method below will request location service if needed
+    _log.info('Resolving current position');
+    position = await Geolocator.getCurrentPosition();
+    _log.info('Current position resolved');
+    emit(MapPermissionGranted(position));
   }
 
   void _listenToLocationServiceStatus() {
@@ -77,24 +96,5 @@ class MapCubit extends Cubit<MapState> {
       },
       onDone: () => _log.info('Position stream closed'),
     );
-  }
-
-  Future<void> _getPosition() async {
-    Position? position;
-    _log.info('Checking last known position');
-    position = await Geolocator.getLastKnownPosition();
-    if (position != null) {
-      emit(MapPermissionGranted(position));
-    }
-    // Method below will request location service if needed
-    _log.info('Resolving current position');
-    position = await Geolocator.getCurrentPosition();
-    _log.info('Current position resolved');
-    emit(MapPermissionGranted(position));
-  }
-
-  void x() async {
-    final v = await Geolocator.openLocationSettings();
-    _log.info(v);
   }
 }

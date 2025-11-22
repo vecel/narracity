@@ -70,21 +70,22 @@ class MapScreen extends StatelessWidget {
         _log.info('Entering bloc builder with state: $state');
         switch (state) {
           case MapInitial(): {
-            cubit.askForPermission();
+            cubit.init();
             return _buildLoadingScreen();
           }
           case MapPermissionDenied(): {
-            return Text('Permission not granted');
+            // Add explanatory ui to say, why app needs permissions
+            return TextButton(onPressed: cubit.init, child: Text('Give permission'));
           }
           case MapPermissionDeniedForever(): {
-            // Add button to open app settings
-            return Text('Permission denied forever');
+            // Add link to app settings, ask user to change them and after that to click some button
+            return TextButton(onPressed: cubit.openAppSettings, child: Text('Open app settings'));
           }
           case MapLocationServiceDisabled(): {
             return Text('Location disabled');
           }
           case MapLocationServiceRequestRejected(): {
-            return TextButton(onPressed: cubit.x, child: Text('Open location settings'));
+            return TextButton(onPressed: cubit.openLocationSettings, child: Text('Open location settings'));
           }
           case MapPermissionGranted(:var position): {
             return Text('$position');
