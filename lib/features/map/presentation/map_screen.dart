@@ -35,8 +35,8 @@ class MapScreen extends StatelessWidget {
           case MapLocationServiceRequestRejected(): {
             return _buildLocationServiceRequestRejectedScreen(cubit.openLocationSettings, cubit.askForPermission);
           }
-          case MapReady(:var lastKnownPosition, :var polygons): {
-            return _buildMapScreen(lastKnownPosition, polygons);
+          case MapReady(:var position, :var polygons): {
+            return _buildMapScreen(position, polygons);
           }
         }
       }
@@ -82,7 +82,7 @@ class MapScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMapScreen(Position lastKnownPosition, List<Polygon> polygons) {
+  Widget _buildMapScreen(LocationMarkerPosition position, List<Polygon> polygons) {
     return _buildMapWidget(
       layers: [
         TileLayer(
@@ -90,23 +90,23 @@ class MapScreen extends StatelessWidget {
           userAgentPackageName: 'pl.edu.pw.mini.karandys.narracity',
         ),
         PolygonLayer(polygons: polygons),
-        CurrentLocationLayer(
-          indicators: LocationMarkerIndicators(
-            serviceDisabled: LocationMarkerLayer(
-              position: LocationMarkerPosition(latitude: lastKnownPosition.latitude, longitude: lastKnownPosition.longitude, accuracy: lastKnownPosition.accuracy),
-              style: LocationMarkerStyle(
-                marker: DefaultLocationMarker(color: Colors.grey),
-                showHeadingSector: false,
-                showAccuracyCircle: false
-              ),
-            ),
-          ),
-        ),
+        LocationMarkerLayer(position: position),
+        // CurrentLocationLayer(
+        //   indicators: LocationMarkerIndicators(
+        //     serviceDisabled: LocationMarkerLayer(
+        //       position: LocationMarkerPosition(latitude: lastKnownPosition.latitude, longitude: lastKnownPosition.longitude, accuracy: lastKnownPosition.accuracy),
+        //       style: LocationMarkerStyle(
+        //         marker: DefaultLocationMarker(color: Colors.grey),
+        //         showHeadingSector: false,
+        //         showAccuracyCircle: false
+        //       ),
+        //     ),
+        //   ),
+        // ),
         SimpleAttributionWidget(source: Text('OpenStreetMap contributors')),
       ]
     );
   }
-
 
   Widget _buildMapWidget({required List<Widget> layers}) {
     return Center(

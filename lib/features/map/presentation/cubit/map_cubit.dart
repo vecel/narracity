@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:logging/logging.dart';
 import 'package:narracity/features/map/presentation/cubit/map_state.dart';
@@ -10,15 +11,22 @@ class MapCubit extends Cubit<MapState> {
 
   static final _log = Logger('MapCubit');
   
-  MapCubit(): 
-    _positionStream = Geolocator.getPositionStream(),
-    _polygons = [],
-    super(MapInitial());
+  MapCubit(): super(MapInitial()) {
+    // _subscribeToPositionStream();
+  }
 
-  final Stream<Position> _positionStream;
-  final List<Polygon> _polygons;
+  final Stream<LocationMarkerPosition?> _positionStream = const LocationMarkerDataStreamFactory().fromGeolocatorPositionStream();
+  late StreamSubscription<LocationMarkerPosition?> _positionStreamSubscription;
+
+  late LocationMarkerPosition? _position;
+  final List<Polygon> _polygons = [];
   
-  late Position _position;
+
+  @override
+  Future<void> close() {
+    _unsubscribeToPositionStream();
+    return super.close();
+  }
 
   void askForPermission() async {
     LocationPermission permission;
@@ -40,9 +48,9 @@ class MapCubit extends Cubit<MapState> {
     }
 
     _log.info('Permission granted');
-    // _listenToLocationServiceStatus();
     try {
       _position = await _getPosition();
+      _subscribeToPositionStream();
       emit(MapReady(_position, _polygons));
     } on LocationServiceDisabledException {
       emit(MapLocationServiceRequestRejected());
@@ -70,5 +78,20 @@ class MapCubit extends Cubit<MapState> {
     }
     _log.info('Checking current position');
     return await Geolocator.getCurrentPosition();
+  }
+
+  void _subscribeToPositionStream() {
+    _positionStreamSubscription = _positionStream.listen(
+      (position) {
+        if (position != null) {
+          _position = position;
+          emit(MapReady(_position!, _polygons));
+        }
+      }
+    );
+  }
+
+  void _unsubscribeToPositionStream() {
+    _positionStreamSubscription.cancel();
   }
 }
