@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:logging/logging.dart';
 import 'package:narracity/features/map/presentation/cubit/map_cubit.dart';
@@ -13,56 +15,7 @@ class MapScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _log.info('Build method');
-    // final error = Column(
-    //     children: [
-    //       Text('Should enable location and give permission'),
-    //       FilledButton(
-    //         onPressed: () {}, 
-    //         child: Text('Action')
-    //       )
-    //     ],
-    //   );
-
-    // final screen = Center(
-    //   child: Container(
-    //     margin: EdgeInsets.all(16),
-    //     child: FlutterMap(
-    //       options: MapOptions(
-    //         initialCenter: LatLng(52.20161, 20.86548),
-    //         initialZoom: 16,
-    //         maxZoom: 20,
-    //         minZoom: 12
-    //       ),
-    //       children: [
-    //         TileLayer(
-    //           urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-    //           userAgentPackageName: 'pl.edu.pw.mini.karandys.narracity',
-    //         ),
-    //         PolygonLayer(
-    //           polygons: [
-    //             Polygon(
-    //               points: [
-    //                 LatLng(52.20, 20.86),
-    //                 LatLng(52.20, 20.85),
-    //                 LatLng(52.21, 20.85),
-    //                 LatLng(52.21, 20.86),
-    //               ],
-    //               color: Colors.red
-    //             ),
-    //           ]
-    //         ),
-    //         // MarkerLayer(
-    //         //   markers: [
-    //         //     Marker(point: viewModel.userLocation!, child: Container(width: 10, height: 10, color: Colors.red))
-    //         //   ]
-    //         // ),
-    //         SimpleAttributionWidget(source: Text('OpenStreetMap contributors')),
-    //       ]
-    //     )
-    //   ),
-    // );
-
+    
     final cubit = BlocProvider.of<MapCubit>(context);
   
     return BlocBuilder<MapCubit, MapState>(
@@ -70,25 +23,20 @@ class MapScreen extends StatelessWidget {
         _log.info('Entering bloc builder with state: $state');
         switch (state) {
           case MapInitial(): {
-            cubit.init();
+            cubit.askForPermission();
             return _buildLoadingScreen();
           }
           case MapPermissionDenied(): {
-            // Add explanatory ui to say, why app needs permissions
-            return TextButton(onPressed: cubit.init, child: Text('Give permission'));
+            return _buildPermissionDeniedScreen(cubit.askForPermission);
           }
           case MapPermissionDeniedForever(): {
-            // Add link to app settings, ask user to change them and after that to click some button
-            return TextButton(onPressed: cubit.openAppSettings, child: Text('Open app settings'));
-          }
-          case MapLocationServiceDisabled(): {
-            return Text('Location disabled');
+            return _buildPermissionDeniedForeverScreen(cubit.openAppSettings, cubit.askForPermission);
           }
           case MapLocationServiceRequestRejected(): {
-            return TextButton(onPressed: cubit.openLocationSettings, child: Text('Open location settings'));
+            return _buildLocationServiceRequestRejectedScreen(cubit.openLocationSettings, cubit.askForPermission);
           }
-          case MapPermissionGranted(:var position): {
-            return Text('$position');
+          case MapReady(:var lastKnownPosition, :var polygons): {
+            return _buildMapScreen(lastKnownPosition, polygons);
           }
         }
       }
@@ -96,6 +44,85 @@ class MapScreen extends StatelessWidget {
   }
 
   Widget _buildLoadingScreen() {
-    return CircularProgressIndicator();
+    return Center(child: CircularProgressIndicator());
+  }
+
+  Widget _buildPermissionDeniedScreen(void Function() askForPermission) {
+    return Center(
+      child: Column(
+        children: [
+          Text('Please give the application location permission. We need it to display your position on the map.'),
+          FilledButton(onPressed: askForPermission, child: Text('Give permission'))
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPermissionDeniedForeverScreen(void Function() openAppSettings, void Function() refresh) {
+    return Center(
+      child: Column(
+        children: [
+          Text('Location permission was denied forever. We won\'t ask for it anymore. Please manually change it in the application settings and refresh the map.'),
+          FilledButton(onPressed: openAppSettings, child: Text('Open settings')),
+          TextButton(onPressed: refresh, child: Text('Refresh'))
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLocationServiceRequestRejectedScreen(void Function() openLocationSettings, void Function() refresh) {
+    return Center(
+      child: Column(
+        children: [
+          Text('Please enable location service and refresh the map'),
+          FilledButton(onPressed: openLocationSettings, child: Text('Open settings')),
+          TextButton(onPressed: refresh, child: Text('Refresh'))
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMapScreen(Position lastKnownPosition, List<Polygon> polygons) {
+    return _buildMapWidget(
+      layers: [
+        TileLayer(
+          urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+          userAgentPackageName: 'pl.edu.pw.mini.karandys.narracity',
+        ),
+        PolygonLayer(polygons: polygons),
+        CurrentLocationLayer(
+          indicators: LocationMarkerIndicators(
+            serviceDisabled: LocationMarkerLayer(
+              position: LocationMarkerPosition(latitude: lastKnownPosition.latitude, longitude: lastKnownPosition.longitude, accuracy: lastKnownPosition.accuracy),
+              style: LocationMarkerStyle(
+                marker: DefaultLocationMarker(color: Colors.grey),
+                showHeadingSector: false,
+                showAccuracyCircle: false
+              ),
+            ),
+          ),
+        ),
+        SimpleAttributionWidget(source: Text('OpenStreetMap contributors')),
+      ]
+    );
+  }
+
+
+  Widget _buildMapWidget({required List<Widget> layers}) {
+    return Center(
+      child: Container(
+        margin: EdgeInsets.all(16),
+        child: FlutterMap(
+          // TODO: Change map options.
+          options: MapOptions(
+            initialCenter: LatLng(52.20161, 20.86548),
+            initialZoom: 16,
+            maxZoom: 20,
+            minZoom: 12
+          ),
+          children: layers
+        )
+      ),
+    );
   }
 }

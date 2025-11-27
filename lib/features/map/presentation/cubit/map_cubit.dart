@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:logging/logging.dart';
 import 'package:narracity/features/map/presentation/cubit/map_state.dart';
@@ -10,14 +11,16 @@ class MapCubit extends Cubit<MapState> {
   static final _log = Logger('MapCubit');
   
   MapCubit(): 
-    _positionStream = Geolocator.getPositionStream(), 
-    _locationServiceStream = Geolocator.getServiceStatusStream(),
+    _positionStream = Geolocator.getPositionStream(),
+    _polygons = [],
     super(MapInitial());
 
   final Stream<Position> _positionStream;
-  final Stream<ServiceStatus> _locationServiceStream;
+  final List<Polygon> _polygons;
+  
+  late Position _position;
 
-  void init() async {
+  void askForPermission() async {
     LocationPermission permission;
 
     _log.info('Checking location permission');
@@ -36,13 +39,12 @@ class MapCubit extends Cubit<MapState> {
       }
     }
 
-    _log.info('Permission granted, resolving position');
+    _log.info('Permission granted');
+    // _listenToLocationServiceStatus();
     try {
-      await _getPosition();
-      _listenToPositionChanges();
-      _listenToLocationServiceStatus();
+      _position = await _getPosition();
+      emit(MapReady(_position, _polygons));
     } on LocationServiceDisabledException {
-      _log.info('Location service request rejected');
       emit(MapLocationServiceRequestRejected());
     }
   }
@@ -55,46 +57,18 @@ class MapCubit extends Cubit<MapState> {
     await Geolocator.openAppSettings();
   }
 
-  Future<void> _getPosition() async {
+  void addPolygon(Polygon polygon) {
+    _polygons.add(polygon);
+  }
+
+  Future<Position> _getPosition() async {
     Position? position;
     _log.info('Checking last known position');
     position = await Geolocator.getLastKnownPosition();
     if (position != null) {
-      emit(MapPermissionGranted(position));
+      return position;
     }
-    // Method below will request location service if needed
-    _log.info('Resolving current position');
-    position = await Geolocator.getCurrentPosition();
-    _log.info('Current position resolved');
-    emit(MapPermissionGranted(position));
-  }
-
-  void _listenToLocationServiceStatus() {
-    _log.info('Listening for location service status');
-    _locationServiceStream.listen(
-      (status) {
-        if (status == ServiceStatus.disabled) {
-          _log.info('Location service disabled');
-        }
-        if (status == ServiceStatus.enabled) {
-          _log.info('Location service enabled');
-        }
-      }
-    );
-  }
-
-  void _listenToPositionChanges() {
-    _log.info('Listening for position changes');
-    _positionStream.listen(
-      (position) {
-        _log.info('Position update with position: $position');
-        emit(MapPermissionGranted(position));
-      },
-      onError: (error) {
-        _log.info('Location service disabled when listening to updates');
-        throw error;
-      },
-      onDone: () => _log.info('Position stream closed'),
-    );
+    _log.info('Checking current position');
+    return await Geolocator.getCurrentPosition();
   }
 }

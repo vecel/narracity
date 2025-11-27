@@ -1,13 +1,14 @@
+import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 
 sealed class MapState {}
 final class MapInitial extends MapState {}
-final class MapLocationServiceDisabled extends MapState {}
+/// Emitted when user explicitly reject enabling location service. Can happen only if they are asked to do so by dialog.
 final class MapLocationServiceRequestRejected extends MapState {}
 final class MapPermissionDenied extends MapState {}
 final class MapPermissionDeniedForever extends MapState {}
-final class MapPermissionGranted extends MapState {
-  MapPermissionGranted(this.position);
-
-  final Position position;
+final class MapReady extends MapState {
+  MapReady(this.lastKnownPosition, this.polygons);
+  final Position lastKnownPosition;
+  final List<Polygon> polygons;
 }
