@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:logging/logging.dart';
 import 'package:narracity/features/map/presentation/cubit/map_cubit.dart';
@@ -20,7 +19,6 @@ class MapScreen extends StatelessWidget {
   
     return BlocBuilder<MapCubit, MapState>(
       builder: (context, state) {
-        _log.info('Entering bloc builder with state: $state');
         switch (state) {
           case MapInitial(): {
             cubit.askForPermission();

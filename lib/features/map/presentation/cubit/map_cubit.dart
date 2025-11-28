@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:geolocator/geolocator.dart' hide PermissionDeniedException;
 import 'package:logging/logging.dart';
 import 'package:narracity/features/map/presentation/cubit/map_state.dart';
 
@@ -11,14 +11,13 @@ class MapCubit extends Cubit<MapState> {
 
   static final _log = Logger('MapCubit');
   
-  MapCubit(): super(MapInitial()) {
-    // _subscribeToPositionStream();
-  }
+  MapCubit(): super(MapInitial());
 
   final Stream<LocationMarkerPosition?> _positionStream = const LocationMarkerDataStreamFactory().fromGeolocatorPositionStream();
+  
   late StreamSubscription<LocationMarkerPosition?> _positionStreamSubscription;
 
-  late LocationMarkerPosition? _position;
+  late LocationMarkerPosition _position;
   final List<Polygon> _polygons = [];
   
 
@@ -69,23 +68,41 @@ class MapCubit extends Cubit<MapState> {
     _polygons.add(polygon);
   }
 
-  Future<Position> _getPosition() async {
+  Future<LocationMarkerPosition> _getPosition() async {
     Position? position;
     _log.info('Checking last known position');
     position = await Geolocator.getLastKnownPosition();
-    if (position != null) {
-      return position;
+    if (position == null) {
+      _log.info('Checking current position');
+      position = await Geolocator.getCurrentPosition();
     }
-    _log.info('Checking current position');
-    return await Geolocator.getCurrentPosition();
+    return LocationMarkerPosition(
+      latitude: position.latitude, 
+      longitude: position.longitude, 
+      accuracy: position.accuracy
+    );
   }
 
   void _subscribeToPositionStream() {
     _positionStreamSubscription = _positionStream.listen(
       (position) {
+        _log.info('Position update with $position');
         if (position != null) {
           _position = position;
-          emit(MapReady(_position!, _polygons));
+          emit(MapReady(_position, _polygons));
+        }
+      },
+      onError: (error) {
+        switch (error) {
+          case IncorrectSetupException _:
+            _log.info('LocationMarker plugin has not been setup correctly. '
+                  'Please follow the instructions in the documentation');
+          case PermissionRequestingException _:
+            emit(MapInitial());
+          case PermissionDeniedException _:
+            emit(MapPermissionDenied());
+          case ServiceDisabledException _:
+            _log.info('Location service disabled');
         }
       }
     );
