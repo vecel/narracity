@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:narracity/features/map/presentation/cubit/map_cubit.dart';
 import 'package:narracity/features/map/presentation/map_screen.dart';
 import 'package:narracity/features/scenario/presentation/navigation_bar.dart';
+import 'package:narracity/features/story/presentation/cubit/story_cubit.dart';
 import 'package:narracity/features/story/presentation/story_screen.dart';
 import 'package:narracity/features/scenario/presentation/view_model/scenario_view_model.dart';
 import 'package:narracity/shared_widgets/base_app_bar.dart';
@@ -14,8 +15,11 @@ class ScenarioScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => MapCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<MapCubit>(create: (context) => MapCubit()),
+        BlocProvider<StoryCubit>(create: (context) => StoryCubit(viewModel.start)),
+      ],
       child: ListenableBuilder(
         listenable: viewModel,
         builder: (context, child) => Scaffold(
@@ -28,7 +32,7 @@ class ScenarioScreen extends StatelessWidget {
             journalNotification: false,
           ),
           body: [
-            StoryScreen(viewModel: viewModel.storyViewModel),
+            StoryScreen(),
             MapScreen(),
             Center(child: Text('Journal')),
           ][viewModel.selectedPageIndex],

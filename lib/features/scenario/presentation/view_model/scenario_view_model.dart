@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:narracity/features/scenario/domain/node.dart';
-import 'package:narracity/features/story/presentation/view_model/story_view_model.dart';
 
 class ScenarioViewModel extends ChangeNotifier {
 
   static final Logger log = Logger('ScenarioViewModel');
 
-  ScenarioViewModel({required this.title, required ScenarioNode start}): 
-    storyViewModel = StoryViewModel(start: start);
+  ScenarioViewModel({required this.title, required this.start});
   
-  final StoryViewModel storyViewModel;
   final String title;
+  final ScenarioNode start;
 
   int selectedPageIndex = 0;
   bool storyPageNotification = false;

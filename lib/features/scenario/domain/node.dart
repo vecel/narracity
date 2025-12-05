@@ -1,13 +1,13 @@
 sealed class ScenarioNode {}
 
-class TextNode extends ScenarioNode {
+final class TextNode extends ScenarioNode {
   TextNode({required this.text, required this.next});
 
   final String text;
   final ScenarioNode next;
 }
 
-class ChoiceNode extends ScenarioNode {
+final class ChoiceNode extends ScenarioNode {
   ChoiceNode({required this.text, required this.labelA, required this.labelB, required this.choiceA, required this.choiceB});
 
   final String text;
