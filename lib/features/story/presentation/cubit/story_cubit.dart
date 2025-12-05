@@ -7,8 +7,6 @@ class StoryCubit extends Cubit<StoryState> {
   
   StoryCubit(ScenarioNode startingNode): super(StoryInitial()) {
     _enter(startingNode);
-
-    emit(StoryReady(_progress));
   }
 
   final List<ProgressItem> _progress = [];
@@ -19,7 +17,7 @@ class StoryCubit extends Cubit<StoryState> {
       case ChoiceNode(): _enterChoiceNode(node);
       case EmptyNode(): {}
     }
-
+    
     emit(StoryReady(_progress));
   }
 
