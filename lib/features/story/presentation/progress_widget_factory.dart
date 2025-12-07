@@ -6,7 +6,7 @@ class ProgressWidgetFactory {
     return switch(node) {
       TextProgressItem(:var text) => Text(text),
       LogProgressItem(:var text) => Text(text, style: TextStyle(fontStyle: FontStyle.italic, color: Colors.blueGrey)), // TODO use theme
-      ProceedProgressItem(:var onPressed) => TextButton(onPressed: onPressed, child: Text('Next')),
+      ActionProgressItem(:var onPressed) => TextButton(onPressed: onPressed, child: Text('Next')),
       ChoiceProgressItem(:var labelA, :var labelB, :var onChoiceA, :var onChoiceB) => Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

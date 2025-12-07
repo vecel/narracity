@@ -15,10 +15,11 @@ class ScenarioScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return MultiBlocProvider(
       providers: [
         BlocProvider<MapCubit>(create: (context) => MapCubit()),
-        BlocProvider<StoryCubit>(create: (context) => StoryCubit(viewModel.start)),
+        BlocProvider<StoryCubit>(create: (context) => StoryCubit(viewModel.start, context.read<MapCubit>())),
       ],
       child: ListenableBuilder(
         listenable: viewModel,

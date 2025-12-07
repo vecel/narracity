@@ -1,20 +1,26 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:narracity/features/map/domain/my_polygon.dart';
+import 'package:narracity/features/map/presentation/cubit/map_cubit.dart';
 import 'package:narracity/features/scenario/domain/node.dart';
 import 'package:narracity/features/story/domain/progress_item.dart';
 import 'package:narracity/features/story/presentation/cubit/story_state.dart';
 
 class StoryCubit extends Cubit<StoryState> {
   
-  StoryCubit(ScenarioNode startingNode): super(StoryInitial()) {
+  StoryCubit(ScenarioNode startingNode, MapCubit mapCubit): 
+    _mapCubit = mapCubit,
+    super(StoryInitial()) {
     _enter(startingNode);
   }
 
+  final MapCubit _mapCubit;
   final List<ProgressItem> _progress = [];
 
   void _enter(ScenarioNode node) {
     switch (node) {
       case TextNode(): _enterTextNode(node);
       case ChoiceNode(): _enterChoiceNode(node);
+      case PolygonNode(): _enterPolygonNode(node);
       case EmptyNode(): {}
     }
     
@@ -23,7 +29,7 @@ class StoryCubit extends Cubit<StoryState> {
 
   void _enterTextNode(TextNode node) {
     _progress.add(TextProgressItem(text: node.text));
-    _progress.add(ProceedProgressItem(
+    _progress.add(ActionProgressItem(
       onPressed: () {
         _leaveTextNode();
         _enter(node.next);
@@ -45,6 +51,24 @@ class StoryCubit extends Cubit<StoryState> {
         _enter(node.choiceB);
       })
     );
+  }
+
+  void _enterPolygonNode(PolygonNode node) {
+    _progress.add(LogProgressItem(text: 'Map was updated'));
+    MyPolygon myPolygon = MyPolygon(
+      polygon: node.polygon,
+      onEnter: () {
+        if (node.onEnter != null) {
+          _enter(node.onEnter!);
+        }
+      },
+      onLeave: () {
+        if (node.onLeave != null) {
+          _enter(node.onLeave!);
+        }
+      }
+    );
+    _mapCubit.addPolygon(myPolygon);
   }
 
   void _leaveTextNode() => _progress.removeLast();

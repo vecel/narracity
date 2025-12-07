@@ -5,21 +5,26 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:geolocator/geolocator.dart' hide PermissionDeniedException;
 import 'package:logging/logging.dart';
+import 'package:narracity/features/map/domain/my_polygon.dart';
 import 'package:narracity/features/map/presentation/cubit/map_state.dart';
+import 'package:narracity/features/map/services/polygon_service.dart';
 
 class MapCubit extends Cubit<MapState> {
 
   static final _log = Logger('MapCubit');
   
-  MapCubit(): super(MapInitial());
+  MapCubit(): 
+    _positionStream = const LocationMarkerDataStreamFactory().fromGeolocatorPositionStream(),
+    _polygonService = PolygonService(),
+    super(MapInitial());
 
-  final Stream<LocationMarkerPosition?> _positionStream = const LocationMarkerDataStreamFactory().fromGeolocatorPositionStream();
-  
+  final Stream<LocationMarkerPosition?> _positionStream;
   late StreamSubscription<LocationMarkerPosition?> _positionStreamSubscription;
-
   late LocationMarkerPosition _position;
-  final List<Polygon> _polygons = [];
-  
+
+  final PolygonService _polygonService;
+
+  bool _mapInitalized = false;
 
   @override
   Future<void> close() {
@@ -28,29 +33,15 @@ class MapCubit extends Cubit<MapState> {
   }
 
   void askForPermission() async {
-    LocationPermission permission;
+    bool permissionGranted = await _resolvePermission();
 
-    _log.info('Checking location permission');
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.deniedForever) {
-        _log.info('Permission denied forever');
-        emit(MapPermissionDeniedForever());
-        return;
-      }
-      if (permission == LocationPermission.denied) {
-        _log.info('Permission denied');
-        emit(MapPermissionDenied());
-        return;
-      }
-    }
-
-    _log.info('Permission granted');
+    if (!permissionGranted) return;
+    
     try {
       _position = await _getPosition();
       _subscribeToPositionStream();
-      emit(MapReady(_position, _polygons));
+      _mapInitalized = true;
+      _emitMapReadyState();
     } on LocationServiceDisabledException {
       emit(MapLocationServiceRequestRejected());
     }
@@ -64,8 +55,37 @@ class MapCubit extends Cubit<MapState> {
     await Geolocator.openAppSettings();
   }
 
-  void addPolygon(Polygon polygon) {
-    _polygons.add(polygon);
+  void addPolygon(MyPolygon polygon) {
+    // Could also check if player is currently in added polygon
+    _polygonService.add(polygon);
+    _emitMapReadyState();
+  }
+
+  void removePolygon(MyPolygon polygon) {
+    _polygonService.remove(polygon);
+    _emitMapReadyState();
+  }
+
+  Future<bool> _resolvePermission() async {
+    LocationPermission permission;
+
+    _log.info('Checking location permission');
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.deniedForever) {
+        _log.info('Permission denied forever');
+        emit(MapPermissionDeniedForever());
+        return false;
+      }
+      if (permission == LocationPermission.denied) {
+        _log.info('Permission denied');
+        emit(MapPermissionDenied());
+        return false;
+      }
+    }
+    _log.info('Permission granted');
+    return true;
   }
 
   Future<LocationMarkerPosition> _getPosition() async {
@@ -83,13 +103,22 @@ class MapCubit extends Cubit<MapState> {
     );
   }
 
+  void _emitMapReadyState() {
+    if (!_mapInitalized) {
+      _log.info('MapReady state requested to emit, but map was not initialized yet. Skipping.');
+      return;
+    }
+    emit(MapReady(_position, _polygonService.polygons));
+  }
+
   void _subscribeToPositionStream() {
     _positionStreamSubscription = _positionStream.listen(
       (position) {
         _log.info('Position update with $position');
         if (position != null) {
           _position = position;
-          emit(MapReady(_position, _polygons));
+          _polygonService.update(position);
+          _emitMapReadyState();
         }
       },
       onError: (error) {

@@ -3,13 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:logging/logging.dart';
 import 'package:narracity/features/map/presentation/cubit/map_cubit.dart';
 import 'package:narracity/features/map/presentation/cubit/map_state.dart';
 
 class MapScreen extends StatelessWidget {
-  static final _log = Logger('MapScreen');
-
   const MapScreen({super.key});
 
   @override
@@ -82,6 +79,12 @@ class MapScreen extends StatelessWidget {
 
   Widget _buildMapScreen(LocationMarkerPosition position, List<Polygon> polygons) {
     return _buildMapWidget(
+      options: MapOptions(
+        initialCenter: position.latLng,
+        initialZoom: 16,
+        maxZoom: 20,
+        minZoom: 12
+      ),
       layers: [
         TileLayer(
           urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -89,35 +92,17 @@ class MapScreen extends StatelessWidget {
         ),
         PolygonLayer(polygons: polygons),
         LocationMarkerLayer(position: position),
-        // CurrentLocationLayer(
-        //   indicators: LocationMarkerIndicators(
-        //     serviceDisabled: LocationMarkerLayer(
-        //       position: LocationMarkerPosition(latitude: lastKnownPosition.latitude, longitude: lastKnownPosition.longitude, accuracy: lastKnownPosition.accuracy),
-        //       style: LocationMarkerStyle(
-        //         marker: DefaultLocationMarker(color: Colors.grey),
-        //         showHeadingSector: false,
-        //         showAccuracyCircle: false
-        //       ),
-        //     ),
-        //   ),
-        // ),
         SimpleAttributionWidget(source: Text('OpenStreetMap contributors')),
       ]
     );
   }
 
-  Widget _buildMapWidget({required List<Widget> layers}) {
+  Widget _buildMapWidget({required MapOptions options, required List<Widget> layers}) {
     return Center(
       child: Container(
         margin: EdgeInsets.all(16),
         child: FlutterMap(
-          // TODO: Change map options.
-          options: MapOptions(
-            initialCenter: LatLng(52.20161, 20.86548),
-            initialZoom: 16,
-            maxZoom: 20,
-            minZoom: 12
-          ),
+          options: options,
           children: layers
         )
       ),

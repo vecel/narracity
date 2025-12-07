@@ -12,8 +12,8 @@ class LogProgressItem extends ProgressItem {
   final String text;
 }
 
-class ProceedProgressItem extends ProgressItem {
-  ProceedProgressItem({required this.onPressed});
+class ActionProgressItem extends ProgressItem {
+  ActionProgressItem({required this.onPressed});
 
   final void Function() onPressed;
 }
