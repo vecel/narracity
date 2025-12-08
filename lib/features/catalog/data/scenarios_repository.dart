@@ -11,7 +11,7 @@ class ScenariosRepository {
       location: 'Warsaw', 
       distance: '4 km', 
       duration: '1 h',
-      startNode: exampleNode
+      startNode: exampleScenario[0]
     ));
 
     _scenarios.add(Scenario(
@@ -21,7 +21,7 @@ class ScenariosRepository {
       location: 'Warsaw', 
       distance: '20 km', 
       duration: '5 h',
-      startNode: exampleNode
+      startNode: exampleScenario[0]
     ));
   }
 

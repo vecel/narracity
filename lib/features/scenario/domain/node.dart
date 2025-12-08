@@ -15,13 +15,21 @@ sealed class ScenarioAction {
   const ScenarioAction();
 }
 
-class DisplayTextAction extends ScenarioAction {
+sealed class StoryAction extends ScenarioAction {
+  const StoryAction();
+}
+
+sealed class MapAction extends ScenarioAction {
+  const MapAction();
+}
+
+class DisplayTextAction extends StoryAction {
   const DisplayTextAction({required this.text});
 
   final String text;
 }
 
-class AddPolygonAction extends ScenarioAction {
+class AddPolygonAction extends MapAction {
   const AddPolygonAction({required this.polygon, this.enterTrigger, this.leaveTrigger});
 
   final Polygon polygon;
@@ -29,14 +37,14 @@ class AddPolygonAction extends ScenarioAction {
   final ScenarioActionTrigger? leaveTrigger;
 }
 
-class AddButtonAction extends ScenarioAction {
+class AddButtonAction extends StoryAction {
   const AddButtonAction({required this.text, required this.trigger});
 
   final String text;
   final ScenarioActionTrigger trigger;
 }
 
-class AddMultiButtonsAction extends ScenarioAction {
+class AddMultiButtonsAction extends StoryAction {
   const AddMultiButtonsAction({required this.actions});
 
   final List<AddButtonAction> actions;
@@ -49,9 +57,9 @@ sealed class ScenarioActionTrigger {
 }
 
 class ProceedTrigger extends ScenarioActionTrigger {
-  const ProceedTrigger({required this.node});
+  const ProceedTrigger({required this.id});
 
-  final String node;
+  final String id;
 } 
 
 class AppendActionsTrigger extends ScenarioActionTrigger {
@@ -63,7 +71,7 @@ class AppendActionsTrigger extends ScenarioActionTrigger {
 class EmptyTrigger extends ScenarioActionTrigger {}
 
 
-final scenario = [
+final exampleScenario = [
   ScenarioNode(
     id: 'introduction', 
     actions: [
@@ -76,7 +84,7 @@ final scenario = [
             DisplayTextAction(text: 'Great, you are doing well.'),
             AddButtonAction(
               text: 'Proceed', 
-              trigger: ProceedTrigger(node: 'chapter 1')
+              trigger: ProceedTrigger(id: 'chapter 1')
             )
           ]
         )

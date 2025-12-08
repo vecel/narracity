@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:narracity/features/scenario/domain/node.dart';
 import 'package:narracity/features/scenario/domain/scenario.dart';
 import 'package:narracity/features/scenario/presentation/scenario_screen.dart';
 import 'package:narracity/features/scenario/presentation/view_model/scenario_view_model.dart';
@@ -33,7 +34,8 @@ class DetailsScreen extends StatelessWidget {
         FilledButton(
           onPressed: () => Navigator.push(
             context, 
-            MaterialPageRoute(builder: (context) => ScenarioScreen(viewModel: ScenarioViewModel(title: scenario.title, start: scenario.startNode)))
+            // TODO: Change exampleScenario to dynamic one
+            MaterialPageRoute(builder: (context) => ScenarioScreen(viewModel: ScenarioViewModel(title: scenario.title, start: scenario.startNode), scenario: exampleScenario))
           ),
           child: Text('Play')
         )
