@@ -22,9 +22,10 @@ class TextElement extends StoryElement {
 }
 
 class PolygonElement extends MapElement {
-  const PolygonElement({required this.polygon, this.enterTrigger, this.leaveTrigger});
+  const PolygonElement({required this.polygon, this.removeOnEnter = true, this.enterTrigger, this.leaveTrigger});
 
   final Polygon polygon;
+  final bool removeOnEnter;
   final ScenarioTrigger? enterTrigger;
   final ScenarioTrigger? leaveTrigger;
 }

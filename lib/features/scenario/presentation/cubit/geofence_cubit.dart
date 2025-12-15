@@ -89,6 +89,10 @@ class GeofenceCubit extends Cubit<GeofenceState> {
     if (polygon.enterTrigger != null) {
       _scenarioCubit.handleTrigger(polygon.enterTrigger!);
     }
+
+    if (polygon.removeOnEnter) {
+      _scenarioCubit.removeElement(polygon);
+    }
   }
 
   void _onPolygonLeave(PolygonElement polygon) {

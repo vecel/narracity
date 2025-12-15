@@ -34,4 +34,9 @@ class ScenarioCubit extends Cubit<ScenarioState> {
       case EmptyTrigger(): {}
     }
   }
+
+  void removeElement(ScenarioElement element) {
+    final updated = List<ScenarioElement>.from(state.elements)..remove(element);
+    emit(ScenarioState(elements: updated));
+  }
 }
