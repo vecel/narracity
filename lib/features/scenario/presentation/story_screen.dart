@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:narracity/features/scenario/domain/node.dart';
+import 'package:narracity/features/scenario/domain/dsl_elements.dart';
 import 'package:narracity/features/scenario/presentation/cubit/scenario_cubit.dart';
 import 'package:narracity/features/scenario/presentation/cubit/scenario_state.dart';
 
@@ -30,14 +30,14 @@ class StoryScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildStoryItem(StoryAction item, ScenarioCubit cubit) {
+  Widget _buildStoryItem(StoryElement item, ScenarioCubit cubit) {
     return switch (item) {
-      DisplayTextAction(:var text) => Text(text),
-      AddButtonAction(:var text, :var trigger) => TextButton(
+      TextElement(:var text) => Text(text),
+      ButtonElement(:var text, :var trigger) => TextButton(
         onPressed: () => cubit.handleTrigger(trigger), 
         child: Text(text)
       ),
-      AddMultiButtonsAction(:var actions) => Row(
+      MultiButtonElement(buttons:var actions) => Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: actions.map((action) => TextButton(onPressed: () => cubit.handleTrigger(action.trigger), child: Text(action.text))).toList()
       ),

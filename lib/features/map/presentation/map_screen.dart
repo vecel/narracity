@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:narracity/features/map/presentation/cubit/map_cubit.dart';
 import 'package:narracity/features/map/presentation/cubit/map_state.dart';
+import 'package:narracity/features/scenario/presentation/cubit/scenario_cubit.dart';
+import 'package:narracity/features/scenario/presentation/cubit/scenario_state.dart';
 
 class MapScreen extends StatelessWidget {
   const MapScreen({super.key});
@@ -15,6 +16,7 @@ class MapScreen extends StatelessWidget {
     final cubit = BlocProvider.of<MapCubit>(context);
   
     return BlocBuilder<MapCubit, MapState>(
+      bloc: cubit,
       builder: (context, state) {
         switch (state) {
           case MapInitial(): {
@@ -30,8 +32,8 @@ class MapScreen extends StatelessWidget {
           case MapLocationServiceRequestRejected(): {
             return _buildLocationServiceRequestRejectedScreen(cubit.openLocationSettings, cubit.askForPermission);
           }
-          case MapReady(:var position, :var polygons): {
-            return _buildMapScreen(position, polygons);
+          case MapReady(:var position): {
+            return _buildMapScreen(position);
           }
         }
       }
@@ -77,34 +79,29 @@ class MapScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMapScreen(LocationMarkerPosition position, List<Polygon> polygons) {
-    return _buildMapWidget(
-      options: MapOptions(
-        initialCenter: position.latLng,
-        initialZoom: 16,
-        maxZoom: 20,
-        minZoom: 12
-      ),
-      layers: [
-        TileLayer(
-          urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-          userAgentPackageName: 'pl.edu.pw.mini.karandys.narracity',
+  Widget _buildMapScreen(LocationMarkerPosition position) {
+    return BlocBuilder<ScenarioCubit, ScenarioState>(
+      builder: (context, state) => Center(
+        child: Container(
+          margin: EdgeInsets.all(16),
+          child: FlutterMap(
+            options: MapOptions(
+              initialCenter: position.latLng,
+              initialZoom: 16,
+              maxZoom: 20,
+              minZoom: 12
+            ),
+            children: [
+              TileLayer(
+                urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                userAgentPackageName: 'pl.edu.pw.mini.karandys.narracity',
+              ),
+              PolygonLayer(polygons: state.polygons),
+              LocationMarkerLayer(position: position),
+              SimpleAttributionWidget(source: Text('OpenStreetMap contributors')),
+            ]
+          )
         ),
-        PolygonLayer(polygons: polygons),
-        LocationMarkerLayer(position: position),
-        SimpleAttributionWidget(source: Text('OpenStreetMap contributors')),
-      ]
-    );
-  }
-
-  Widget _buildMapWidget({required MapOptions options, required List<Widget> layers}) {
-    return Center(
-      child: Container(
-        margin: EdgeInsets.all(16),
-        child: FlutterMap(
-          options: options,
-          children: layers
-        )
       ),
     );
   }

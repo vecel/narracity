@@ -1,5 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:narracity/features/scenario/domain/node.dart';
+import 'package:narracity/features/scenario/domain/dsl_elements.dart';
+import 'package:narracity/features/scenario/domain/dsl_scenario.dart';
+import 'package:narracity/features/scenario/domain/dsl_triggers.dart';
 import 'package:narracity/features/scenario/presentation/cubit/scenario_state.dart';
 
 class ScenarioCubit extends Cubit<ScenarioState> {
@@ -17,17 +19,17 @@ class ScenarioCubit extends Cubit<ScenarioState> {
       orElse: () => throw Exception('ScenarioNode with id: $id was not found in the scenario.')
     );
 
-    emit(ScenarioState(actions: node.actions));
+    emit(ScenarioState(elements: node.elements));
   }
 
-  void handleTrigger(ScenarioActionTrigger trigger) {
+  void handleTrigger(ScenarioTrigger trigger) {
     switch (trigger) {
       case ProceedTrigger(:var id): {
         load(id);
       }
-      case AppendActionsTrigger(:var actions): {
-        final updated = List<ScenarioAction>.from(state.actions)..addAll(actions);
-        emit(ScenarioState(actions: updated));
+      case AppendElementsTrigger(:var elements): {
+        final updated = List<ScenarioElement>.from(state.elements)..addAll(elements);
+        emit(ScenarioState(elements: updated));
       }
       case EmptyTrigger(): {}
     }

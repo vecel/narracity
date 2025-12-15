@@ -1,4 +1,3 @@
-import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 
 sealed class MapState {}
@@ -7,8 +6,8 @@ final class MapInitial extends MapState {}
 final class MapLocationServiceRequestRejected extends MapState {}
 final class MapPermissionDenied extends MapState {}
 final class MapPermissionDeniedForever extends MapState {}
+
 final class MapReady extends MapState {
-  MapReady(this.position, this.polygons);
+  MapReady(this.position);
   final LocationMarkerPosition position;
-  final List<Polygon> polygons;
 }

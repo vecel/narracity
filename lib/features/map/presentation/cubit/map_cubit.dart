@@ -1,13 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:geolocator/geolocator.dart' hide PermissionDeniedException;
 import 'package:logging/logging.dart';
-import 'package:narracity/features/map/domain/my_polygon.dart';
 import 'package:narracity/features/map/presentation/cubit/map_state.dart';
-import 'package:narracity/features/map/services/polygon_service.dart';
 
 class MapCubit extends Cubit<MapState> {
 
@@ -15,14 +12,11 @@ class MapCubit extends Cubit<MapState> {
   
   MapCubit(): 
     _positionStream = const LocationMarkerDataStreamFactory().fromGeolocatorPositionStream(),
-    _polygonService = PolygonService(),
     super(MapInitial());
 
   final Stream<LocationMarkerPosition?> _positionStream;
   late StreamSubscription<LocationMarkerPosition?> _positionStreamSubscription;
   late LocationMarkerPosition _position;
-
-  final PolygonService _polygonService;
 
   bool _mapInitalized = false;
 
@@ -53,17 +47,6 @@ class MapCubit extends Cubit<MapState> {
 
   void openAppSettings() async {
     await Geolocator.openAppSettings();
-  }
-
-  void addPolygon(MyPolygon polygon) {
-    // Could also check if player is currently in added polygon
-    _polygonService.add(polygon);
-    _emitMapReadyState();
-  }
-
-  void removePolygon(MyPolygon polygon) {
-    _polygonService.remove(polygon);
-    _emitMapReadyState();
   }
 
   Future<bool> _resolvePermission() async {
@@ -108,7 +91,7 @@ class MapCubit extends Cubit<MapState> {
       _log.info('MapReady state requested to emit, but map was not initialized yet. Skipping.');
       return;
     }
-    emit(MapReady(_position, _polygonService.polygons));
+    emit(MapReady(_position));
   }
 
   void _subscribeToPositionStream() {
@@ -117,7 +100,6 @@ class MapCubit extends Cubit<MapState> {
         _log.info('Position update with $position');
         if (position != null) {
           _position = position;
-          _polygonService.update(position);
           _emitMapReadyState();
         }
       },

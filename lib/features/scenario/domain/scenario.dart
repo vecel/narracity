@@ -1,4 +1,4 @@
-import 'node.dart';
+import 'dsl_scenario.dart';
 
 class Scenario {
 

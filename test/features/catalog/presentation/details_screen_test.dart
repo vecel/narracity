@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:narracity/features/catalog/presentation/details_screen.dart';
 import 'package:narracity/features/scenario/domain/scenario.dart';
-import 'package:narracity/features/scenario/domain/node.dart';
+import 'package:narracity/features/scenario/domain/dsl_scenario.dart';
 import 'package:narracity/shared_widgets/base_app_bar.dart';
 import 'package:narracity/shared_widgets/labeled_icon.dart';
 

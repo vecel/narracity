@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:narracity/features/scenario/domain/node.dart';
+import 'package:narracity/features/scenario/domain/dsl_scenario.dart';
 import 'package:narracity/features/scenario/domain/scenario.dart';
 import 'package:narracity/features/scenario/presentation/scenario_screen.dart';
-import 'package:narracity/features/scenario/presentation/view_model/scenario_view_model.dart';
 import 'package:narracity/shared_widgets/base_app_bar.dart';
 import 'package:narracity/shared_widgets/labeled_icon.dart';
 
@@ -35,7 +34,7 @@ class DetailsScreen extends StatelessWidget {
           onPressed: () => Navigator.push(
             context, 
             // TODO: Change exampleScenario to dynamic one
-            MaterialPageRoute(builder: (context) => ScenarioScreen(viewModel: ScenarioViewModel(title: scenario.title, start: scenario.startNode), scenario: exampleScenario))
+            MaterialPageRoute(builder: (context) => ScenarioScreen(scenario: exampleScenario))
           ),
           child: Text('Play')
         )

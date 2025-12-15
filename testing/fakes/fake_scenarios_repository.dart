@@ -1,5 +1,5 @@
 import 'package:narracity/features/catalog/data/scenarios_repository.dart';
-import 'package:narracity/features/scenario/domain/node.dart';
+import 'package:narracity/features/scenario/domain/dsl_scenario.dart';
 import 'package:narracity/features/scenario/domain/scenario.dart';
 
 final _choiceNode = ChoiceNode(

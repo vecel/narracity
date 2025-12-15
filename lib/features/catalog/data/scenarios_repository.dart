@@ -1,5 +1,5 @@
 import 'package:narracity/features/scenario/domain/scenario.dart';
-import 'package:narracity/features/scenario/domain/node.dart';
+import 'package:narracity/features/scenario/domain/dsl_scenario.dart';
 
 class ScenariosRepository {
   ScenariosRepository() {
