@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:narracity/features/catalog/presentation/details_screen.dart';
+import 'package:narracity/features/scenario/domain/dsl_elements.dart';
 import 'package:narracity/features/scenario/domain/scenario.dart';
 import 'package:narracity/features/scenario/domain/dsl_scenario.dart';
 import 'package:narracity/shared_widgets/base_app_bar.dart';
@@ -9,6 +10,14 @@ import 'package:narracity/shared_widgets/labeled_icon.dart';
 void main() {
   group('DetailsScreen Widget Tests', () {
     late Scenario testScenario;
+    final exampleScenario = [
+      ScenarioNode(
+        id: 'introduction', 
+        elements: [
+          TextElement(text: 'This the introduction')
+        ]
+      )
+    ];
 
     setUp(() {
       testScenario = Scenario(
@@ -18,7 +27,7 @@ void main() {
         distance: '15km',
         duration: '3 hours',
         image: 'assets/cat.webp',
-        startNode: TextNode(text: 'Start of adventure', next: EmptyNode()),
+        startNode: exampleScenario[0]
       );
     });
 
@@ -99,7 +108,7 @@ void main() {
         distance: '999km',
         duration: '24 hours',
         image: '',
-        startNode: EmptyNode(),
+        startNode: exampleScenario[0],
       );
 
       await tester.pumpWidget(MaterialApp(

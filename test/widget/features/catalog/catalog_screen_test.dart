@@ -94,15 +94,5 @@ void main() {
 
       expect(find.byType(DetailsScreen), findsOneWidget);
     });
-
-    // testWidgets('should display loading indicator while loading', (tester) async {
-    //   await tester.pumpWidget(
-    //     MaterialApp(
-    //       home: CatalogScreen(viewModel: fakeViewModel),
-    //     ),
-    //   );
-
-    //   expect(find.byType(CircularProgressIndicator), findsOneWidget);
-    // });
   });
 }

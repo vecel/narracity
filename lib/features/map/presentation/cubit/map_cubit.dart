@@ -5,79 +5,77 @@ import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:geolocator/geolocator.dart' hide PermissionDeniedException;
 import 'package:logging/logging.dart';
 import 'package:narracity/features/map/presentation/cubit/map_state.dart';
+import 'package:narracity/features/map/services/location_service.dart';
 
 class MapCubit extends Cubit<MapState> {
 
   static final _log = Logger('MapCubit');
   
-  MapCubit(): 
-    _positionStream = const LocationMarkerDataStreamFactory().fromGeolocatorPositionStream(),
+  MapCubit({LocationService? locationService}): 
+    _locationService = locationService ?? LocationService(),
     super(MapInitial());
 
-  final Stream<LocationMarkerPosition?> _positionStream;
-  late StreamSubscription<LocationMarkerPosition?> _positionStreamSubscription;
-  late LocationMarkerPosition _position;
-
-  bool _mapInitalized = false;
-
-  @override
-  Future<void> close() {
-    _unsubscribeToPositionStream();
-    return super.close();
-  }
+  final LocationService _locationService;
+  StreamSubscription<LocationMarkerPosition?>? _positionStreamSubscription;
+  LocationMarkerPosition? _position;
 
   void askForPermission() async {
-    bool permissionGranted = await _resolvePermission();
+    LocationPermission permission = await _resolvePermission();
 
-    if (!permissionGranted) return;
-    
+    switch (permission) {
+      case LocationPermission.deniedForever: _handlePermissionDeniedForever();
+      case LocationPermission.denied: _handlePermissionDenied();
+      case LocationPermission.always || LocationPermission.whileInUse: _initializeMap();
+      default: throw Exception('Cannot determine location permission');
+    }
+  }
+
+  void openLocationSettings() async {
+    await _locationService.openLocationSettings();
+  }
+
+  void openAppSettings() async {
+    await _locationService.openAppSettings();
+  }
+
+  Future<LocationPermission> _resolvePermission() async {
+    LocationPermission permission;
+
+    _log.info('Checking location permission');
+    permission = await _locationService.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await _locationService.requestPermission();
+    }
+    return permission;
+  }
+
+  void _handlePermissionDeniedForever() {
+    _log.info('Permission denied forever');
+    emit(MapPermissionDeniedForever());
+  }
+
+  void _handlePermissionDenied() {
+    _log.info('Permission denied');
+    emit(MapPermissionDenied());
+  }
+
+  void _initializeMap() async {
     try {
       _position = await _getPosition();
       _subscribeToPositionStream();
-      _mapInitalized = true;
       _emitMapReadyState();
     } on LocationServiceDisabledException {
       emit(MapLocationServiceRequestRejected());
     }
   }
 
-  void openLocationSettings() async {
-    await Geolocator.openLocationSettings();
-  }
-
-  void openAppSettings() async {
-    await Geolocator.openAppSettings();
-  }
-
-  Future<bool> _resolvePermission() async {
-    LocationPermission permission;
-
-    _log.info('Checking location permission');
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.deniedForever) {
-        _log.info('Permission denied forever');
-        emit(MapPermissionDeniedForever());
-        return false;
-      }
-      if (permission == LocationPermission.denied) {
-        _log.info('Permission denied');
-        emit(MapPermissionDenied());
-        return false;
-      }
-    }
-    _log.info('Permission granted');
-    return true;
-  }
-
   Future<LocationMarkerPosition> _getPosition() async {
     Position? position;
     _log.info('Checking last known position');
-    position = await Geolocator.getLastKnownPosition();
+    position = await _locationService.getLastKnownPosition();
     if (position == null) {
       _log.info('Checking current position');
-      position = await Geolocator.getCurrentPosition();
+      position = await _locationService.getCurrentPosition();
     }
     return LocationMarkerPosition(
       latitude: position.latitude, 
@@ -87,15 +85,15 @@ class MapCubit extends Cubit<MapState> {
   }
 
   void _emitMapReadyState() {
-    if (!_mapInitalized) {
-      _log.info('MapReady state requested to emit, but map was not initialized yet. Skipping.');
+    if (_position == null) {
+      _log.info('MapReady state requested to emit, but position was not initialized yet. Skipping.');
       return;
     }
-    emit(MapReady(_position));
+    emit(MapReady(_position!));
   }
 
   void _subscribeToPositionStream() {
-    _positionStreamSubscription = _positionStream.listen(
+    _positionStreamSubscription = _locationService.getPositionStream().listen(
       (position) {
         _log.info('Position update with $position');
         if (position != null) {
@@ -120,6 +118,12 @@ class MapCubit extends Cubit<MapState> {
   }
 
   void _unsubscribeToPositionStream() {
-    _positionStreamSubscription.cancel();
+    _positionStreamSubscription?.cancel();
+  }
+
+  @override
+  Future<void> close() {
+    _unsubscribeToPositionStream();
+    return super.close();
   }
 }

@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:narracity/features/catalog/data/scenarios_repository.dart';
 import 'package:narracity/features/scenario/domain/scenario.dart';
 
+// TODO: Remove view model
 class CatalogViewModel {
 
   CatalogViewModel({required ScenariosRepository scenariosRepository}): _scenariosRepository = scenariosRepository;
