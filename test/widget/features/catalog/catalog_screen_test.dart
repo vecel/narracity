@@ -5,8 +5,6 @@ import 'package:narracity/features/catalog/presentation/catalog_screen.dart';
 import 'package:narracity/features/catalog/presentation/details_screen.dart';
 import 'package:narracity/features/catalog/presentation/view_model/catalog_view_model.dart';
 
-import '../../../../testing/fakes/fake_scenarios_repository.dart';
-
 void main() {
   group('CatalogScreen Widget Tests', () {
     late CatalogViewModel fakeViewModel;

@@ -32,15 +32,8 @@ class GeofenceCubit extends Cubit<GeofenceState> {
   final ScenarioCubit _scenarioCubit;
   final MapCubit _mapCubit;
 
-  late StreamSubscription _scenarioSubsription;
-  late StreamSubscription _mapSubscription;
-
-  @override
-  Future<void> close() {
-    _scenarioSubsription.cancel();
-    _mapSubscription.cancel();
-    return super.close();
-  }
+  StreamSubscription? _scenarioSubsription;
+  StreamSubscription? _mapSubscription;
 
   void _subscribeToScenarioCubitStream() {
     _scenarioSubsription = _scenarioCubit.stream.listen((state) {
@@ -99,5 +92,12 @@ class GeofenceCubit extends Cubit<GeofenceState> {
     if (polygon.leaveTrigger != null) {
       _scenarioCubit.handleTrigger(polygon.leaveTrigger!);
     }
+  }
+
+  @override
+  Future<void> close() {
+    _scenarioSubsription?.cancel();
+    _mapSubscription?.cancel();
+    return super.close();
   }
 }

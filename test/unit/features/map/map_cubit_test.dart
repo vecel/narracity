@@ -10,6 +10,8 @@ import 'package:narracity/features/map/presentation/cubit/map_cubit.dart';
 import 'package:narracity/features/map/presentation/cubit/map_state.dart';
 import 'package:narracity/features/map/services/location_service.dart';
 
+import '../../../utils/location_helper.dart';
+
 class MockLocationService extends Mock implements LocationService {}
 
 void main() {
@@ -23,9 +25,6 @@ void main() {
       accuracy: 0, altitude: 0, heading: 0, speed: 0, 
       speedAccuracy: 0, altitudeAccuracy: 0, headingAccuracy: 0,
     );
-
-    LocationMarkerPosition createLocationMarkerPosition(double latitude, double longitude) => 
-      LocationMarkerPosition(latitude: latitude, longitude: longitude, accuracy: 0);
     
     setUp(() {
       positionStreamController = StreamController<LocationMarkerPosition>();
@@ -106,9 +105,9 @@ void main() {
       build: () => cubit,
       act: (cubit) async {
         cubit.askForPermission();
-        positionStreamController.add(createLocationMarkerPosition(51.0, 21.0));
+        positionStreamController.add(LocationHelper.createLocationMarkerPosition(51.0, 21.0));
         await Future.delayed(Duration(microseconds: 10));
-        positionStreamController.add(createLocationMarkerPosition(50.0, 21.0));
+        positionStreamController.add(LocationHelper.createLocationMarkerPosition(50.0, 21.0));
       },
       verify: (_) {
         verify(() => mockLocationService.checkPermission()).called(1);
