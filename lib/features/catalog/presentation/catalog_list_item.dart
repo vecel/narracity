@@ -67,11 +67,11 @@ class CatalogListItem extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        LabeledIcon(icon: Icons.location_on, label: location),
+                        LabeledIcon(icon: Icons.location_on, label: location, orientation: LabeledIconOrientation.horizontal),
                         Expanded(child: Container()),
-                        LabeledIcon(icon: Icons.access_time, label: duration),
+                        LabeledIcon(icon: Icons.access_time, label: duration, orientation: LabeledIconOrientation.horizontal),
                         SizedBox(width: 8),
-                        LabeledIcon(icon: Icons.directions_walk, label: distance)
+                        LabeledIcon(icon: Icons.directions_walk, label: distance, orientation: LabeledIconOrientation.horizontal)
                       ],
                     ),
                   )

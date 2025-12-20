@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:narracity/features/scenario/domain/dsl_scenario.dart';
 import 'package:narracity/features/scenario/domain/scenario.dart';
 import 'package:narracity/features/scenario/presentation/scenario_screen.dart';
-import 'package:narracity/shared_widgets/base_app_bar.dart';
+import 'package:narracity/shared_widgets/labeled_icon.dart';
 
 class DetailsScreen extends StatelessWidget {
   const DetailsScreen({super.key, required this.scenario});
@@ -14,7 +14,6 @@ class DetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BaseAppBar(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.push(
@@ -22,26 +21,50 @@ class DetailsScreen extends StatelessWidget {
           // TODO: Change exampleScenario to dynamic one
           MaterialPageRoute(builder: (context) => ScenarioScreen(scenario: exampleScenario))
         ),
-        backgroundColor: Colors.blue,
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        foregroundColor: Theme.of(context).colorScheme.onPrimary,
         shape: CircleBorder(),
         child: const Icon(Icons.play_arrow, size: 32),
       ),
-      body: Stack(
-        children: [
-          _buildBackgroudImage(),
-          _buildBottomSheet(context),
-          _buildBottomBlur()
-        ],
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final height = constraints.maxHeight;
+          return switch (height) {
+            > 540 => _buildVerticalLayout(context, height),
+            _ => _buildHorizontalLayout(context, height)
+          };
+        },
       )
     );
   }
 
-  Widget _buildBackgroudImage() {
+  Widget _buildVerticalLayout(BuildContext context, double height) {
+    final imageHeight = height / 3 + 16;
+    final bottomSheetHeight = height / 3 * 2;
+    return Stack(
+      children: [
+        _buildBackgroudImage(imageHeight),
+        _buildBottomSheet(context, bottomSheetHeight),
+        _buildBottomBlur(context)
+      ],
+    );
+  }
+
+  Widget _buildHorizontalLayout(BuildContext context, double height) {
+    return Stack(
+      children: [
+        _detailsScreenContent(context),
+        _buildBottomBlur(context)
+      ],
+    );
+  }
+
+  Widget _buildBackgroudImage(double height) {
     return Positioned.fill(
       child: Column(
         children: [
           SizedBox(
-            height: 320,
+            height: height,
             width: double.infinity,
             child: Image(
               image: AssetImage(scenario.image), 
@@ -54,15 +77,15 @@ class DetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBottomSheet(BuildContext context) {
+  Widget _buildBottomSheet(BuildContext context, double height) {
     return Align(
       alignment: AlignmentGeometry.bottomCenter,
       child: SafeArea(
         child: Container(
-          height: 420,
+          height: height,
           width: double.infinity,
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.onPrimary,
+            color: Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
             boxShadow: [
               BoxShadow(
@@ -72,16 +95,66 @@ class DetailsScreen extends StatelessWidget {
               )
             ]
           ),
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 24, 16, 32),
-            child: Text(scenario.description * 2),
-          ),
+          child: _detailsScreenContent(context)
         )
       ),
     );
   }
 
-  Widget _buildBottomBlur() {
+  Widget _detailsScreenContent(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              IconButton(
+                onPressed: () => Navigator.pop(context), 
+                icon: Icon(Icons.arrow_back)
+              ),
+              SizedBox(width: 8),
+              Text(
+                scenario.title,
+                style: TextStyle(fontSize: 24),
+              ),
+              Expanded(child: Container()),
+              IconButton(
+                onPressed: () {}, 
+                icon: Icon(Icons.more_vert)
+              )
+            ],
+          ),
+          SizedBox(height: 16),
+          Row(
+            children: [
+              Expanded(child: Container()),
+              LabeledIcon(icon: Icons.location_on, label: scenario.location),
+              SizedBox(width: 64),
+              LabeledIcon(icon: Icons.access_time, label: scenario.duration),
+              SizedBox(width: 64),
+              LabeledIcon(icon: Icons.directions_walk, label: scenario.distance),
+              Expanded(child: Container())
+            ],
+          ),
+          SizedBox(height: 16),
+          Expanded(
+            child: ListView(
+              children: [
+                Text(
+                  scenario.description,
+                  textAlign: TextAlign.justify,
+                ),
+                SizedBox(height: 56)
+              ]
+            ),
+          ),
+        ],
+      )
+    );
+  }
+
+  Widget _buildBottomBlur(BuildContext context) {
+    final surface = Theme.of(context).colorScheme.surface;
     return Align(
       alignment: AlignmentGeometry.bottomCenter,
       child: Padding(
@@ -96,9 +169,9 @@ class DetailsScreen extends StatelessWidget {
                   begin: AlignmentGeometry.topCenter,
                   end: AlignmentGeometry.bottomCenter,
                   colors: [
-                    Colors.white.withAlpha(0),
-                    Colors.white.withAlpha(60),
-                    Colors.white.withAlpha(250)
+                    surface.withAlpha(0),
+                    surface.withAlpha(60),
+                    surface.withAlpha(250)
                   ],
                   stops: [0.0, 0.5, 1.0]
                 )
