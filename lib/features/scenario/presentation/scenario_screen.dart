@@ -31,12 +31,12 @@ class ScenarioScreen extends StatelessWidget {
           )
         )
       ],
-      child: _ScenarioScreenLayout()
+      child: _ScenarioScreenView()
     );
   }
 }
 
-class _ScenarioScreenLayout extends StatelessWidget {
+class _ScenarioScreenView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<NavigationCubit, int>(

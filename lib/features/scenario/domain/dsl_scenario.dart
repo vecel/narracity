@@ -4,6 +4,26 @@ import 'package:latlong2/latlong.dart';
 import 'package:narracity/features/scenario/domain/dsl_elements.dart';
 import 'package:narracity/features/scenario/domain/dsl_triggers.dart';
 
+class Scenario {
+  const Scenario({
+    required this.title,
+    required this.description,
+    required this.image,
+    required this.location,
+    required this.distance,
+    required this.duration,
+    required this.nodes
+  });
+
+  final String title;
+  final String description;
+  final String image;
+  final String location;
+  final String distance;
+  final String duration;
+  final List<ScenarioNode> nodes;
+}
+
 class ScenarioNode {
   const ScenarioNode({required this.id, required this.elements});
 
@@ -12,8 +32,17 @@ class ScenarioNode {
 }
 
 
+final exampleScenario = Scenario(
+  title: 'Example Scenario',
+  description: 'This is example scenario to present how the app works',
+  distance: '1 km',
+  duration: '30 min',
+  location: 'Warsaw',
+  image: 'assets/cat.webp',
+  nodes: exampleScenarioNodes
+);
 
-final exampleScenario = [
+final exampleScenarioNodes = [
   ScenarioNode(
     id: 'introduction', 
     elements: [

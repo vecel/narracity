@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:narracity/features/catalog/data/scenarios_repository.dart';
 import 'package:narracity/features/catalog/presentation/catalog_screen.dart';
-import 'package:narracity/features/catalog/presentation/view_model/catalog_view_model.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -33,8 +32,7 @@ class WelcomeScreen extends StatelessWidget {
                     Navigator.push(
                       context, 
                       MaterialPageRoute(
-                        builder: (context) => CatalogScreen(
-                          viewModel: CatalogViewModel(scenariosRepository: ScenariosRepository()))
+                        builder: (context) => CatalogScreen(repository: ScenariosRepository())
                       ) 
                     );
                   }, 

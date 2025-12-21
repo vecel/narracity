@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:narracity/features/scenario/domain/dsl_scenario.dart';
-import 'package:narracity/features/scenario/domain/scenario.dart';
 import 'package:narracity/features/scenario/presentation/scenario_screen.dart';
 import 'package:narracity/shared_widgets/labeled_icon.dart';
 
@@ -19,7 +18,7 @@ class DetailsScreen extends StatelessWidget {
         onPressed: () => Navigator.push(
           context, 
           // TODO: Change exampleScenario to dynamic one
-          MaterialPageRoute(builder: (context) => ScenarioScreen(scenario: exampleScenario))
+          MaterialPageRoute(builder: (context) => ScenarioScreen(scenario: exampleScenario.nodes))
         ),
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Theme.of(context).colorScheme.onPrimary,
@@ -183,3 +182,21 @@ class DetailsScreen extends StatelessWidget {
     );
   }
 }
+
+// class _DetailsScreenVerticalLayout extends StatelessWidget {
+
+//   const _DetailsScreenVerticalLayout(this.height);
+
+//   final double height;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Stack(
+//       children: [
+
+//       ],
+//     );
+//   }
+
+  
+// }
