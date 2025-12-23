@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:narracity/features/catalog/presentation/catalog_list_item.dart';
 import 'package:narracity/features/catalog/presentation/catalog_screen.dart';
-import 'package:narracity/features/catalog/presentation/details_screen.dart';
+import 'package:narracity/features/catalog/subfeatures/details/presentation/details_screen.dart';
 import 'package:narracity/features/catalog/presentation/view_model/catalog_view_model.dart';
 
 void main() {

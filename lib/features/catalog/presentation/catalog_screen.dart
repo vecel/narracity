@@ -5,7 +5,6 @@ import 'package:narracity/features/catalog/presentation/cubit/catalog_state.dart
 import 'package:narracity/features/scenario/domain/dsl_scenario.dart';
 import 'package:narracity/shared_widgets/base_app_bar.dart';
 
-import 'details_screen.dart';
 import 'catalog_list_item.dart';
 import 'package:flutter/material.dart';
 
@@ -82,16 +81,7 @@ class _SuccessView extends StatelessWidget {
             itemCount: scenarios.length,
             itemBuilder: (context, index) {
               final scenario = scenarios[index];
-              return Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: GestureDetector(
-                  onTap: () => Navigator.push(
-                      context, 
-                      MaterialPageRoute(builder: (context) => DetailsScreen(scenario: scenario))
-                  ),
-                  child: CatalogListItem(scenario: scenario)
-                ),
-              );
+              return CatalogListItem(scenario: scenario);
             }
           ),
         ),

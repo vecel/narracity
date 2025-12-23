@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:narracity/features/catalog/presentation/details_screen.dart';
+import 'package:narracity/features/catalog/subfeatures/details/presentation/details_screen.dart';
 import 'package:narracity/features/scenario/domain/dsl_elements.dart';
 import 'package:narracity/features/scenario/domain/scenario.dart';
 import 'package:narracity/features/scenario/domain/dsl_scenario.dart';
