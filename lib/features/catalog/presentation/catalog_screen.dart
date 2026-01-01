@@ -36,11 +36,10 @@ class _CatalogView extends StatelessWidget {
     return switch (state) {
       CatalogLoading() => const _LodaingView(),
       CatalogLoaded(:final scenarios) when scenarios.isEmpty => _EmptyView(),
-      CatalogLoaded(:final scenarios) => _SuccessView(scenarios)
+      CatalogLoaded(:final scenarios) => _SuccessView(scenarios),
+      CatalogError(:final message, :final isConnectionError) => _ErrorView(message, isConnectionError),
     };
-  }
-
-  
+  } 
 }
 
 class _LodaingView extends StatelessWidget {
@@ -57,7 +56,7 @@ class _EmptyView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text('No scenarios available :('));
+    return _MessageView('Scenarios repository is empty.', Icons.sentiment_dissatisfied, 'No scenarios found');
   }
 }
 
@@ -68,22 +67,83 @@ class _SuccessView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
-          borderRadius: BorderRadius.circular(20.0)
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(20.0),
-          child: ListView.builder(
-            itemCount: scenarios.length,
-            itemBuilder: (context, index) {
-              final scenario = scenarios[index];
-              return CatalogListItem(scenario: scenario);
-            }
+    return RefreshIndicator(
+      onRefresh: () async => context.read<CatalogCubit>().load(),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface,
+            borderRadius: BorderRadius.circular(20.0)
           ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20.0),
+            child: ListView.builder(
+              itemCount: scenarios.length,
+              itemBuilder: (context, index) {
+                final scenario = scenarios[index];
+                return CatalogListItem(scenario: scenario);
+              }
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ErrorView extends StatelessWidget {
+  const _ErrorView(this.message, this.isConnectionError);
+
+  final String message;
+  final bool isConnectionError;
+
+  @override
+  Widget build(BuildContext context) {
+    return isConnectionError
+      ? _MessageView(message, Icons.wifi_off_outlined, 'Connection lost')
+      : _MessageView(message, Icons.error_outline, 'Error');
+  }
+}
+
+class _MessageView extends StatelessWidget {
+  const _MessageView(this.message, this.icon, this.iconLabel);
+
+  final String message;
+  final IconData icon;
+  final String iconLabel;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
+              size: 64,
+              color: Colors.grey,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              iconLabel,
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
+            ),
+            const SizedBox(height: 24),
+            FilledButton.icon(
+              onPressed: () => context.read<CatalogCubit>().load(),
+              icon: const Icon(Icons.refresh),
+              label: const Text('Try Again'),
+            ),
+          ],
         ),
       ),
     );

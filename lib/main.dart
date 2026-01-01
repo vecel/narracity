@@ -1,15 +1,22 @@
 import 'dart:developer' as developer;
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:narracity/features/home/welcome_screen.dart';
+import 'package:narracity/firebase_options.dart';
 
-void main() {
+void main() async {
 
   Logger.root.level = Level.ALL;
   Logger.root.onRecord.listen((record) {
     developer.log('[${record.level.name}] [${record.time}]: ${record.message}', name: record.loggerName);
   });
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform
+  );
 
   runApp(const MyApp());
 }

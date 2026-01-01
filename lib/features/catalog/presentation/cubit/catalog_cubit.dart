@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:narracity/features/catalog/data/scenarios_repository.dart';
 import 'package:narracity/features/catalog/presentation/cubit/catalog_state.dart';
@@ -8,9 +9,20 @@ class CatalogCubit extends Cubit<CatalogState> {
   final ScenariosRepository repository;
 
   void load() async {
-    final data = repository.scenarios;
-    await Future.delayed(Duration(seconds: 2));
-    emit(CatalogLoaded(data));
+
+    try {
+      final data = await repository.getScenarios();
+      emit(CatalogLoaded(data));
+
+    } on FirebaseException catch (e) {
+      if (e.code == 'unavailable' || e.code == 'network-request-failed') {
+        emit(CatalogError('No internet connection. Please try again.', isConnectionError: true));
+        return;
+      }
+      emit(CatalogError('Server error: ${e.message}'));
+    } catch (e) {
+      emit(CatalogError('Something went wrong. Please try again.'));
+    }
   }
 
 }
