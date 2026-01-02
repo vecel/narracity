@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
-import 'package:narracity/features/map/presentation/cubit/map_cubit.dart';
-import 'package:narracity/features/map/presentation/cubit/map_state.dart';
+import 'package:narracity/features/scenario/subfeatures/map/presentation/cubit/map_cubit.dart';
+import 'package:narracity/features/scenario/subfeatures/map/presentation/cubit/map_state.dart';
 import 'package:narracity/features/scenario/presentation/cubit/scenario_cubit.dart';
 import 'package:narracity/features/scenario/presentation/cubit/scenario_state.dart';
 

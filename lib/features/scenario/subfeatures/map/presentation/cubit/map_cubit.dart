@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:geolocator/geolocator.dart' hide PermissionDeniedException;
 import 'package:logging/logging.dart';
-import 'package:narracity/features/map/presentation/cubit/map_state.dart';
-import 'package:narracity/features/map/services/location_service.dart';
+import 'package:narracity/features/scenario/subfeatures/map/presentation/cubit/map_state.dart';
+import 'package:narracity/features/scenario/subfeatures/map/services/location_service.dart';
 
 class MapCubit extends Cubit<MapState> {
 

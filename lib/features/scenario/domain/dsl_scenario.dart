@@ -69,7 +69,9 @@ final exampleScenarioNodes = [
             TextElement(text: 'Great, you are doing well.'),
             ButtonElement(
               text: 'Proceed', 
-              trigger: ProceedTrigger(id: 'chapter 1')
+              trigger: WithMapNotificationTrigger(
+                trigger: ProceedTrigger(id: 'chapter 1')
+              )
             )
           ]
         )

@@ -13,10 +13,11 @@ void main() async {
     developer.log('[${record.level.name}] [${record.time}]: ${record.message}', name: record.loggerName);
   });
 
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform
-  );
+  // TODO: Uncomment for production
+  // WidgetsFlutterBinding.ensureInitialized();
+  // await Firebase.initializeApp(
+  //   options: DefaultFirebaseOptions.currentPlatform
+  // );
 
   runApp(const MyApp());
 }

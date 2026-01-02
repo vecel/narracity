@@ -3,10 +3,11 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:logging/logging.dart';
-import 'package:narracity/features/map/presentation/cubit/map_cubit.dart';
-import 'package:narracity/features/map/presentation/cubit/map_state.dart';
+
 import 'package:narracity/features/scenario/domain/dsl_elements.dart';
 import 'package:narracity/features/scenario/presentation/cubit/scenario_cubit.dart';
+import 'package:narracity/features/scenario/subfeatures/map/presentation/cubit/map_cubit.dart';
+import 'package:narracity/features/scenario/subfeatures/map/presentation/cubit/map_state.dart';
 import 'package:narracity/utils/geometry_helper.dart';
 
 class GeofenceState {

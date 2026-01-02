@@ -6,9 +6,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:narracity/features/map/presentation/cubit/map_cubit.dart';
-import 'package:narracity/features/map/presentation/cubit/map_state.dart';
-import 'package:narracity/features/map/services/location_service.dart';
+import 'package:narracity/features/scenario/subfeatures/map/presentation/cubit/map_cubit.dart';
+import 'package:narracity/features/scenario/subfeatures/map/presentation/cubit/map_state.dart';
+import 'package:narracity/features/scenario/subfeatures/map/services/location_service.dart';
 
 import '../../../utils/location_helper.dart';
 
