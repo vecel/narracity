@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:narracity/example.dart';
 import 'package:narracity/features/scenario/domain/dsl_scenario.dart';
 
 class ScenariosRepository {
@@ -19,7 +20,7 @@ class ScenariosRepository {
 
   // For Linux development purposes
   Future<List<Scenario>> getScenarios() async {
-    return Future.value(List.of([exampleScenario, exampleScenario]));
+    return Future.value(List.of([warsawUniversityOfTechnologyScenario]));
   }
   
   

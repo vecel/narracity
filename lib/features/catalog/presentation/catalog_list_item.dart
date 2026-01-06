@@ -28,7 +28,7 @@ class CatalogListItem extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadiusGeometry.all(Radius.circular(8)),
                   child: Image(
-                    image: AssetImage('assets/cat.webp'), // TODO
+                    image: NetworkImage(scenario.image),
                     fit: BoxFit.cover,
                   ),
                 ),

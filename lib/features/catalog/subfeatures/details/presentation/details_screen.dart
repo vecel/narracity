@@ -6,6 +6,8 @@ import 'package:narracity/features/catalog/subfeatures/details/presentation/cont
 import 'package:narracity/features/scenario/domain/dsl_scenario.dart';
 import 'package:narracity/features/scenario/presentation/scenario_screen.dart';
 
+// TODO: Wyswietlaj dopiero po zaladowaniu zdjecia
+
 class DetailsScreen extends StatelessWidget {
   const DetailsScreen({super.key, required this.scenario});
 
@@ -18,8 +20,7 @@ class DetailsScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.push(
           context, 
-          // TODO: Change exampleScenario to dynamic one
-          MaterialPageRoute(builder: (context) => ScenarioScreen(scenario: exampleScenario.nodes))
+          MaterialPageRoute(builder: (context) => ScenarioScreen(scenario: scenario))
         ),
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Theme.of(context).colorScheme.onPrimary,

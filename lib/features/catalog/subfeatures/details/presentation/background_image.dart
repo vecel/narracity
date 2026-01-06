@@ -15,7 +15,7 @@ class DetailsBackgroundImage extends StatelessWidget {
             height: height,
             width: double.infinity,
             child: Image(
-              image: AssetImage(image), 
+              image: NetworkImage(image), 
               fit: BoxFit.cover
             )
           ),

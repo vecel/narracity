@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:narracity/features/scenario/domain/dsl_elements.dart';
@@ -36,7 +37,10 @@ final _nodes = [
             LatLng(52.220666, 21.010993),
             LatLng(52.220206, 21.011776),
             LatLng(52.220119, 21.011677)
-          ]
+          ],
+          color: Colors.blue.withAlpha(50),
+          borderColor: Colors.blue,
+          borderStrokeWidth: 2
         ),
         enterTrigger: WithStoryNotificationTrigger(
           trigger: AppendElementsTrigger(
@@ -62,7 +66,10 @@ final _nodes = [
             LatLng(52.222016, 21.007301),
             LatLng(52.221804, 21.007331),
             LatLng(52.221796, 21.006955)
-          ]
+          ],
+          color: Colors.blue.withAlpha(50),
+          borderColor: Colors.blue,
+          borderStrokeWidth: 2
         ),
         enterTrigger: WithStoryNotificationTrigger(
           trigger: AppendElementsTrigger(
@@ -93,7 +100,10 @@ final _nodes = [
             LatLng(52.219565, 21.010583),
             LatLng(52.219542, 21.010942),
             LatLng(52.219252, 21.011023)
-          ]
+          ],
+          color: Colors.blue.withAlpha(50),
+          borderColor: Colors.blue,
+          borderStrokeWidth: 2
         ),
         enterTrigger: WithStoryNotificationTrigger(
           trigger: AppendElementsTrigger(

@@ -97,6 +97,11 @@ class MapScreen extends StatelessWidget {
               TileLayer(
                 urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                 userAgentPackageName: 'pl.edu.pw.mini.karandys.narracity',
+                tileProvider: NetworkTileProvider(
+                  cachingProvider: BuiltInMapCachingProvider.getOrCreateInstance(
+                    maxCacheSize: 1_000_000_000
+                  )
+                ),
               ),
               PolygonLayer(polygons: state.polygons),
               LocationMarkerLayer(position: position),
