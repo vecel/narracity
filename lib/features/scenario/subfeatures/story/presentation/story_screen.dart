@@ -4,6 +4,8 @@ import 'package:narracity/features/scenario/domain/dsl_elements.dart';
 import 'package:narracity/features/scenario/presentation/cubit/scenario_cubit.dart';
 import 'package:narracity/features/scenario/presentation/cubit/scenario_state.dart';
 
+// TODO: Change _buildStoryItem to _Item class
+
 class StoryScreen extends StatelessWidget {
   const StoryScreen({super.key});
 
@@ -12,7 +14,7 @@ class StoryScreen extends StatelessWidget {
     
     final cubit = BlocProvider.of<ScenarioCubit>(context);
 
-    return BlocBuilder<ScenarioCubit, ScenarioState>(
+    return BlocBuilder<ScenarioCubit, ScenarioRunning>(
       bloc: cubit,
       builder: (context, state) {
         return Padding(

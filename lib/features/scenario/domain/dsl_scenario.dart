@@ -5,6 +5,13 @@ import 'package:latlong2/latlong.dart';
 import 'package:narracity/features/scenario/domain/dsl_elements.dart';
 import 'package:narracity/features/scenario/domain/dsl_triggers.dart';
 
+// TODO: Add AddPolygonTrigger
+// TODO: Easier button removal after use/trigger
+// TODO: Easier notifications sending
+// TODO: Add default polygon style
+// TODO: Add text styling (headings, center, bold etc.)
+// TODO: Add button styling
+
 class Scenario {
   const Scenario({
     required this.title,

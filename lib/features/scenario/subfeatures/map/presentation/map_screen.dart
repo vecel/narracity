@@ -7,6 +7,8 @@ import 'package:narracity/features/scenario/subfeatures/map/presentation/cubit/m
 import 'package:narracity/features/scenario/presentation/cubit/scenario_cubit.dart';
 import 'package:narracity/features/scenario/presentation/cubit/scenario_state.dart';
 
+// TODO: change private methods to _SthView classes
+
 class MapScreen extends StatelessWidget {
   const MapScreen({super.key});
 
@@ -80,7 +82,7 @@ class MapScreen extends StatelessWidget {
   }
 
   Widget _buildMapScreen(LocationMarkerPosition position) {
-    return BlocBuilder<ScenarioCubit, ScenarioState>(
+    return BlocBuilder<ScenarioCubit, ScenarioRunning>(
       builder: (context, state) => Center(
         child: Container(
           margin: EdgeInsets.all(16),

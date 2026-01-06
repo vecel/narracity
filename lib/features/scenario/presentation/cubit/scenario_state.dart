@@ -1,10 +1,12 @@
 import 'package:flutter_map/flutter_map.dart';
 import 'package:narracity/features/scenario/domain/dsl_elements.dart';
 
-final class ScenarioState {
-  const ScenarioState({required this.elements});
+sealed class ScenarioState {}
 
-  factory ScenarioState.initial() => const ScenarioState(elements: []);
+class ScenarioRunning extends ScenarioState {
+  ScenarioRunning({required this.elements});
+
+  factory ScenarioRunning.initial() => ScenarioRunning(elements: []);
 
   final List<ScenarioElement> elements;
 
@@ -12,3 +14,5 @@ final class ScenarioState {
   List<Polygon> get polygons => polygonElements.map((el) => el.polygon).toList();
   List<StoryElement> get story => elements.whereType<StoryElement>().toList();
 } 
+
+class ScenarioFinished extends ScenarioState {}

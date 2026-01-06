@@ -1,31 +1,35 @@
 import 'package:narracity/features/scenario/domain/dsl_elements.dart';
 
 sealed class ScenarioTrigger {
-  const ScenarioTrigger();
+  ScenarioTrigger();
+
+  bool triggered = false;
 }
 
 class ProceedTrigger extends ScenarioTrigger {
-  const ProceedTrigger({required this.id});
+  ProceedTrigger({required this.id});
 
   final String id;
 } 
 
 class AppendElementsTrigger extends ScenarioTrigger {
-  const AppendElementsTrigger({required this.elements});
+  AppendElementsTrigger({required this.elements});
 
   final List<ScenarioElement> elements;
 }
 
 class WithStoryNotificationTrigger extends ScenarioTrigger {
-  const WithStoryNotificationTrigger({required this.trigger});
+  WithStoryNotificationTrigger({required this.trigger});
 
   final ScenarioTrigger trigger;
 }
 
 class WithMapNotificationTrigger extends ScenarioTrigger {
-  const WithMapNotificationTrigger({required this.trigger});
+  WithMapNotificationTrigger({required this.trigger});
 
   final ScenarioTrigger trigger;
 }
+
+class EndTrigger extends ScenarioTrigger {}
 
 class EmptyTrigger extends ScenarioTrigger {}

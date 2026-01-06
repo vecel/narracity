@@ -50,7 +50,7 @@ void main() {
       build: () => cubit,
       act: (cubit) => cubit.handleTrigger(ProceedTrigger(id: 'end')),
       expect: () => [
-        isA<ScenarioState>()
+        isA<ScenarioRunning>()
           .having((state) => state.elements.length, 'length', 2)
           .having((state) => state.elements, 'elements', [thankText, byeText])
       ]
@@ -60,7 +60,7 @@ void main() {
       build: () => cubit,
       act: (cubit) => cubit.handleTrigger(AppendElementsTrigger(elements: [thankText])),
       expect: () => [
-        isA<ScenarioState>()
+        isA<ScenarioRunning>()
           .having((state) => state.elements.length, 'length', 2)
           .having((state) => state.elements, 'elements', [welcomeText, thankText])
       ]
@@ -70,7 +70,7 @@ void main() {
       build: () => cubit,
       act: (cubit) => cubit.removeElement(welcomeText),
       expect: () => [
-        isA<ScenarioState>()
+        isA<ScenarioRunning>()
           .having((state) => state.elements.length, 'length', 0)
       ]
     );

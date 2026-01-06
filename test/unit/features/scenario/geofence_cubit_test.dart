@@ -25,7 +25,7 @@ void main() {
     late MockScenarioCubit mockScenarioCubit;
     late GeofenceCubit geofenceCubit;
     late StreamController<MapState> mapStreamController;
-    late StreamController<ScenarioState> scenarioStreamController;
+    late StreamController<ScenarioRunning> scenarioStreamController;
 
     final position = LocationMarkerPosition(
       latitude: 50.0, 
@@ -59,7 +59,7 @@ void main() {
       when(() => mockScenarioCubit.stream).thenAnswer((_) => scenarioStreamController.stream);
       
       when(() => mockMapCubit.state).thenReturn(MapReady(position));
-      when(() => mockScenarioCubit.state).thenReturn(ScenarioState(elements: [polygon]));
+      when(() => mockScenarioCubit.state).thenReturn(ScenarioRunning(elements: [polygon]));
 
       geofenceCubit = GeofenceCubit(
         scenarioCubit: mockScenarioCubit, 
