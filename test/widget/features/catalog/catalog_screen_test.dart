@@ -1,96 +1,89 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:narracity/features/catalog/presentation/catalog_list_item.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:narracity/features/catalog/data/scenarios_repository.dart';
 import 'package:narracity/features/catalog/presentation/catalog_screen.dart';
-import 'package:narracity/features/catalog/subfeatures/details/presentation/details_screen.dart';
-import 'package:narracity/features/catalog/presentation/view_model/catalog_view_model.dart';
+import 'package:narracity/features/catalog/presentation/catalog_list_item.dart';
+import 'package:narracity/features/scenario/domain/dsl_scenario.dart';
+import 'package:network_image_mock/network_image_mock.dart';
+
+class MockScenariosRepository extends Mock implements ScenariosRepository {}
+
+class MockScenario extends Mock implements Scenario {}
 
 void main() {
-  group('CatalogScreen Widget Tests', () {
-    late CatalogViewModel fakeViewModel;
+  late MockScenariosRepository mockRepository;
 
-    setUp(() {
-      fakeViewModel = CatalogViewModel(
-        scenariosRepository: FakeScenariosRepository.withScenarios()
+  setUp(() {
+    mockRepository = MockScenariosRepository();
+  });
+
+  Widget createWidgetUnderTest() {
+    return MaterialApp(
+      home: CatalogScreen(repository: mockRepository),
+    );
+  }
+
+  group('CatalogScreen', () {
+    testWidgets('renders Loading view initially', (tester) async {
+      when(() => mockRepository.getScenarios()).thenAnswer(
+        (_) async {
+          await Future.delayed(const Duration(seconds: 1));
+          return [];
+        },
       );
+
+      await tester.pumpWidget(createWidgetUnderTest());
+      await tester.pump(); 
+
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+
+      await tester.pumpAndSettle(const Duration(seconds: 1));
     });
 
-    testWidgets('should display catalog screen with basic structure', (tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: CatalogScreen(viewModel: fakeViewModel),
-        ),
-      );
+    testWidgets('renders Success view with list items when data loads', (tester) async {
+      final mockScenario = MockScenario();
 
-      expect(find.byType(CatalogScreen), findsOneWidget);
-      expect(find.byType(Scaffold), findsOneWidget);
+      when(() => mockScenario.title).thenReturn('Test Title');
+      when(() => mockScenario.description).thenReturn('Example description');
+      when(() => mockScenario.location).thenReturn('Warsaw');
+      when(() => mockScenario.duration).thenReturn('2 h');
+      when(() => mockScenario.distance).thenReturn('6 km');
+      when(() => mockScenario.image).thenReturn('');
+      
+      when(() => mockRepository.getScenarios()).thenAnswer((_) async => [mockScenario]);
+
+      await mockNetworkImagesFor(() async {
+        await tester.pumpWidget(createWidgetUnderTest());
+        await tester.pumpAndSettle();
+
+        expect(find.byType(CatalogListItem), findsOneWidget);
+        expect(find.text('No scenarios found'), findsNothing);
+      });
+
     });
 
-    testWidgets('should display app bar with correct title', (tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: CatalogScreen(viewModel: fakeViewModel),
-        ),
-      );
+    testWidgets('renders Error view when repository throws', (tester) async {
+      when(() => mockRepository.getScenarios()).thenThrow(Exception('Network Error'));
 
-      expect(find.byType(AppBar), findsOneWidget);
-      expect(find.text('Choose Scenario'), findsOneWidget);
-    });
-
-    testWidgets('should display scenarios list when scenarios are available', (tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: CatalogScreen(viewModel: fakeViewModel),
-        ),
-      );
-
+      await tester.pumpWidget(createWidgetUnderTest());
       await tester.pumpAndSettle();
 
-      expect(find.byType(ListView), findsOneWidget);
+      expect(find.text('Error'), findsOneWidget);
+      expect(find.byIcon(Icons.refresh), findsOneWidget);
     });
 
-    testWidgets('should display empty state when no scenarios available', (tester) async {
+    testWidgets('renders Empty view when repository returns empty list', (tester) async {
+      when(() => mockRepository.getScenarios()).thenAnswer((_) async => []);
 
-      fakeViewModel = CatalogViewModel(scenariosRepository: FakeScenariosRepository.empty());
-
-      await tester.pumpWidget(
-        MaterialApp(
-          home: CatalogScreen(viewModel: fakeViewModel),
-        ),
-      );
-
+      await tester.pumpWidget(createWidgetUnderTest());
       await tester.pumpAndSettle();
 
-      expect(find.byType(CatalogListItem), findsNothing);
-    });
-
-    testWidgets('should display scenario list items', (tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: CatalogScreen(viewModel: fakeViewModel),
-        ),
-      );
-
-      await tester.pumpAndSettle();
-
-      expect(find.byType(CatalogListItem), findsAtLeastNWidgets(2));
-    });
-
-    testWidgets('should handle scenario selection on tap', (tester) async {
-      // TODO: move to integration tests
-      await tester.pumpWidget(
-        MaterialApp(
-          home: CatalogScreen(viewModel: fakeViewModel),
-        ),
-      );
-
-      await tester.pumpAndSettle();
-
-      final firstScenario = find.byType(CatalogListItem).first;
-      await tester.tap(firstScenario);
-      await tester.pumpAndSettle();
-
-      expect(find.byType(DetailsScreen), findsOneWidget);
+      expect(find.text('No scenarios found'), findsOneWidget);
+      expect(find.text('Scenarios repository is empty.'), findsOneWidget);
+      expect(find.byIcon(Icons.sentiment_dissatisfied), findsOneWidget);
+      
+      expect(find.text('Try Again'), findsOneWidget);
     });
   });
 }

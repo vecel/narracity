@@ -7,7 +7,7 @@ import 'package:narracity/features/scenario/subfeatures/map/presentation/cubit/m
 import 'package:narracity/features/scenario/presentation/cubit/scenario_cubit.dart';
 import 'package:narracity/features/scenario/presentation/cubit/scenario_state.dart';
 
-// TODO: change private methods to _SthView classes
+// TODO: Change initial map center to previously left map center
 
 class MapScreen extends StatelessWidget {
   const MapScreen({super.key});
@@ -15,7 +15,7 @@ class MapScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     
-    final cubit = BlocProvider.of<MapCubit>(context);
+    final cubit = context.watch<MapCubit>();
   
     return BlocBuilder<MapCubit, MapState>(
       bloc: cubit,
@@ -23,93 +23,182 @@ class MapScreen extends StatelessWidget {
         switch (state) {
           case MapInitial(): {
             cubit.askForPermission();
-            return _buildLoadingScreen();
+            return _LodaingView();
           }
           case MapPermissionDenied(): {
-            return _buildPermissionDeniedScreen(cubit.askForPermission);
+            return _PermissionDeniedView(askForPermission: cubit.askForPermission);
           }
           case MapPermissionDeniedForever(): {
-            return _buildPermissionDeniedForeverScreen(cubit.openAppSettings, cubit.askForPermission);
+            return _PermissionDeniedForeverView(openAppSettings: cubit.openAppSettings, refresh: cubit.askForPermission);
           }
           case MapLocationServiceRequestRejected(): {
-            return _buildLocationServiceRequestRejectedScreen(cubit.openLocationSettings, cubit.askForPermission);
+            return _LocationServiceRequestRejectedView(openLocationSettings: cubit.openLocationSettings, refresh: cubit.askForPermission);
           }
           case MapReady(:var position): {
-            return _buildMapScreen(position);
+            return _MapView(position: position);
           }
         }
       }
     );
   }
+}
 
-  Widget _buildLoadingScreen() {
+class _LodaingView extends StatelessWidget {
+  const _LodaingView();
+
+  @override
+  Widget build(BuildContext context) {
     return Center(child: CircularProgressIndicator());
   }
+}
 
-  Widget _buildPermissionDeniedScreen(void Function() askForPermission) {
+class _PermissionDeniedView extends StatelessWidget {
+  final VoidCallback askForPermission;
+  
+  const _PermissionDeniedView({
+    required this.askForPermission
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Center(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center, 
         children: [
-          Text('Please give the application location permission. We need it to display your position on the map.'),
-          FilledButton(onPressed: askForPermission, child: Text('Give permission'))
-        ],
-      ),
-    );
-  }
-
-  Widget _buildPermissionDeniedForeverScreen(void Function() openAppSettings, void Function() refresh) {
-    return Center(
-      child: Column(
-        children: [
-          Text('Location permission was denied forever. We won\'t ask for it anymore. Please manually change it in the application settings and refresh the map.'),
-          FilledButton(onPressed: openAppSettings, child: Text('Open settings')),
-          TextButton(onPressed: refresh, child: Text('Refresh'))
-        ],
-      ),
-    );
-  }
-
-  Widget _buildLocationServiceRequestRejectedScreen(void Function() openLocationSettings, void Function() refresh) {
-    return Center(
-      child: Column(
-        children: [
-          Text('Please enable location service and refresh the map'),
-          FilledButton(onPressed: openLocationSettings, child: Text('Open settings')),
-          TextButton(onPressed: refresh, child: Text('Refresh'))
-        ],
-      ),
-    );
-  }
-
-  Widget _buildMapScreen(LocationMarkerPosition position) {
-    return BlocBuilder<ScenarioCubit, ScenarioRunning>(
-      builder: (context, state) => Center(
-        child: Container(
-          margin: EdgeInsets.all(16),
-          child: FlutterMap(
-            options: MapOptions(
-              initialCenter: position.latLng,
-              initialZoom: 16,
-              maxZoom: 20,
-              minZoom: 12
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            child: Text(
+              'Please give the application location permission. We need it to display your position on the map.',
+              textAlign: TextAlign.center,
             ),
-            children: [
-              TileLayer(
-                urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                userAgentPackageName: 'pl.edu.pw.mini.karandys.narracity',
-                tileProvider: NetworkTileProvider(
-                  cachingProvider: BuiltInMapCachingProvider.getOrCreateInstance(
-                    maxCacheSize: 1_000_000_000
-                  )
-                ),
-              ),
-              PolygonLayer(polygons: state.polygons),
-              LocationMarkerLayer(position: position),
-              SimpleAttributionWidget(source: Text('OpenStreetMap contributors')),
-            ]
-          )
+          ),
+          const SizedBox(height: 16),
+          FilledButton(
+            onPressed: askForPermission,
+            child: const Text('Give permission'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _PermissionDeniedForeverView extends StatelessWidget {
+  final VoidCallback openAppSettings;
+  final VoidCallback refresh;
+
+  const _PermissionDeniedForeverView({
+    required this.openAppSettings,
+    required this.refresh,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              'Location permission was denied forever. We won\'t ask for it anymore. Please manually change it in the application settings and refresh the map.',
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 16),
+            FilledButton(
+              onPressed: openAppSettings,
+              child: const Text('Open settings'),
+            ),
+            TextButton(
+              onPressed: refresh,
+              child: const Text('Refresh'),
+            ),
+          ],
         ),
       ),
+    );
+  }
+}
+
+class _LocationServiceRequestRejectedView extends StatelessWidget {
+  final VoidCallback openLocationSettings;
+  final VoidCallback refresh;
+
+  const _LocationServiceRequestRejectedView({
+    required this.openLocationSettings,
+    required this.refresh,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              'Please enable location service and refresh the map',
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 16),
+            FilledButton(
+              onPressed: openLocationSettings,
+              child: const Text('Open settings'),
+            ),
+            TextButton(
+              onPressed: refresh,
+              child: const Text('Refresh'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _MapView extends StatelessWidget {
+  final LocationMarkerPosition position;
+
+  const _MapView({
+    required this.position,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ScenarioCubit, ScenarioRunning>(
+      builder: (context, state) {
+        return Center(
+          child: Container(
+            margin: const EdgeInsets.all(16),
+            child: FlutterMap(
+              options: MapOptions(
+                initialCenter: position.latLng,
+                initialZoom: 16,
+                maxZoom: 20,
+                minZoom: 12,
+                keepAlive: true,
+              ),
+              children: [
+                TileLayer(
+                  urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  userAgentPackageName: 'pl.edu.pw.mini.karandys.narracity',
+                  tileProvider: NetworkTileProvider(
+                    cachingProvider: BuiltInMapCachingProvider.getOrCreateInstance(
+                      maxCacheSize: 1_000_000_000,
+                    ),
+                  ),
+                ),
+                PolygonLayer(polygons: state.polygons),
+                LocationMarkerLayer(position: position),
+                const SimpleAttributionWidget(
+                  source: Text('OpenStreetMap contributors'),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
