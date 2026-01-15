@@ -20,7 +20,7 @@ class CatalogScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => CatalogCubit(repository)..load(),
       child: Scaffold(
-        appBar: BaseAppBar(title: 'Choose Scenario'),
+        appBar: BaseAppBar(title: 'Choose Scenario', backRoute: '/'),
         backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
         body: const _CatalogView()
       ),
@@ -33,14 +33,14 @@ class _CatalogView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final state = context.watch<CatalogCubit>().state;
-
-    return switch (state) {
-      CatalogLoading() => const _LodaingView(),
-      CatalogLoaded(:final scenarios) when scenarios.isEmpty => _EmptyView(),
-      CatalogLoaded(:final scenarios) => _SuccessView(scenarios),
-      CatalogError(:final message, :final isConnectionError) => _ErrorView(message, isConnectionError),
-    };
+    return BlocBuilder<CatalogCubit, CatalogState>(
+      builder: (context, state) => switch (state) {
+        CatalogLoading() => const _LodaingView(),
+        CatalogLoaded(:final scenarios) when scenarios.isEmpty => _EmptyView(),
+        CatalogLoaded(:final scenarios) => _SuccessView(scenarios),
+        CatalogError(:final message, :final isConnectionError) => _ErrorView(message, isConnectionError),
+      },
+    );
   } 
 }
 

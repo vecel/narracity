@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const BaseAppBar({super.key, this.title = ''});
+  const BaseAppBar({super.key, required this.title, required this.backRoute});
 
   final String title;
+  final String backRoute;
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       leading: IconButton(
-        onPressed: () => Navigator.pop(context), 
+        onPressed: () => context.go(backRoute),
         icon: Icon(Icons.arrow_back)
       ),
       title: Text(title),

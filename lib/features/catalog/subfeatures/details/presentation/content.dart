@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:narracity/features/scenario/domain/dsl_scenario.dart';
 import 'package:narracity/shared_widgets/labeled_icon.dart';
 
@@ -16,7 +17,7 @@ class DetailsScreenContent extends StatelessWidget {
           Row(
             children: [
               IconButton(
-                onPressed: () => Navigator.pop(context), 
+                onPressed: () => context.go('/catalog'), 
                 icon: Icon(Icons.arrow_back)
               ),
               SizedBox(width: 8),

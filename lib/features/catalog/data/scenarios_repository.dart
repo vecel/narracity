@@ -4,12 +4,14 @@ import 'package:narracity/example.dart';
 import 'package:narracity/features/scenario/domain/dsl_scenario.dart';
 
 class ScenariosRepository {
+
+  final Map<String, Scenario> _cache = {};
+
   // TODO: Uncomment for firestore database usage
   // final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   // final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // Future<List<Scenario>> getScenarios() async {
-
   //   if (_auth.currentUser == null) {
   //     await _auth.signInAnonymously();
   //   }
@@ -23,5 +25,13 @@ class ScenariosRepository {
     return Future.value(List.of([warsawUniversityOfTechnologyScenario]));
   }
   
+  Future<Scenario> getScenarioById(String id) async {
+    if (_cache.containsKey(id)) {
+      return _cache[id]!;
+    }
+
+    return Future.value(warsawUniversityOfTechnologyScenario);
+    // TODO: Implement loading from database
+  }
   
 }

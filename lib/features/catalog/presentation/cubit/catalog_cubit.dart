@@ -9,7 +9,6 @@ class CatalogCubit extends Cubit<CatalogState> {
   final ScenariosRepository repository;
 
   void load() async {
-
     try {
       final data = await repository.getScenarios();
       emit(CatalogLoaded(data));
