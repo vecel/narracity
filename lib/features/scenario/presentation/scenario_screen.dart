@@ -47,19 +47,9 @@ class ScenarioScreen extends StatelessWidget {
           child: BlocBuilder<NavigationCubit, NavigationState>(
             builder: (context, state) => Scaffold(
               appBar: BaseAppBar(title: scenario.title, backRoute: '/details/$id'),
-              bottomNavigationBar: ScenarioNavigationBar(
-                index: state.index,
-                selectPage: (index) => context.read<NavigationCubit>().selectPage(index),
-                storyNotification: state.storyNotification,
-                mapNotification: state.mapNotification,
-                journalNotification: false,
-              ),
-              body: [
-                StoryScreen(),
-                MapScreen(),
-                Center(child: Text('Journal')),
-              ][state.index],
-            ),
+              bottomNavigationBar: _NavigationBar(state: state),
+              body: _ScenarioView(selectedIndex: state.index)
+            )
           )
         )
       ),
@@ -67,29 +57,37 @@ class ScenarioScreen extends StatelessWidget {
   }
 }
 
-// class _ScenarioScreenView extends StatelessWidget {
-//   const _ScenarioScreenView(this.title);
+class _NavigationBar extends StatelessWidget {
+  const _NavigationBar({required this.state});
 
-//   final String title;
+  final NavigationState state;
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocBuilder<NavigationCubit, NavigationState>(
-//       builder: (context, state) => Scaffold(
-//         appBar: BaseAppBar(title: title, backRoute: '/details/$id'),
-//         bottomNavigationBar: ScenarioNavigationBar(
-//           index: state.index,
-//           selectPage: (index) => context.read<NavigationCubit>().selectPage(index),
-//           storyNotification: state.storyNotification,
-//           mapNotification: state.mapNotification,
-//           journalNotification: false,
-//         ),
-//         body: [
-//           StoryScreen(),
-//           MapScreen(),
-//           Center(child: Text('Journal')),
-//         ][state.index],
-//       ),
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return ScenarioNavigationBar(
+      index: state.index,
+      selectPage: (index) => context.read<NavigationCubit>().selectPage(index),
+      storyNotification: state.storyNotification,
+      mapNotification: state.mapNotification,
+      journalNotification: false,
+    );
+  }
+}
+
+class _ScenarioView extends StatelessWidget {
+  const _ScenarioView({required this.selectedIndex});
+
+  final int selectedIndex;
+
+  @override
+  Widget build(BuildContext context) {
+    return IndexedStack(
+      index: selectedIndex,
+      children: const [
+        StoryScreen(),
+        MapScreen(),
+        Center(child: Text('Journal')),
+      ],
+    );
+  }
+}

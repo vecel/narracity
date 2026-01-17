@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:narracity/features/catalog/presentation/cubit/catalog_cubit.dart';
+import 'package:narracity/features/catalog/data/scenarios_repository.dart';
 import 'package:narracity/features/catalog/subfeatures/details/presentation/bottom_blur.dart';
 import 'package:network_image_mock/network_image_mock.dart';
 
@@ -12,22 +13,23 @@ import 'package:narracity/features/catalog/subfeatures/details/presentation/bott
 import 'package:narracity/features/catalog/subfeatures/details/presentation/content.dart';
 import 'package:narracity/features/scenario/domain/dsl_scenario.dart';
 
-class MockCatalogCubit extends Mock implements CatalogCubit {}
+import '../../../utils/router_helper.dart';
+
 class MockScenario extends Mock implements Scenario {}
-class MockNavigatorObserver extends Mock implements NavigatorObserver {}
-class FakeRoute extends Fake implements Route {}
+class MockScenariosRepository extends Mock implements ScenariosRepository {}
+class MockGoRouter extends Mock implements GoRouter {}
 
 void main() {
-  late MockCatalogCubit mockCubit;
   late MockScenario mockScenario;
-  late MockNavigatorObserver mockObserver;
+  late MockScenariosRepository mockRepository;
+  late MockGoRouter mockRouter;
 
   setUp(() {
-    mockCubit = MockCatalogCubit();
     mockScenario = MockScenario();
-    mockObserver = MockNavigatorObserver();
-    
-    registerFallbackValue(FakeRoute());
+    mockRepository = MockScenariosRepository();
+    mockRouter = MockGoRouter();
+
+    when(() => mockRepository.getScenarioById(any())).thenAnswer((_) async => mockScenario);
 
     when(() => mockScenario.id).thenReturn('Test Id');
     when(() => mockScenario.image).thenReturn('https://example.com/image.png');
@@ -36,15 +38,19 @@ void main() {
     when(() => mockScenario.location).thenReturn('Test Location');
     when(() => mockScenario.duration).thenReturn('Dur');
     when(() => mockScenario.distance).thenReturn('Dist');
+
+    when(() => mockRouter.go(any())).thenReturn(null);
   });
 
   Widget createWidgetUnderTest(String id) {
-    return MaterialApp(
-      home: BlocProvider<CatalogCubit>.value(
-        value: mockCubit,
-        child: DetailsScreen(id: id)
+    return RepositoryProvider<ScenariosRepository>.value(
+      value: mockRepository,
+      child: MaterialApp(
+        home: MockGoRouterProvider(
+          router: mockRouter,
+          child: DetailsScreen(id: id)
+        ),
       ),
-      navigatorObservers: [mockObserver],
     );
   }
 
@@ -89,7 +95,7 @@ void main() {
         
         await tester.pump(); 
 
-        verify(() => mockObserver.didPush(any(), any())).called(1);
+        verify(() => mockRouter.go('/scenario/Test Id')).called(1);
       });
     });
   });
