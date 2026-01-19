@@ -5,12 +5,11 @@ import 'package:mocktail/mocktail.dart';
 import 'package:narracity/features/catalog/data/scenarios_repository.dart';
 import 'package:narracity/features/catalog/presentation/catalog_screen.dart';
 import 'package:narracity/features/catalog/presentation/catalog_list_item.dart';
-import 'package:narracity/features/scenario/domain/dsl_scenario.dart';
 import 'package:network_image_mock/network_image_mock.dart';
 
-class MockScenariosRepository extends Mock implements ScenariosRepository {}
+import '../../../utils/test_factory.dart';
 
-class MockScenario extends Mock implements Scenario {}
+class MockScenariosRepository extends Mock implements ScenariosRepository {}
 
 void main() {
   late MockScenariosRepository mockRepository;
@@ -46,14 +45,7 @@ void main() {
     });
 
     testWidgets('renders Success view with list items when data loads', (tester) async {
-      final mockScenario = MockScenario();
-
-      when(() => mockScenario.title).thenReturn('Test Title');
-      when(() => mockScenario.description).thenReturn('Example description');
-      when(() => mockScenario.location).thenReturn('Warsaw');
-      when(() => mockScenario.duration).thenReturn('2 h');
-      when(() => mockScenario.distance).thenReturn('6 km');
-      when(() => mockScenario.image).thenReturn('');
+      final mockScenario = TestFactory.createMockScenario();
       
       when(() => mockRepository.getScenarios()).thenAnswer((_) async => [mockScenario]);
 

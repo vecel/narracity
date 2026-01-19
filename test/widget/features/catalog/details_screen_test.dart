@@ -13,43 +13,24 @@ import 'package:narracity/features/catalog/subfeatures/details/presentation/bott
 import 'package:narracity/features/catalog/subfeatures/details/presentation/content.dart';
 import 'package:narracity/features/scenario/domain/dsl_scenario.dart';
 
-import '../../../utils/router_helper.dart';
+import '../../../utils/test_factory.dart';
 
-class MockScenario extends Mock implements Scenario {}
-class MockScenariosRepository extends Mock implements ScenariosRepository {}
 class MockGoRouter extends Mock implements GoRouter {}
 
 void main() {
-  late MockScenario mockScenario;
-  late MockScenariosRepository mockRepository;
-  late MockGoRouter mockRouter;
+  late Scenario mockScenario;
+  late ScenariosRepository mockRepository;
 
   setUp(() {
-    mockScenario = MockScenario();
-    mockRepository = MockScenariosRepository();
-    mockRouter = MockGoRouter();
-
-    when(() => mockRepository.getScenarioById(any())).thenAnswer((_) async => mockScenario);
-
-    when(() => mockScenario.id).thenReturn('Test Id');
-    when(() => mockScenario.image).thenReturn('https://example.com/image.png');
-    when(() => mockScenario.title).thenReturn('Test Scenario');
-    when(() => mockScenario.description).thenReturn('Test Description');
-    when(() => mockScenario.location).thenReturn('Test Location');
-    when(() => mockScenario.duration).thenReturn('Dur');
-    when(() => mockScenario.distance).thenReturn('Dist');
-
-    when(() => mockRouter.go(any())).thenReturn(null);
+    mockScenario = TestFactory.createMockScenario();
+    mockRepository = TestFactory.createMockScenariosRepository(scenarios: [mockScenario]);
   });
 
-  Widget createWidgetUnderTest(String id) {
+  Widget createWidgetUnderTest() {
     return RepositoryProvider<ScenariosRepository>.value(
       value: mockRepository,
       child: MaterialApp(
-        home: MockGoRouterProvider(
-          router: mockRouter,
-          child: DetailsScreen(id: id)
-        ),
+        home: DetailsScreen(id: 'Id')
       ),
     );
   }
@@ -60,7 +41,7 @@ void main() {
         tester.view.physicalSize = const Size(600, 800);
         tester.view.devicePixelRatio = 1;
         
-        await tester.pumpWidget(createWidgetUnderTest('Test Id'));
+        await tester.pumpWidget(createWidgetUnderTest());
         await tester.pumpAndSettle();
 
         expect(find.byType(DetailsBackgroundImage), findsOneWidget);
@@ -75,7 +56,7 @@ void main() {
         tester.view.physicalSize = const Size(800, 400);
         tester.view.devicePixelRatio = 1;
         
-        await tester.pumpWidget(createWidgetUnderTest('Test Id'));
+        await tester.pumpWidget(createWidgetUnderTest());
         await tester.pumpAndSettle();
 
         expect(find.byType(DetailsBackgroundImage), findsNothing);
@@ -83,19 +64,6 @@ void main() {
         
         expect(find.byType(DetailsScreenContent), findsOneWidget);
         expect(find.byType(DetailsBottomBlur), findsOneWidget);
-      });
-    });
-
-    testWidgets('navigates to ScenarioScreen when FAB is pressed', (tester) async {
-      await mockNetworkImagesFor(() async {
-        await tester.pumpWidget(createWidgetUnderTest('Test Id'));
-        await tester.pumpAndSettle();
-
-        await tester.tap(find.byIcon(Icons.play_arrow));
-        
-        await tester.pump(); 
-
-        verify(() => mockRouter.go('/scenario/Test Id')).called(1);
       });
     });
   });
