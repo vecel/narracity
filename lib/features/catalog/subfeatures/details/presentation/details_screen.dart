@@ -7,7 +7,7 @@ import 'package:narracity/features/catalog/subfeatures/details/presentation/cont
 import 'package:narracity/features/scenario/domain/dsl_scenario.dart';
 import 'package:narracity/shared_widgets/scenario_loader.dart';
 
-// TODO: Wyswietlaj dopiero po zaladowaniu zdjecia
+// TODO: Display only after image is loaded
 
 class DetailsScreen extends StatelessWidget {
   const DetailsScreen({super.key, required this.id});

@@ -15,30 +15,26 @@ class MapScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
-    final cubit = context.watch<MapCubit>();
-  
     return BlocBuilder<MapCubit, MapState>(
-      bloc: cubit,
       builder: (context, state) {
-        switch (state) {
-          case MapInitial(): {
-            cubit.askForPermission();
-            return _LodaingView();
-          }
-          case MapPermissionDenied(): {
-            return _PermissionDeniedView(askForPermission: cubit.askForPermission);
-          }
-          case MapPermissionDeniedForever(): {
-            return _PermissionDeniedForeverView(openAppSettings: cubit.openAppSettings, refresh: cubit.askForPermission);
-          }
-          case MapLocationServiceRequestRejected(): {
-            return _LocationServiceRequestRejectedView(openLocationSettings: cubit.openLocationSettings, refresh: cubit.askForPermission);
-          }
-          case MapReady(:var position): {
-            return _MapView(position: position);
-          }
-        }
+
+        final cubit = context.read<MapCubit>();
+
+        return switch (state) {
+          MapInitial() => _LodaingView(),
+          MapPermissionDenied() => _PermissionDeniedView(
+            askForPermission: cubit.askForPermission
+          ),
+          MapPermissionDeniedForever() => _PermissionDeniedForeverView(
+            openAppSettings: cubit.openAppSettings, 
+            refresh: cubit.askForPermission
+          ),
+          MapLocationServiceRequestRejected() => _LocationServiceRequestRejectedView(
+            openLocationSettings: cubit.openLocationSettings, 
+            refresh: cubit.askForPermission
+          ),
+          MapReady(:var position) => _MapView(position: position),
+        };
       }
     );
   }

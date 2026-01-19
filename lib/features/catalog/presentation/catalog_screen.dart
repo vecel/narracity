@@ -15,10 +15,10 @@ class CatalogScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) { 
-    final repository = RepositoryProvider.of<ScenariosRepository>(context);
-
     return BlocProvider(
-      create: (context) => CatalogCubit(repository)..load(),
+      create: (context) => CatalogCubit(
+        scenariosRepository: context.read<ScenariosRepository>()
+      )..load(),
       child: Scaffold(
         appBar: BaseAppBar(title: 'Catalog', backRoute: '/'),
         backgroundColor: Theme.of(context).colorScheme.surfaceContainer,

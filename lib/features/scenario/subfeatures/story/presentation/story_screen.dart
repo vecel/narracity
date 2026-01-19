@@ -4,8 +4,6 @@ import 'package:narracity/features/scenario/domain/dsl_elements.dart';
 import 'package:narracity/features/scenario/presentation/cubit/scenario_cubit.dart';
 import 'package:narracity/features/scenario/presentation/cubit/scenario_state.dart';
 
-// TODO: Change _buildStoryItem to _Item class
-
 class StoryScreen extends StatelessWidget {
   const StoryScreen({super.key});
 
@@ -22,26 +20,39 @@ class StoryScreen extends StatelessWidget {
           child: ListView.separated(
             separatorBuilder: (context, index) => SizedBox(height: 8),
             itemCount: state.story.length,
-            itemBuilder: (context, index) {
-              final item = state.story[index];
-              return _buildStoryItem(item, cubit);
-            }
+            itemBuilder: (context, index)  => _StoryItem(element: state.story[index])
           ),
         );
       }
     );
   }
+}
 
-  Widget _buildStoryItem(StoryElement item, ScenarioCubit cubit) {
-    return switch (item) {
-      TextElement(:var text) => Text(text),
-      ButtonElement(:var text, :var trigger) => TextButton(
-        onPressed: () => cubit.handleTrigger(trigger), 
-        child: Text(text)
-      ),
-      MultiButtonElement(buttons:var actions) => Row(
+class _StoryItem extends StatelessWidget {
+  const _StoryItem({required this.element});
+
+  final StoryElement element;
+
+  @override
+  Widget build(BuildContext context) {
+    final cubit = context.read<ScenarioCubit>();
+
+    return switch (element) {
+      TextElement(:final text) => Text(text),
+
+      ButtonElement(:final text, :final trigger) => TextButton(
+          onPressed: () => cubit.handleTrigger(trigger),
+          child: Text(text),
+        ),
+        
+      MultiButtonElement(buttons: final actions) => Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: actions.map((action) => TextButton(onPressed: () => cubit.handleTrigger(action.trigger), child: Text(action.text))).toList()
+        children: actions.map((action) {
+          return TextButton(
+            onPressed: () => cubit.handleTrigger(action.trigger),
+            child: Text(action.text),
+          );
+        }).toList(),
       ),
     };
   }
