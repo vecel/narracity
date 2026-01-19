@@ -20,7 +20,7 @@ class CatalogScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => CatalogCubit(repository)..load(),
       child: Scaffold(
-        appBar: BaseAppBar(title: 'Choose Scenario', backRoute: '/'),
+        appBar: BaseAppBar(title: 'Catalog', backRoute: '/'),
         backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
         body: const _CatalogView()
       ),

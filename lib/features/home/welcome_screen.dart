@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:narracity/features/catalog/data/scenarios_repository.dart';
-import 'package:narracity/features/catalog/presentation/catalog_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
