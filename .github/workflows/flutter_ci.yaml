@@ -7,8 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  analyze_and_test:
-    name: Analyze and Test
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,8 +22,15 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      # - name: Analyze code
-      #   run: flutter analyze
+      - name: Analyze code
+        continue-on-error: true
+        run: flutter analyze > code_analysis.txt
+
+      - name: Upload analysis report
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-analysis-report
+          path: code_analysis.txt
 
       - name: Run tests
         run: flutter test
