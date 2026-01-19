@@ -10,6 +10,7 @@ import 'package:narracity/features/catalog/presentation/catalog_screen.dart';
 import 'package:narracity/features/catalog/subfeatures/details/presentation/details_screen.dart';
 import 'package:narracity/features/home/welcome_screen.dart';
 import 'package:narracity/features/scenario/presentation/scenario_screen.dart';
+import 'package:narracity/features/scenario/subfeatures/map/services/location_service.dart';
 import 'package:narracity/firebase_options.dart';
 
 void main() async {
@@ -25,8 +26,11 @@ void main() async {
   //   options: DefaultFirebaseOptions.currentPlatform
   // );
 
-  runApp(RepositoryProvider(
-    create: (context) => ScenariosRepository(),
+  runApp(MultiRepositoryProvider(
+    providers: [
+      RepositoryProvider(create: (context) => ScenariosRepository()),
+      RepositoryProvider(create: (context) => LocationService())
+    ],
     child: const MyApp(),
   ));
 }
@@ -35,7 +39,7 @@ final _router = GoRouter(
   initialLocation: '/',
   routes: [
     GoRoute(path: '/', builder: (context, state) => WelcomeScreen()),
-    GoRoute(path: '/catalog', builder: (context, state) => CatalogScreen(repository: ScenariosRepository())), // TODO: Remove repo from constructor
+    GoRoute(path: '/catalog', builder: (context, state) => CatalogScreen()),
     GoRoute(path: '/details/:id', builder: (context, state) => DetailsScreen(id: state.pathParameters['id']!)),
     GoRoute(path: '/scenario/:id', builder: (context, state) => ScenarioScreen(id: state.pathParameters['id']!)),
   ]

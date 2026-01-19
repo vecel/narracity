@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:narracity/features/catalog/data/scenarios_repository.dart';
@@ -19,8 +20,11 @@ void main() {
   });
 
   Widget createWidgetUnderTest() {
-    return MaterialApp(
-      home: CatalogScreen(repository: mockRepository),
+    return RepositoryProvider<ScenariosRepository>.value(
+      value: mockRepository,
+      child: MaterialApp(
+        home: CatalogScreen(),
+      ),
     );
   }
 

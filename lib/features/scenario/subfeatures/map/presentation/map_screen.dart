@@ -6,6 +6,7 @@ import 'package:narracity/features/scenario/subfeatures/map/presentation/cubit/m
 import 'package:narracity/features/scenario/subfeatures/map/presentation/cubit/map_state.dart';
 import 'package:narracity/features/scenario/presentation/cubit/scenario_cubit.dart';
 import 'package:narracity/features/scenario/presentation/cubit/scenario_state.dart';
+import 'package:narracity/features/scenario/subfeatures/map/presentation/map_factory.dart';
 
 // TODO: Change initial map center to previously left map center
 
@@ -171,7 +172,7 @@ class _MapView extends StatelessWidget {
         return Center(
           child: Container(
             margin: const EdgeInsets.all(16),
-            child: FlutterMap(
+            child: MapFactory.build(
               options: MapOptions(
                 initialCenter: position.latLng,
                 initialZoom: 16,

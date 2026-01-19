@@ -11,8 +11,8 @@ class MapCubit extends Cubit<MapState> {
 
   static final _log = Logger('MapCubit');
   
-  MapCubit({LocationService? locationService}): 
-    _locationService = locationService ?? LocationService(),
+  MapCubit({required locationService}): 
+    _locationService = locationService,
     super(MapInitial());
 
   final LocationService _locationService;

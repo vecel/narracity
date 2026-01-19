@@ -8,15 +8,15 @@ import 'package:narracity/shared_widgets/base_app_bar.dart';
 import 'catalog_list_item.dart';
 import 'package:flutter/material.dart';
 
-// TODO: Wyswietlaj itemy po zaladowaniu zdjecia
+// TODO: Display only after image is loaded
 
 class CatalogScreen extends StatelessWidget {
-  const CatalogScreen({super.key, required this.repository});
-
-  final ScenariosRepository repository;
+  const CatalogScreen({super.key});
 
   @override
   Widget build(BuildContext context) { 
+    final repository = RepositoryProvider.of<ScenariosRepository>(context);
+
     return BlocProvider(
       create: (context) => CatalogCubit(repository)..load(),
       child: Scaffold(

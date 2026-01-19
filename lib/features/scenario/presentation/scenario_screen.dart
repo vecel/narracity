@@ -8,6 +8,7 @@ import 'package:narracity/features/scenario/presentation/cubit/geofence_cubit.da
 import 'package:narracity/features/scenario/presentation/cubit/navigation_cubit.dart';
 import 'package:narracity/features/scenario/presentation/cubit/scenario_cubit.dart';
 import 'package:narracity/features/scenario/presentation/navigation_bar.dart';
+import 'package:narracity/features/scenario/subfeatures/map/services/location_service.dart';
 import 'package:narracity/features/scenario/subfeatures/story/presentation/story_screen.dart';
 import 'package:narracity/shared_widgets/base_app_bar.dart';
 import 'package:narracity/shared_widgets/scenario_loader.dart';
@@ -25,7 +26,9 @@ class ScenarioScreen extends StatelessWidget {
       builder: (scenario) => MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => NavigationCubit()),
-          BlocProvider(create: (context) => MapCubit()),
+          BlocProvider(create: (context) => MapCubit(
+            locationService: context.read<LocationService>()
+          )),
           BlocProvider(create: (context) => ScenarioCubit(
             scenario: scenario.nodes,
             navigationCubit: context.read<NavigationCubit>()
