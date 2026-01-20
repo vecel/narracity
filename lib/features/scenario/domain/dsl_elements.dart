@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:narracity/features/scenario/domain/dsl_triggers.dart';
 
 sealed class ScenarioElement {
@@ -22,7 +24,13 @@ class TextElement extends StoryElement {
 }
 
 class PolygonElement extends MapElement {
-  const PolygonElement({required this.polygon, this.removeOnEnter = true, this.enterTrigger, this.leaveTrigger});
+  PolygonElement({required List<LatLng> points, this.removeOnEnter = true, this.enterTrigger, this.leaveTrigger}):
+    polygon = Polygon(
+      points: points,
+      color: Colors.blue.withAlpha(50),
+      borderColor: Colors.blue,
+      borderStrokeWidth: 2
+    );
 
   final Polygon polygon;
   final bool removeOnEnter;

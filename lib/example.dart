@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:narracity/features/scenario/domain/dsl_elements.dart';
 import 'package:narracity/features/scenario/domain/dsl_scenario.dart';
@@ -31,17 +29,12 @@ final _nodes = [
     id: 'main building', 
     elements: [
       PolygonElement(
-        polygon: Polygon(
-          points: [
-            LatLng(52.220148, 21.010668),
-            LatLng(52.220666, 21.010993),
-            LatLng(52.220206, 21.011776),
-            LatLng(52.220119, 21.011677)
-          ],
-          color: Colors.blue.withAlpha(50),
-          borderColor: Colors.blue,
-          borderStrokeWidth: 2
-        ),
+        points: [
+          LatLng(52.220148, 21.010668),
+          LatLng(52.220666, 21.010993),
+          LatLng(52.220206, 21.011776),
+          LatLng(52.220119, 21.011677)
+        ],
         enterTrigger: WithStoryNotificationTrigger(
           trigger: AppendElementsTrigger(
             elements: [
@@ -60,17 +53,12 @@ final _nodes = [
     elements: [
       TextElement(text: 'Wybrałeś wydział MiNI. Na mapie zaznaczono odpowiedni obszar. Udaj się tam.'),
       PolygonElement(
-        polygon: Polygon(
-          points: [
-            LatLng(52.222011, 21.006953),
-            LatLng(52.222016, 21.007301),
-            LatLng(52.221804, 21.007331),
-            LatLng(52.221796, 21.006955)
-          ],
-          color: Colors.blue.withAlpha(50),
-          borderColor: Colors.blue,
-          borderStrokeWidth: 2
-        ),
+        points: [
+          LatLng(52.222011, 21.006953),
+          LatLng(52.222016, 21.007301),
+          LatLng(52.221804, 21.007331),
+          LatLng(52.221796, 21.006955)
+        ],
         enterTrigger: WithStoryNotificationTrigger(
           trigger: AppendElementsTrigger(
             elements: [
@@ -93,18 +81,13 @@ final _nodes = [
     elements: [
       TextElement(text: 'Wybrałeś wydział EiTI. Na mapie zaznaczono odpowiedni obszar. Udaj się tam.'),
       PolygonElement(
-        polygon: Polygon(
-          points: [
-            LatLng(52.219163, 21.010744),
-            LatLng(52.219304, 21.010562),
-            LatLng(52.219565, 21.010583),
-            LatLng(52.219542, 21.010942),
-            LatLng(52.219252, 21.011023)
-          ],
-          color: Colors.blue.withAlpha(50),
-          borderColor: Colors.blue,
-          borderStrokeWidth: 2
-        ),
+        points: [
+          LatLng(52.219163, 21.010744),
+          LatLng(52.219304, 21.010562),
+          LatLng(52.219565, 21.010583),
+          LatLng(52.219542, 21.010942),
+          LatLng(52.219252, 21.011023)
+        ],
         enterTrigger: WithStoryNotificationTrigger(
           trigger: AppendElementsTrigger(
             elements: [

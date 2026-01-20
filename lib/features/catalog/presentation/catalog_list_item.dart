@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:narracity/features/scenario/domain/dsl_scenario.dart';
@@ -24,10 +25,19 @@ class CatalogListItem extends StatelessWidget {
                 dimension: 96,
                 child: ClipRRect(
                   borderRadius: BorderRadiusGeometry.all(Radius.circular(8)),
-                  child: Image(
-                    image: NetworkImage(scenario.image),
+                  child: CachedNetworkImage(
+                    imageUrl: scenario.image,
                     fit: BoxFit.cover,
-                  ),
+                    placeholder: (context, url) => Center(
+                      child: SizedBox.square(
+                        dimension: 24,
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+                    errorWidget: (context, url, error) => Center(
+                      child: const Icon(Icons.broken_image, size: 48, color: Colors.grey),
+                    ),
+                  )
                 ),
               ),
               SizedBox(width: 8),

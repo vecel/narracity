@@ -8,8 +8,6 @@ import 'package:narracity/shared_widgets/base_app_bar.dart';
 import 'catalog_list_item.dart';
 import 'package:flutter/material.dart';
 
-// TODO: Display only after image is loaded
-
 class CatalogScreen extends StatelessWidget {
   const CatalogScreen({super.key});
 
