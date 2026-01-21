@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:narracity/features/scenario/domain/dsl_elements.dart';
 
 // TODO: Add AddPolygonTrigger
@@ -29,8 +28,7 @@ class Scenario {
   final String duration;
   final List<ScenarioNode> nodes;
 
-  factory Scenario.fromFirestore(DocumentSnapshot doc) {
-    final data = doc.data() as Map<String, dynamic>;
+  factory Scenario.fromJson(Map<String, dynamic> data) {
     return Scenario(
       id: data['id'] ?? 'Unknown',
       title: data['title'] ?? 'Untitled',
@@ -42,6 +40,18 @@ class Scenario {
       nodes: []
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'title': title,
+      'description': description,
+      'distance': distance,
+      'duration': duration,
+      'loaction': location,
+      'image': image,
+      'nodes': nodes.map((node) => node.toJson()).toList()
+    };
+  }
 }
 
 class ScenarioNode {
@@ -49,4 +59,11 @@ class ScenarioNode {
 
   final String id;
   final List<ScenarioElement> elements;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'elements': elements.map((element) => element.toJson()).toList()
+    };
+  }
 }

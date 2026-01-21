@@ -5,6 +5,8 @@ import 'package:narracity/features/scenario/domain/dsl_triggers.dart';
 
 sealed class ScenarioElement {
   const ScenarioElement();
+
+  Map<String, dynamic> toJson();
 }
 
 sealed class StoryElement extends ScenarioElement {
@@ -21,6 +23,14 @@ class TextElement extends StoryElement {
   const TextElement({required this.text});
 
   final String text;
+  
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      'type': 'text',
+      'text': text
+    };
+  }
 }
 
 class PolygonElement extends MapElement {
@@ -36,6 +46,22 @@ class PolygonElement extends MapElement {
   final bool removeOnEnter;
   final ScenarioTrigger? enterTrigger;
   final ScenarioTrigger? leaveTrigger;
+  
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      'type': 'polygon',
+      'points': polygon.points.map((point) => {
+        'lat': point.latitude,
+        'lng': point.longitude
+      }).toList(),
+      'removeOnEnter': removeOnEnter,
+      if (enterTrigger != null) 'enterTrigger': enterTrigger!.toJson(),
+      if (leaveTrigger != null) 'leaveTrigger': leaveTrigger!.toJson(),
+    };
+  }
+
+  
 }
 
 class ButtonElement extends StoryElement {
@@ -43,10 +69,27 @@ class ButtonElement extends StoryElement {
 
   final String text;
   final ScenarioTrigger trigger;
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      'type': 'button',
+      'text': text,
+      'trigger': trigger.toJson(),
+    };
+  }
 }
 
 class MultiButtonElement extends StoryElement {
   const MultiButtonElement({required this.buttons});
 
   final List<ButtonElement> buttons;
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      'type': 'multi_button',
+      'buttons': buttons.map((button) => button.toJson()).toList(),
+    };
+  }
 }

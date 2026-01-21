@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:narracity/features/catalog/subfeatures/details/presentation/cubit/details_cubit.dart';
 import 'package:narracity/features/scenario/domain/dsl_scenario.dart';
 import 'package:narracity/shared_widgets/labeled_icon.dart';
 
@@ -27,8 +29,8 @@ class DetailsScreenContent extends StatelessWidget {
               ),
               Expanded(child: Container()),
               IconButton(
-                onPressed: () {}, 
-                icon: Icon(Icons.more_vert)
+                onPressed: () => context.read<DetailsCubit>().save(), 
+                icon: Icon(Icons.download)
               )
             ],
           ),

@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:narracity/features/catalog/subfeatures/details/presentation/background_image.dart';
 import 'package:narracity/features/catalog/subfeatures/details/presentation/bottom_sheet.dart';
 import 'package:narracity/features/catalog/subfeatures/details/presentation/bottom_blur.dart';
 import 'package:narracity/features/catalog/subfeatures/details/presentation/content.dart';
+import 'package:narracity/features/catalog/subfeatures/details/presentation/cubit/details_cubit.dart';
+import 'package:narracity/features/catalog/subfeatures/details/presentation/cubit/details_state.dart';
 import 'package:narracity/features/scenario/domain/dsl_scenario.dart';
 import 'package:narracity/shared_widgets/scenario_loader.dart';
 
-// TODO: Display only after image is loaded
+// TODO: Test showing a snack bar
 
 class DetailsScreen extends StatelessWidget {
   const DetailsScreen({super.key, required this.id});
@@ -19,10 +22,13 @@ class DetailsScreen extends StatelessWidget {
 
     return ScenarioLoader(
       id: id,
-      builder: (scenario) => Scaffold(
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: _FloatingActionButton(id),
-        body: _DetailsView(scenario)
+      builder: (scenario) => BlocProvider<DetailsCubit>(
+        create: (context) => DetailsCubit(scenario: scenario),
+        child: Scaffold(
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+          floatingActionButton: _FloatingActionButton(id),
+          body: _DetailsView(scenario)
+        ),
       ),
     );
   }
@@ -35,14 +41,25 @@ class _DetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final height = constraints.maxHeight;
-        return switch (height) {
-          > 540 => _VerticalLayout(scenario, height),
-          _ => _HorizontalLayout(scenario)
-        };
+    return BlocListener<DetailsCubit, DetailsState>(
+      listener: (context, state) {
+        if (state is DetailsScenarioDownloaded) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Scenario saved!')
+            )
+          );
+        }
       },
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final height = constraints.maxHeight;
+          return switch (height) {
+            > 540 => _VerticalLayout(scenario, height),
+            _ => _HorizontalLayout(scenario)
+          };
+        },
+      ),
     );
   }
 }
