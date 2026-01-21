@@ -1,3 +1,5 @@
+import 'package:file/memory.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:narracity/features/catalog/data/scenarios_repository.dart';
@@ -9,6 +11,7 @@ import 'location_helper.dart';
 class MockScenario extends Mock implements Scenario {}
 class MockLocationService extends Mock implements LocationService {}
 class MockScenariosRepository extends Mock implements ScenariosRepository {}
+class MockCacheManager extends Mock implements DefaultCacheManager {}
 
 class TestFactory {
 
@@ -16,7 +19,7 @@ class TestFactory {
     String id = 'Id',
     String title = 'Title',
     String description = 'Description',
-    String image = 'Image',
+    String image = 'https://www.pw.plock.pl/var/wwwglowna/storage/images/filia/aktualnosci/politechnika-warszawska-zmienia-swoje-oblicze/35146-2-pol-PL/Politechnika-Warszawska-zmienia-swoje-oblicze.png',
     String location = 'Location',
     String distance = 'Distance',
     String duration = 'Duration',
@@ -53,6 +56,24 @@ class TestFactory {
 
     when(() => mock.getScenarios()).thenAnswer((_) async => scenarios);
     when(() => mock.getScenarioById(any())).thenAnswer((_) async => scenarios.first);
+
+    return mock;
+  }
+
+  static DefaultCacheManager createMockCacheManager() {
+    final mock = MockCacheManager();
+
+    final fs = MemoryFileSystem();
+    final file = fs.file('');
+
+    when(() => mock.getFileStream(any())).thenAnswer((_) => Stream.value(
+      FileInfo(
+        file,
+        FileSource.Online,
+        DateTime.now(),
+        'http://test.url'
+      )
+    ));
 
     return mock;
   }

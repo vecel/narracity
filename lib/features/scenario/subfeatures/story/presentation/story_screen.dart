@@ -9,11 +9,7 @@ class StoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
-    final cubit = BlocProvider.of<ScenarioCubit>(context);
-
     return BlocBuilder<ScenarioCubit, ScenarioRunning>(
-      bloc: cubit,
       builder: (context, state) {
         return Padding(
           padding: const EdgeInsets.all(8.0),

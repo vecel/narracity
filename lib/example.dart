@@ -115,7 +115,7 @@ final _nodes = [
 ];
 
 final warsawUniversityOfTechnologyScenario = Scenario(
-  id: 'example',
+  id: 'hello_wut',
   title: 'Witaj PW', 
   description: 'Jest to pokazowy scenariusz prezentujący działanie aplikacji i jej możliwości. Oprowadza uczestnika po kampusie Politechniki Warszawskiej.', 
   image: 'https://www.pw.plock.pl/var/wwwglowna/storage/images/filia/aktualnosci/politechnika-warszawska-zmienia-swoje-oblicze/35146-2-pol-PL/Politechnika-Warszawska-zmienia-swoje-oblicze.png', 

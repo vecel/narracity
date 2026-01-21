@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:bloc_test/bloc_test.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:latlong2/latlong.dart';
@@ -34,14 +33,12 @@ void main() {
     );
 
     final polygon = PolygonElement(
-      polygon: Polygon(
-        points: [
-          LatLng(52.0, 21.0),
-          LatLng(54.0, 21.0),
-          LatLng(54.0, 23.0),
-          LatLng(52.0, 23.0)
-        ]
-      ),
+      points: [
+        LatLng(52.0, 21.0),
+        LatLng(54.0, 21.0),
+        LatLng(54.0, 23.0),
+        LatLng(52.0, 23.0)
+      ],
       enterTrigger: EmptyTrigger()
     );
 

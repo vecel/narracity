@@ -1,5 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:narracity/shared_widgets/cached_image.dart';
 
 class DetailsBackgroundImage extends StatelessWidget {
   const DetailsBackgroundImage(this.image, this.height, {super.key});
@@ -15,26 +15,14 @@ class DetailsBackgroundImage extends StatelessWidget {
           SizedBox(
             height: height,
             width: double.infinity,
-            child: CachedNetworkImage(
-              imageUrl: image,
-              fit: BoxFit.cover,
-              placeholder: (context, url) => Center(
-                child: SizedBox.square(
-                  dimension: 24,
-                  child: CircularProgressIndicator(),
-                ),
-              ),
+            child: CachedImage(
+              url: image,
               errorWidget: (context, url, error) => Container(
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.secondaryContainer
                 ),
-                child: const Icon(Icons.broken_image, size: 48, color: Colors.grey),
               ),
             )
-            // Image(
-            //   image: NetworkImage(image), 
-            //   fit: BoxFit.cover
-            // )
           ),
           Expanded(child: Container())
         ],

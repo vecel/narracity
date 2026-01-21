@@ -1,10 +1,15 @@
 import 'dart:developer' as developer;
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
+import 'package:narracity/example.dart';
 import 'package:narracity/features/catalog/data/scenarios_repository.dart';
+import 'package:narracity/features/scenario/domain/dsl_elements.dart';
+import 'package:narracity/features/scenario/domain/dsl_scenario.dart';
+import 'package:narracity/features/scenario/domain/dsl_triggers.dart';
 import 'package:narracity/features/scenario/subfeatures/map/services/location_service.dart';
 import 'package:narracity/firebase_options.dart';
 import 'package:narracity/routes.dart';
