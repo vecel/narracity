@@ -1,95 +1,108 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:narracity/features/scenario/domain/dsl_triggers.dart';
+import 'package:narracity/utils/json_serializer.dart';
+
+part 'dsl_elements.g.dart';
 
 sealed class ScenarioElement {
-  const ScenarioElement();
+  const ScenarioElement({required this.type});
+
+  final String type;
 
   Map<String, dynamic> toJson();
+  
+  factory ScenarioElement.fromJson(Map<String, dynamic> json) {
+    final type = json['type'] as String;
+    
+    return switch(type) {
+      'text' => TextElement.fromJson(json),
+      'polygon' => PolygonElement.fromJson(json),
+      'button' => ButtonElement.fromJson(json),
+      'multi_button' => MultiButtonElement.fromJson(json),
+      _ => throw FormatException('Unsupported element type: $type')
+    };
+  }
+  
 }
 
 sealed class StoryElement extends ScenarioElement {
-  const StoryElement();
+  const StoryElement({required super.type});
 }
 
 sealed class MapElement extends ScenarioElement {
-  const MapElement();
+  const MapElement({required super.type});
 }
 
 
-
+@JsonSerializable()
 class TextElement extends StoryElement {
-  const TextElement({required this.text});
+  const TextElement({required this.text}) : super(type: 'text');
 
   final String text;
   
+  factory TextElement.fromJson(Map<String, dynamic> json) => _$TextElementFromJson(json);
+
   @override
-  Map<String, dynamic> toJson() {
-    return {
-      'type': 'text',
-      'text': text
-    };
-  }
+  Map<String, dynamic> toJson() => _$TextElementToJson(this);
 }
 
+@JsonSerializable()
 class PolygonElement extends MapElement {
-  PolygonElement({required List<LatLng> points, this.removeOnEnter = true, this.enterTrigger, this.leaveTrigger}):
+  PolygonElement({required this.points, this.removeOnEnter = true, this.enterTrigger, this.leaveTrigger}):
     polygon = Polygon(
       points: points,
       color: Colors.blue.withAlpha(50),
       borderColor: Colors.blue,
       borderStrokeWidth: 2
-    );
+    ),
+    super(type: 'polygon');
 
-  final Polygon polygon;
+  @LatLngSerializer()
+  final List<LatLng> points;
   final bool removeOnEnter;
+
+  @ScenarioTriggerSerializer()
   final ScenarioTrigger? enterTrigger;
+
+  @ScenarioTriggerSerializer()
   final ScenarioTrigger? leaveTrigger;
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final Polygon polygon;
+
+  factory PolygonElement.fromJson(Map<String, dynamic> json) => _$PolygonElementFromJson(json);
   
   @override
-  Map<String, dynamic> toJson() {
-    return {
-      'type': 'polygon',
-      'points': polygon.points.map((point) => {
-        'lat': point.latitude,
-        'lng': point.longitude
-      }).toList(),
-      'removeOnEnter': removeOnEnter,
-      if (enterTrigger != null) 'enterTrigger': enterTrigger!.toJson(),
-      if (leaveTrigger != null) 'leaveTrigger': leaveTrigger!.toJson(),
-    };
-  }
-
-  
+  Map<String, dynamic> toJson() => _$PolygonElementToJson(this);
 }
 
+@JsonSerializable()
 class ButtonElement extends StoryElement {
-  const ButtonElement({required this.text, required this.trigger});
+  const ButtonElement({required this.text, required this.trigger}) : super(type: 'button');
 
   final String text;
+
+  @ScenarioTriggerSerializer()
   final ScenarioTrigger trigger;
 
+  factory ButtonElement.fromJson(Map<String, dynamic> json) => _$ButtonElementFromJson(json);
+  
   @override
-  Map<String, dynamic> toJson() {
-    return {
-      'type': 'button',
-      'text': text,
-      'trigger': trigger.toJson(),
-    };
-  }
+  Map<String, dynamic> toJson() => _$ButtonElementToJson(this);
+
 }
 
+@JsonSerializable()
 class MultiButtonElement extends StoryElement {
-  const MultiButtonElement({required this.buttons});
+  const MultiButtonElement({required this.buttons}) : super(type: 'multi_button');
 
   final List<ButtonElement> buttons;
 
+  factory MultiButtonElement.fromJson(Map<String, dynamic> json) => _$MultiButtonElementFromJson(json);
+  
   @override
-  Map<String, dynamic> toJson() {
-    return {
-      'type': 'multi_button',
-      'buttons': buttons.map((button) => button.toJson()).toList(),
-    };
-  }
+  Map<String, dynamic> toJson() => _$MultiButtonElementToJson(this);
 }

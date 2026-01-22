@@ -55,10 +55,10 @@ class ScenariosRepository {
     //   return remote;
     // }
 
-    // final local = await _storage.load(id);
-    // if (local != null) {
-    //   return local;
-    // }
+    final local = await _storage.load(id);
+    if (local != null) {
+      return local;
+    }
 
     // This is for testing purposes only
     return Future.value(warsawUniversityOfTechnologyScenario);
