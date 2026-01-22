@@ -29,7 +29,7 @@ void main() {
 
   group('CatalogScreen', () {
     testWidgets('renders Loading view initially', (tester) async {
-      when(() => mockRepository.getScenarios()).thenAnswer(
+      when(() => mockRepository.loadAll()).thenAnswer(
         (_) async {
           await Future.delayed(const Duration(seconds: 1));
           return [];
@@ -47,7 +47,7 @@ void main() {
     testWidgets('renders Success view with list items when data loads', (tester) async {
       final mockScenario = TestFactory.createMockScenario();
       
-      when(() => mockRepository.getScenarios()).thenAnswer((_) async => [mockScenario]);
+      when(() => mockRepository.loadAll()).thenAnswer((_) async => [mockScenario]);
 
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(createWidgetUnderTest());
@@ -60,7 +60,7 @@ void main() {
     });
 
     testWidgets('renders Error view when repository throws', (tester) async {
-      when(() => mockRepository.getScenarios()).thenThrow(Exception('Network Error'));
+      when(() => mockRepository.loadAll()).thenThrow(Exception('Network Error'));
 
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.pumpAndSettle();
@@ -70,7 +70,7 @@ void main() {
     });
 
     testWidgets('renders Empty view when repository returns empty list', (tester) async {
-      when(() => mockRepository.getScenarios()).thenAnswer((_) async => []);
+      when(() => mockRepository.loadAll()).thenAnswer((_) async => []);
 
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.pumpAndSettle();

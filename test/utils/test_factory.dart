@@ -36,6 +36,19 @@ class TestFactory {
     when(() => mock.image).thenReturn(image);
     when(() => mock.nodes).thenReturn(nodes);
 
+    final json = {
+      'id': id,
+      'title': title,
+      'description': description,
+      'location': location,
+      'duration': duration,
+      'distance': distance,
+      'image': image,
+      'nodes': nodes
+    };
+
+    when(() => mock.toJson()).thenReturn(json);
+
     return mock;
   }
 
@@ -54,8 +67,8 @@ class TestFactory {
   }) {
     final mock = MockScenariosRepository();
 
-    when(() => mock.getScenarios()).thenAnswer((_) async => scenarios);
-    when(() => mock.getScenarioById(any())).thenAnswer((_) async => scenarios.first);
+    when(() => mock.loadAll()).thenAnswer((_) async => scenarios);
+    when(() => mock.load(any())).thenAnswer((_) async => scenarios.first);
 
     return mock;
   }
