@@ -3,8 +3,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:narracity/features/scenario/domain/dsl_scenario.dart';
 
 class ScenariosApi {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  ScenariosApi({
+    FirebaseFirestore? firestore,
+    FirebaseAuth? auth
+  }) : 
+    _firestore = firestore ?? FirebaseFirestore.instance,
+    _auth = auth ?? FirebaseAuth.instance;
+
+  final FirebaseFirestore _firestore;
+  final FirebaseAuth _auth;
 
   Future<List<Scenario>> getScenarios() async {
     if (_auth.currentUser == null) {

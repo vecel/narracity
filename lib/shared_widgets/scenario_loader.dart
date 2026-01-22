@@ -12,7 +12,7 @@ class ScenarioLoader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: context.read<ScenariosRepository>().getScenarioById(id),
+      future: context.read<ScenariosRepository>().load(id),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return builder(snapshot.data!);

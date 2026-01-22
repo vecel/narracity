@@ -14,7 +14,7 @@ class CatalogCubit extends Cubit<CatalogState> {
 
   void load() async {
     try {
-      final data = await _repository.getScenarios();
+      final data = await _repository.loadAll();
       emit(CatalogLoaded(data));
 
     } on FirebaseException catch (e) {

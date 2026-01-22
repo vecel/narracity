@@ -19,7 +19,7 @@ class ScenariosRepository {
   final _cache = ScenariosCache();
 
   // TODO: Uncomment for production
-  // Future<List<Scenario>> getScenarios() async {
+  // Future<List<Scenario>> loadAll() async {
   //   final cached = _cache.getScenarios();
   //   final remote = await _api.getScenarios();
   //   final local = await _storage.getScenarios();
@@ -40,11 +40,11 @@ class ScenariosRepository {
   // }
 
   // For Linux development purposes
-  Future<List<Scenario>> getScenarios() async {
+  Future<List<Scenario>> loadAll() async {
     return Future.value(List.of([warsawUniversityOfTechnologyScenario]));
   }
   
-  Future<Scenario?> getScenarioById(String id) async {
+  Future<Scenario?> load(String id) async {
     if (_cache.contains(id)) {
       return Future.value(_cache.getScenarioById(id));
     }
@@ -64,7 +64,7 @@ class ScenariosRepository {
     return Future.value(warsawUniversityOfTechnologyScenario);
   }
 
-  Future<void> saveToStorage(Scenario scenario) async {
+  Future<void> save(Scenario scenario) async {
     await _storage.save(scenario);
   }
   

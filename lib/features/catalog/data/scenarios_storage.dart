@@ -46,6 +46,8 @@ class ScenariosStorage {
     final data = await scenarioFile.readAsString();
     final json = jsonDecode(data);
 
+    final Scenario s = Scenario.fromJson(json);
+    log.info(s);
     return Scenario.fromJson(json);
   }
 }
