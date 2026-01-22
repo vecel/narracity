@@ -46,7 +46,7 @@ class ScenariosRepository {
   
   Future<Scenario?> load(String id) async {
     if (_cache.contains(id)) {
-      return Future.value(_cache.getScenarioById(id));
+      return Future.value(_cache.load(id));
     }
 
     // Uncomment for production

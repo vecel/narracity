@@ -10,11 +10,11 @@ class ScenariosCache {
     _cache[id] = scenario;
   }
 
-  List<Scenario> getScenarios() {
+  List<Scenario> loadAll() {
     return _cache.values.toList();
   }
 
-  Scenario? getScenarioById(String id) {
+  Scenario? load(String id) {
     if (_cache.containsKey(id)) return _cache[id];
     return null;
   }
