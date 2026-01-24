@@ -2,7 +2,10 @@ import 'package:file/memory.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:narracity/features/catalog/data/scenarios_api.dart';
+import 'package:narracity/features/catalog/data/scenarios_cache.dart';
 import 'package:narracity/features/catalog/data/scenarios_repository.dart';
+import 'package:narracity/features/catalog/data/scenarios_storage.dart';
 import 'package:narracity/features/scenario/domain/dsl_scenario.dart';
 import 'package:narracity/features/scenario/subfeatures/map/services/location_service.dart';
 
@@ -12,6 +15,9 @@ class MockScenario extends Mock implements Scenario {}
 class MockLocationService extends Mock implements LocationService {}
 class MockScenariosRepository extends Mock implements ScenariosRepository {}
 class MockCacheManager extends Mock implements DefaultCacheManager {}
+class MockScenariosApi extends Mock implements ScenariosApi {}
+class MockScenariosStorage extends Mock implements ScenariosStorage {}
+class MockScenariosCache extends Mock implements ScenariosCache {}
 
 class TestFactory {
 
@@ -69,6 +75,7 @@ class TestFactory {
 
     when(() => mock.loadAll()).thenAnswer((_) async => scenarios);
     when(() => mock.load(any())).thenAnswer((_) async => scenarios.first);
+    when(() => mock.save(any())).thenAnswer((_) async {});
 
     return mock;
   }
@@ -87,6 +94,55 @@ class TestFactory {
         'http://test.url'
       )
     ));
+
+    return mock;
+  }
+
+  static ScenariosApi createMockScenariosApi({
+    required List<Scenario> scenarios
+  }) {
+    final mock = MockScenariosApi();
+
+    when(() => mock.getScenarios()).thenAnswer((_) async => scenarios);
+    when(() => mock.getScenarioById(any())).thenAnswer((_) async => null);
+    for (final scenario in scenarios) {
+      final id = scenario.id;
+      when(() => mock.getScenarioById(id)).thenAnswer((_) async => scenario); 
+    }
+
+    return mock;
+  }
+
+  static ScenariosStorage createMockScenariosStorage({
+    required List<Scenario> scenarios
+  }) {
+    final mock = MockScenariosStorage();
+
+    when(() => mock.loadAll()).thenAnswer((_) async => scenarios);
+    when(() => mock.load(any())).thenAnswer((_) async => null);
+    for (final scenario in scenarios) {
+      final id = scenario.id;
+      when(() => mock.load(id)).thenAnswer((_) async => scenario);
+    }
+
+    when(() => mock.save(any())).thenAnswer((_) async {});
+
+    return mock;
+  }
+
+  static ScenariosCache createMockScenariosCache({
+    required List<Scenario> scenarios
+  }) {
+    final mock = MockScenariosCache();
+
+    when(() => mock.loadAll()).thenReturn(scenarios);
+    when(() => mock.load(any())).thenReturn(null);
+    when(() => mock.contains(any())).thenReturn(false);
+    for (final scenario in scenarios) {
+      final id = scenario.id;
+      when(() => mock.load(id)).thenReturn(scenario);
+      when(() => mock.contains(id)).thenReturn(true);
+    }
 
     return mock;
   }

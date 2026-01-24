@@ -25,6 +25,12 @@ class ScenariosStorage {
     return File('${scenariosDirectory.path}/scenario_$id.json');
   }
 
+  Future<Scenario> _getScenarioFromFile(File file) async {
+    final data = await file.readAsString();
+    final json = jsonDecode(data);
+    return Scenario.fromJson(json);
+  }
+
   Future<void> save(Scenario scenario) async {
     final scenarioFile = await _getScenarioFile(scenario.id);
     if (await scenarioFile.exists()) {
@@ -43,11 +49,21 @@ class ScenariosStorage {
       return null;
     }
 
-    final data = await scenarioFile.readAsString();
-    final json = jsonDecode(data);
+    return await _getScenarioFromFile(scenarioFile);
+  }
 
-    final Scenario s = Scenario.fromJson(json);
-    log.info(s);
-    return Scenario.fromJson(json);
+  // TODO: Add test for the method
+  Future<List<Scenario>> loadAll() async {
+    final result = <Scenario>[];
+    final scenariosDirectory = await _getScenariosDirectory();
+    for (final file in scenariosDirectory.listSync()) {
+      if (file is! File) {
+        throw UnsupportedError('Cannot read scenario from a Link or Directory.');
+      }
+      final scenario = await _getScenarioFromFile(file);
+      result.add(scenario);
+    }
+
+    return result;
   }
 }

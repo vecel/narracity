@@ -9,40 +9,43 @@ import 'package:narracity/features/scenario/domain/dsl_scenario.dart';
 class ScenariosRepository {
 
   ScenariosRepository({
-    required ScenariosApi api,
-    required ScenariosStorage storage
-  }): _api = api, _storage = storage;
+    ScenariosApi? api,
+    ScenariosStorage? storage,
+    ScenariosCache? cache
+  }) : 
+    _api = api ?? ScenariosApi(), 
+    _storage = storage ?? ScenariosStorage(),
+    _cache = cache ?? ScenariosCache();
 
   final ScenariosApi _api;
   final ScenariosStorage _storage;
-
-  final _cache = ScenariosCache();
+  final ScenariosCache _cache;
 
   // TODO: Uncomment for production
-  // Future<List<Scenario>> loadAll() async {
-  //   final cached = _cache.getScenarios();
-  //   final remote = await _api.getScenarios();
-  //   final local = await _storage.getScenarios();
+  Future<List<Scenario>> loadAll() async {
+    final cached = _cache.loadAll();
+    final remote = await _api.getScenarios();
+    final local = await _storage.loadAll();
 
-  //   final Map<String, Scenario> scenarios = {};
+    final Map<String, Scenario> scenarios = {};
 
-  //   Scenario insertToScenarios(Scenario s) => scenarios[s.id] = s;
+    Scenario insertToScenarios(Scenario s) => scenarios[s.id] = s;
 
-  //   local.forEach(insertToScenarios);
-  //   remote.forEach(insertToScenarios);
-  //   cached.forEach(insertToScenarios);
+    local.forEach(insertToScenarios);
+    remote.forEach(insertToScenarios);
+    cached.forEach(insertToScenarios);
 
-  //   for (final scenario in scenarios.values) {
-  //     _cache.save(scenario);
-  //   }
+    for (final scenario in scenarios.values) {
+      _cache.save(scenario);
+    }
 
-  //   return scenarios.values.toList();
-  // }
+    return scenarios.values.toList();
+  }
 
   // For Linux development purposes
-  Future<List<Scenario>> loadAll() async {
-    return Future.value(List.of([warsawUniversityOfTechnologyScenario]));
-  }
+  // Future<List<Scenario>> loadAll() async {
+  //   return Future.value(List.of([warsawUniversityOfTechnologyScenario]));
+  // }
   
   Future<Scenario?> load(String id) async {
     if (_cache.contains(id)) {
@@ -50,10 +53,10 @@ class ScenariosRepository {
     }
 
     // Uncomment for production
-    // final remote = await _api.getScenarioById(id);
-    // if (remote != null) {
-    //   return remote;
-    // }
+    final remote = await _api.getScenarioById(id);
+    if (remote != null) {
+      return remote;
+    }
 
     final local = await _storage.load(id);
     if (local != null) {

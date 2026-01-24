@@ -34,13 +34,12 @@ void main() async {
   // );
 
   final mockApi = MockScenariosApi();
-  when(() => mockApi.getScenarios()).thenAnswer((_) async => Future.value([]));
+  when(() => mockApi.getScenarios()).thenAnswer((_) async => Future.value([warsawUniversityOfTechnologyScenario]));
 
   runApp(MultiRepositoryProvider(
     providers: [
       RepositoryProvider(create: (context) => ScenariosRepository(
-        api: Platform.isLinux ? mockApi : ScenariosApi(),
-        storage: ScenariosStorage()
+        api: Platform.isLinux ? mockApi : null,
       )),
       RepositoryProvider(create: (context) => LocationService())
     ],
