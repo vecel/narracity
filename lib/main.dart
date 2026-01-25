@@ -10,10 +10,6 @@ import 'package:mocktail/mocktail.dart';
 import 'package:narracity/example.dart';
 import 'package:narracity/features/catalog/data/scenarios_api.dart';
 import 'package:narracity/features/catalog/data/scenarios_repository.dart';
-import 'package:narracity/features/catalog/data/scenarios_storage.dart';
-import 'package:narracity/features/scenario/domain/dsl_elements.dart';
-import 'package:narracity/features/scenario/domain/dsl_scenario.dart';
-import 'package:narracity/features/scenario/domain/dsl_triggers.dart';
 import 'package:narracity/features/scenario/subfeatures/map/services/location_service.dart';
 import 'package:narracity/firebase_options.dart';
 import 'package:narracity/routes.dart';
@@ -28,10 +24,10 @@ void main() async {
   });
 
   // TODO: Uncomment for production
-  // WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp(
-  //   options: DefaultFirebaseOptions.currentPlatform
-  // );
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform
+  );
 
   final mockApi = MockScenariosApi();
   when(() => mockApi.getScenarios()).thenAnswer((_) async => Future.value([warsawUniversityOfTechnologyScenario]));

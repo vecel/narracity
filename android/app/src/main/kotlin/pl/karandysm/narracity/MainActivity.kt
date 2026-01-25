@@ -1,4 +1,4 @@
-package com.example.my_app
+package pl.karandysm.narracity
 
 import io.flutter.embedding.android.FlutterActivity
 

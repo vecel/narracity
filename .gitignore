@@ -44,5 +44,8 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
+# Patrol test related
+patrol_test/test_bundle.dart
+
 # Custom
 .notes

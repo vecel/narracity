@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:narracity/keys.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -27,6 +28,7 @@ class WelcomeScreen extends StatelessWidget {
             Expanded(
               child: Center(
                 child: FilledButton.tonal(
+                  key: keys.welcomeScreen.letsExploreButton,
                   onPressed: () => context.go('/catalog'),
                   child: Text("Let's Explore")
                 ),

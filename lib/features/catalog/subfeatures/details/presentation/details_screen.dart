@@ -8,6 +8,7 @@ import 'package:narracity/features/catalog/subfeatures/details/presentation/cont
 import 'package:narracity/features/catalog/subfeatures/details/presentation/cubit/details_cubit.dart';
 import 'package:narracity/features/catalog/subfeatures/details/presentation/cubit/details_state.dart';
 import 'package:narracity/features/scenario/domain/dsl_scenario.dart';
+import 'package:narracity/keys.dart';
 import 'package:narracity/shared_widgets/scenario_loader.dart';
 
 // TODO: Test showing a snack bar
@@ -72,6 +73,7 @@ class _FloatingActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
+      key: keys.detailsScreen.playScenarioKey(id),
       onPressed: () => context.go('/scenario/$id'),
       backgroundColor: Theme.of(context).colorScheme.primary,
       foregroundColor: Theme.of(context).colorScheme.onPrimary,

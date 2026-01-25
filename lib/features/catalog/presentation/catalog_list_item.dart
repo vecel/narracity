@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:narracity/features/scenario/domain/dsl_scenario.dart';
+import 'package:narracity/keys.dart';
 import 'package:narracity/shared_widgets/cached_image.dart';
 import 'package:narracity/shared_widgets/labeled_icon.dart';
 
@@ -13,6 +14,7 @@ class CatalogListItem extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return GestureDetector(
+      key: keys.catalogScreen.scenarioItemKey(scenario.id),
       onTap: () => context.go('/details/${scenario.id}'),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
