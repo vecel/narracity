@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:narracity/example.dart';
 import 'package:narracity/features/catalog/data/scenarios_api.dart';
 import 'package:narracity/features/catalog/data/scenarios_cache.dart';

@@ -38,6 +38,12 @@ dev_dependencies:
   json_serializable: ^6.11.2
   fake_cloud_firestore: ^4.0.1
   firebase_auth_mocks: ^0.15.1
+  patrol: ^4.1.0
 
 flutter:
   uses-material-design: true
+
+patrol:
+  app_name: Narracity
+  android:
+    package_name: pl.karandysm.narracity
