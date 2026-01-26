@@ -1,7 +1,6 @@
 import 'dart:developer' as developer;
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,20 +22,39 @@ void main() async {
     developer.log('[${record.level.name}] [${record.time}]: ${record.message}', name: record.loggerName);
   });
 
-  // TODO: Uncomment for production
+  if (Platform.isAndroid) {
+    runAppOnAndroid();
+  }
+
+  if (Platform.isLinux) {
+    runAppOnLinux();
+  }
+}
+
+void runAppOnLinux() {
+  final mockApi = MockScenariosApi();
+  when(() => mockApi.getScenarios()).thenAnswer((_) async => Future.value([]));
+
+  runApp(MultiRepositoryProvider(
+    providers: [
+      RepositoryProvider(create: (context) => ScenariosRepository(
+        api: mockApi,
+      )),
+      RepositoryProvider(create: (context) => LocationService())
+    ],
+    child: const MyApp(),
+  ));
+}
+
+void runAppOnAndroid() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform
   );
 
-  final mockApi = MockScenariosApi();
-  when(() => mockApi.getScenarios()).thenAnswer((_) async => Future.value([warsawUniversityOfTechnologyScenario]));
-
   runApp(MultiRepositoryProvider(
     providers: [
-      RepositoryProvider(create: (context) => ScenariosRepository(
-        api: Platform.isLinux ? mockApi : null,
-      )),
+      RepositoryProvider(create: (context) => ScenariosRepository()),
       RepositoryProvider(create: (context) => LocationService())
     ],
     child: const MyApp(),

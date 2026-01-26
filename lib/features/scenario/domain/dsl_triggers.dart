@@ -10,7 +10,13 @@ sealed class ScenarioTrigger {
   final String type;
   bool triggered = false;
 
-  Map<String, dynamic> toJson();
+  Map<String, dynamic> toJson() {
+    final json = _toJsonContent();
+    json['type'] = type;
+    return json;
+  }
+
+  Map<String, dynamic> _toJsonContent();
 
   factory ScenarioTrigger.fromJson(Map<String, dynamic> json) {
     final type = json['type'] as String;
@@ -36,7 +42,7 @@ class ProceedTrigger extends ScenarioTrigger {
   factory ProceedTrigger.fromJson(Map<String, dynamic> json) => _$ProceedTriggerFromJson(json);
 
   @override
-  Map<String, dynamic> toJson() => _$ProceedTriggerToJson(this);
+  Map<String, dynamic> _toJsonContent() => _$ProceedTriggerToJson(this);
 } 
 
 @JsonSerializable()
@@ -49,7 +55,7 @@ class AppendElementsTrigger extends ScenarioTrigger {
   factory AppendElementsTrigger.fromJson(Map<String, dynamic> json) => _$AppendElementsTriggerFromJson(json);
 
   @override
-  Map<String, dynamic> toJson() => _$AppendElementsTriggerToJson(this);
+  Map<String, dynamic> _toJsonContent() => _$AppendElementsTriggerToJson(this);
 }
 
 @JsonSerializable()
@@ -62,7 +68,7 @@ class WithStoryNotificationTrigger extends ScenarioTrigger {
   factory WithStoryNotificationTrigger.fromJson(Map<String, dynamic> json) => _$WithStoryNotificationTriggerFromJson(json);
 
   @override
-  Map<String, dynamic> toJson() => _$WithStoryNotificationTriggerToJson(this);
+  Map<String, dynamic> _toJsonContent() => _$WithStoryNotificationTriggerToJson(this);
 }
 
 @JsonSerializable()
@@ -75,7 +81,7 @@ class WithMapNotificationTrigger extends ScenarioTrigger {
   factory WithMapNotificationTrigger.fromJson(Map<String, dynamic> json) => _$WithMapNotificationTriggerFromJson(json);
 
   @override
-  Map<String, dynamic> toJson() => _$WithMapNotificationTriggerToJson(this);
+  Map<String, dynamic> _toJsonContent() => _$WithMapNotificationTriggerToJson(this);
 }
 
 @JsonSerializable()
@@ -85,7 +91,7 @@ class EndTrigger extends ScenarioTrigger {
   factory EndTrigger.fromJson(Map<String, dynamic> json) => _$EndTriggerFromJson(json);
 
   @override
-  Map<String, dynamic> toJson() => _$EndTriggerToJson(this);
+  Map<String, dynamic> _toJsonContent() => _$EndTriggerToJson(this);
 }
 
 @JsonSerializable()
@@ -95,5 +101,5 @@ class EmptyTrigger extends ScenarioTrigger {
   factory EmptyTrigger.fromJson(Map<String, dynamic> json) => _$EmptyTriggerFromJson(json);
 
   @override
-  Map<String, dynamic> toJson() => _$EmptyTriggerToJson(this);
+  Map<String, dynamic> _toJsonContent() => _$EmptyTriggerToJson(this);
 }

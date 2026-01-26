@@ -12,7 +12,13 @@ sealed class ScenarioElement {
 
   final String type;
 
-  Map<String, dynamic> toJson();
+  Map<String, dynamic> toJson() {
+    final json = _toJsonContent();
+    json['type'] = type;
+    return json;
+  }
+
+  Map<String, dynamic> _toJsonContent();
   
   factory ScenarioElement.fromJson(Map<String, dynamic> json) {
     final type = json['type'] as String;
@@ -46,7 +52,8 @@ class TextElement extends StoryElement {
   factory TextElement.fromJson(Map<String, dynamic> json) => _$TextElementFromJson(json);
 
   @override
-  Map<String, dynamic> toJson() => _$TextElementToJson(this);
+  Map<String, dynamic> _toJsonContent() => _$TextElementToJson(this);
+  
 }
 
 @JsonSerializable()
@@ -76,12 +83,12 @@ class PolygonElement extends MapElement {
   factory PolygonElement.fromJson(Map<String, dynamic> json) => _$PolygonElementFromJson(json);
   
   @override
-  Map<String, dynamic> toJson() => _$PolygonElementToJson(this);
+  Map<String, dynamic> _toJsonContent() => _$PolygonElementToJson(this);
 }
 
 @JsonSerializable()
 class ButtonElement extends StoryElement {
-  const ButtonElement({required this.text, required this.trigger}) : super(type: 'button');
+  const ButtonElement({required this.text, required this.trigger}): super(type: 'button');
 
   final String text;
 
@@ -91,7 +98,7 @@ class ButtonElement extends StoryElement {
   factory ButtonElement.fromJson(Map<String, dynamic> json) => _$ButtonElementFromJson(json);
   
   @override
-  Map<String, dynamic> toJson() => _$ButtonElementToJson(this);
+  Map<String, dynamic> _toJsonContent() => _$ButtonElementToJson(this);
 
 }
 
@@ -104,5 +111,5 @@ class MultiButtonElement extends StoryElement {
   factory MultiButtonElement.fromJson(Map<String, dynamic> json) => _$MultiButtonElementFromJson(json);
   
   @override
-  Map<String, dynamic> toJson() => _$MultiButtonElementToJson(this);
+  Map<String, dynamic> _toJsonContent() => _$MultiButtonElementToJson(this);
 }

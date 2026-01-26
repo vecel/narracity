@@ -13,7 +13,7 @@ part 'dsl_scenario.g.dart';
 
 // TODO: Change type field type from String to enum
 
-@JsonSerializable()
+@JsonSerializable(createFactory: false)
 class Scenario {
   const Scenario({
     required this.id,
@@ -33,36 +33,24 @@ class Scenario {
   final String location;
   final String distance;
   final String duration;
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
   final List<ScenarioNode> nodes;
 
-  factory Scenario.fromJson(Map<String, dynamic> json) => _$ScenarioFromJson(json);
-  // {
-  //   return Scenario(
-  //     id: json['id'] as String,
-  //     title: json['title'] as String,
-  //     description: json['description'] as String,
-  //     distance: json['distance'] as String,
-  //     location: json['location'] as String,
-  //     duration: json['duration'] as String,
-  //     image: json['image'] as String,
-  //     nodes: (json['nodes'] as List<dynamic>)
-  //       .map((nodeJson) => ScenarioNode.fromJson(nodeJson as Map<String, dynamic>))
-  //       .toList()
-  //   );
-  // }
-
+  factory Scenario.fromJson(Map<String, dynamic> json, List<ScenarioNode> nodes) {
+    return Scenario(
+      id: json['id'] as String,
+      title: json['title'] as String,
+      description: json['description'] as String,
+      image: json['image'] as String,
+      location: json['location'] as String,
+      distance: json['distance'] as String,
+      duration: json['duration'] as String,
+      nodes: nodes
+    );
+  }
+  
   Map<String, dynamic> toJson() => _$ScenarioToJson(this);
-  // {
-  //   return {
-  //     'title': title,
-  //     'description': description,
-  //     'distance': distance,
-  //     'duration': duration,
-  //     'loaction': location,
-  //     'image': image,
-  //     'nodes': nodes.map((node) => node.toJson()).toList()
-  //   };
-  // }
 }
 
 @JsonSerializable()
@@ -75,20 +63,6 @@ class ScenarioNode {
   final List<ScenarioElement> elements;
 
   factory ScenarioNode.fromJson(Map<String, dynamic> json) => _$ScenarioNodeFromJson(json);
-  // {
-  //   return ScenarioNode(
-  //     id: json['id'] as String,
-  //     elements: (json['elements'] as List<dynamic>)
-  //       .map((element) => ScenarioElement.fromJson(element as Map<String, dynamic>))
-  //       .toList(),
-  //   );
-  // }
 
   Map<String, dynamic> toJson() => _$ScenarioNodeToJson(this);
-  // {
-  //   return {
-  //     'id': id,
-  //     'elements': elements.map((element) => element.toJson()).toList()
-  //   };
-  // }
 }
