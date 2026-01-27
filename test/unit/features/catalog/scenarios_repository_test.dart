@@ -59,7 +59,7 @@ void main() {
       final scenario3 = result.firstWhere((s) => s.id == 'id_3');
       expect(scenario3.title, 'loc_3');
 
-      verify(() => mockApi.getScenarios()).called(1);
+      verify(() => mockApi.loadAll()).called(1);
       verify(() => mockCache.loadAll()).called(1);
     });
 
@@ -69,7 +69,7 @@ void main() {
       expect(result, isNotNull);
       expect(result!.title, 'cac_1');
       
-      verifyNever(() => mockApi.getScenarioById(any()));
+      verifyNever(() => mockApi.load(any()));
       verifyNever(() => mockStorage.load(any()));
     });
 
@@ -80,7 +80,7 @@ void main() {
       expect(result!.title, 'loc_3');
 
       verify(() => mockCache.contains('id_3')).called(1);
-      verify(() => mockApi.getScenarioById('id_3')).called(1);
+      verify(() => mockApi.load('id_3')).called(1);
       verify(() => mockStorage.load('id_3')).called(1);
     });
 

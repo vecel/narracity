@@ -20,13 +20,13 @@ final _nodes = [
       ButtonElement(
         text: 'Dalej', 
         trigger: WithMapNotificationTrigger(
-          trigger: ProceedTrigger(id: 'main building')
+          trigger: ProceedTrigger(id: 'main_building')
         )
       )
     ]
   ),
   ScenarioNode(
-    id: 'main building', 
+    id: 'main_building', 
     elements: [
       PolygonElement(
         points: [
@@ -122,5 +122,6 @@ final warsawUniversityOfTechnologyScenario = Scenario(
   location: 'Warszawa, Mokotów', 
   distance: '1 km', 
   duration: '15 min', 
-  nodes: _nodes
+  nodes: _nodes,
+  startNodeId: 'welcome'
 );

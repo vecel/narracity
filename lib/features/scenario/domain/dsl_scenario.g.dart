@@ -14,6 +14,7 @@ Map<String, dynamic> _$ScenarioToJson(Scenario instance) => <String, dynamic>{
   'location': instance.location,
   'distance': instance.distance,
   'duration': instance.duration,
+  'startNodeId': instance.startNodeId,
 };
 
 ScenarioNode _$ScenarioNodeFromJson(Map<String, dynamic> json) => ScenarioNode(

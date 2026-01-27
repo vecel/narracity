@@ -13,7 +13,7 @@ part 'dsl_scenario.g.dart';
 
 // TODO: Change type field type from String to enum
 
-@JsonSerializable(createFactory: false)
+@JsonSerializable(createFactory: false, explicitToJson: true)
 class Scenario {
   const Scenario({
     required this.id,
@@ -23,7 +23,8 @@ class Scenario {
     required this.location,
     required this.distance,
     required this.duration,
-    required this.nodes
+    required this.nodes,
+    required this.startNodeId
   });
 
   final String id;
@@ -33,6 +34,7 @@ class Scenario {
   final String location;
   final String distance;
   final String duration;
+  final String startNodeId;
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   final List<ScenarioNode> nodes;
@@ -46,6 +48,7 @@ class Scenario {
       location: json['location'] as String,
       distance: json['distance'] as String,
       duration: json['duration'] as String,
+      startNodeId: json['startNodeId'] as String,
       nodes: nodes
     );
   }
@@ -53,7 +56,7 @@ class Scenario {
   Map<String, dynamic> toJson() => _$ScenarioToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class ScenarioNode {
   const ScenarioNode({required this.id, required this.elements});
 

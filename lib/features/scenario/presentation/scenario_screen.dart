@@ -31,7 +31,7 @@ class ScenarioScreen extends StatelessWidget {
             locationService: context.read<LocationService>()
           )),
           BlocProvider(create: (context) => ScenarioCubit(
-            scenario: scenario.nodes,
+            scenario: scenario,
             navigationCubit: context.read<NavigationCubit>()
           )),
           BlocProvider(

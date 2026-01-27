@@ -27,7 +27,7 @@ void main() {
         .doc(mockScenario.id)
         .set(mockScenario.toJson());
 
-      final result = await api.getScenarios();
+      final result = await api.loadAll();
 
       expect(result.length, 1);
       expect(result.first.title, mockScenario.title);
@@ -45,14 +45,14 @@ void main() {
         .doc(otherScenario.id)
         .set(otherScenario.toJson());
 
-      final result = await api.getScenarioById(id);
+      final result = await api.load(id);
 
       expect(result, isNotNull);
       expect(result!.id, id);
     });
 
     test('returns empty list when database is empty', () async {
-      final result = await api.getScenarios();
+      final result = await api.loadAll();
 
       expect(result, isNotNull);
       expect(result.length, 0);
@@ -63,7 +63,7 @@ void main() {
         .doc(mockScenario.id)
         .set(mockScenario.toJson());
 
-      final result = await api.getScenarioById('not_id');
+      final result = await api.load('not_id');
 
       expect(result, isNull);
     });

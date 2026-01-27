@@ -7,16 +7,14 @@ import 'package:narracity/features/scenario/presentation/cubit/scenario_state.da
 
 class ScenarioCubit extends Cubit<ScenarioRunning> {
   ScenarioCubit({required this.scenario, required this.navigationCubit}): super(ScenarioRunning(elements: [])) {
-    if (scenario.isNotEmpty) {
-      load(scenario.first.id);
-    }
+    load(scenario.startNodeId);
   }
 
-  final List<ScenarioNode> scenario;
+  final Scenario scenario;
   final NavigationCubit navigationCubit;
 
   void load(String id) {
-    final node = scenario.firstWhere(
+    final node = scenario.nodes.firstWhere(
       (element) => element.id == id,
       orElse: () => throw Exception('ScenarioNode with id: $id was not found in the scenario.')
     );

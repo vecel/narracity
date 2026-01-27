@@ -76,4 +76,6 @@ MultiButtonElement _$MultiButtonElementFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$MultiButtonElementToJson(MultiButtonElement instance) =>
-    <String, dynamic>{'buttons': instance.buttons};
+    <String, dynamic>{
+      'buttons': instance.buttons.map((e) => e.toJson()).toList(),
+    };

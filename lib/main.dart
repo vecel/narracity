@@ -33,7 +33,7 @@ void main() async {
 
 void runAppOnLinux() {
   final mockApi = MockScenariosApi();
-  when(() => mockApi.getScenarios()).thenAnswer((_) async => Future.value([]));
+  when(() => mockApi.loadAll()).thenAnswer((_) async => Future.value([warsawUniversityOfTechnologyScenario]));
 
   runApp(MultiRepositoryProvider(
     providers: [

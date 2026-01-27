@@ -1,11 +1,9 @@
-import 'package:narracity/example.dart';
 import 'package:narracity/features/catalog/data/scenarios_api.dart';
 import 'package:narracity/features/catalog/data/scenarios_cache.dart';
 import 'package:narracity/features/catalog/data/scenarios_storage.dart';
 import 'package:narracity/features/scenario/domain/dsl_scenario.dart';
 
 class ScenariosRepository {
-
   ScenariosRepository({
     ScenariosApi? api,
     ScenariosStorage? storage,
@@ -19,10 +17,9 @@ class ScenariosRepository {
   final ScenariosStorage _storage;
   final ScenariosCache _cache;
 
-  // TODO: Uncomment for production
   Future<List<Scenario>> loadAll() async {
     final cached = _cache.loadAll();
-    final remote = await _api.getScenarios();
+    final remote = await _api.loadAll();
     final local = await _storage.loadAll();
 
     final Map<String, Scenario> scenarios = {};
@@ -40,18 +37,12 @@ class ScenariosRepository {
     return scenarios.values.toList();
   }
 
-  // For Linux development purposes
-  // Future<List<Scenario>> loadAll() async {
-  //   return Future.value(List.of([warsawUniversityOfTechnologyScenario]));
-  // }
-  
   Future<Scenario?> load(String id) async {
     if (_cache.contains(id)) {
       return Future.value(_cache.load(id));
     }
 
-    // Uncomment for production
-    final remote = await _api.getScenarioById(id);
+    final remote = await _api.load(id);
     if (remote != null) {
       return remote;
     }
@@ -61,8 +52,7 @@ class ScenariosRepository {
       return local;
     }
 
-    // This is for testing purposes only
-    return Future.value(warsawUniversityOfTechnologyScenario);
+    return null;
   }
 
   Future<void> save(Scenario scenario) async {

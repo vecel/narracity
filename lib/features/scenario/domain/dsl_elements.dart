@@ -102,7 +102,7 @@ class ButtonElement extends StoryElement {
 
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class MultiButtonElement extends StoryElement {
   const MultiButtonElement({required this.buttons}) : super(type: 'multi_button');
 

@@ -103,11 +103,11 @@ class TestFactory {
   }) {
     final mock = MockScenariosApi();
 
-    when(() => mock.getScenarios()).thenAnswer((_) async => scenarios);
-    when(() => mock.getScenarioById(any())).thenAnswer((_) async => null);
+    when(() => mock.loadAll()).thenAnswer((_) async => scenarios);
+    when(() => mock.load(any())).thenAnswer((_) async => null);
     for (final scenario in scenarios) {
       final id = scenario.id;
-      when(() => mock.getScenarioById(id)).thenAnswer((_) async => scenario); 
+      when(() => mock.load(id)).thenAnswer((_) async => scenario); 
     }
 
     return mock;

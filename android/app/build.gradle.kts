@@ -41,6 +41,8 @@ android {
         
         testInstrumentationRunner = "pl.leancode.patrol.PatrolJUnitRunner"
         testInstrumentationRunnerArguments["clearPackageData"] = "true"
+
+        multiDexEnabled = true
     }
 
     buildTypes {
