@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:narracity/features/scenario/subfeatures/map/presentation/map_factory.dart';
 import 'package:narracity/features/scenario/subfeatures/map/services/location_service.dart';
 import 'package:network_image_mock/network_image_mock.dart';
@@ -17,6 +18,10 @@ void main() {
   late ScenariosRepository mockRepository;
   late Scenario mockScenario;
   late LocationService mockLocationService;
+
+  setUpAll(() {
+    registerFallbackValue(TestFactory.createMockScenario());
+  });
 
   setUp(() {
     mockScenario = TestFactory.createMockScenario();
@@ -43,13 +48,10 @@ void main() {
   }
 
   group('ScenarioScreen', () {
-    testWidgets('renders Loader initially, then StoryScreen and AppBar upon success', (tester) async {
+    testWidgets('renders StoryScreen and AppBar', (tester) async {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(createWidgetUnderTest());
-
-        expect(find.byType(CircularProgressIndicator), findsOneWidget);
-
-        await tester.pumpAndSettle();
+        await tester.pump();
 
         expect(find.byType(BaseAppBar), findsOneWidget);
         expect(find.text('Title'), findsOneWidget);

@@ -7,7 +7,14 @@ import 'package:narracity/features/scenario/presentation/cubit/scenario_state.da
 
 class ScenarioCubit extends Cubit<ScenarioRunning> {
   ScenarioCubit({required this.scenario, required this.navigationCubit}): super(ScenarioRunning(elements: [])) {
-    load(scenario.startNodeId);
+    // TODO: Add state ScenarioError
+    try {
+      load(scenario.startNodeId);
+    } catch (e) {
+      emit(ScenarioRunning(elements: [
+        TextElement(text: 'Error: $e.')
+      ]));
+    }
   }
 
   final Scenario scenario;
