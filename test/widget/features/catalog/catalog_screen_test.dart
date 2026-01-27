@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:narracity/features/catalog/data/scenarios_repository.dart';
 import 'package:narracity/features/catalog/presentation/catalog_screen.dart';
 import 'package:narracity/features/catalog/presentation/catalog_list_item.dart';
-import 'package:network_image_mock/network_image_mock.dart';
 
 import '../../../utils/test_factory.dart';
 
@@ -49,9 +49,9 @@ void main() {
       
       when(() => mockRepository.loadAll()).thenAnswer((_) async => [mockScenario]);
 
-      await mockNetworkImagesFor(() async {
+      await mockNetworkImages(() async {
         await tester.pumpWidget(createWidgetUnderTest());
-        await tester.pumpAndSettle();
+        await tester.pump();
 
         expect(find.byType(CatalogListItem), findsOneWidget);
         expect(find.text('No scenarios found'), findsNothing);
@@ -59,7 +59,7 @@ void main() {
 
     });
 
-    testWidgets('renders Error view when repository throws', (tester) async {
+    testWidgets('renders Error view when repository throws an exception', (tester) async {
       when(() => mockRepository.loadAll()).thenThrow(Exception('Network Error'));
 
       await tester.pumpWidget(createWidgetUnderTest());

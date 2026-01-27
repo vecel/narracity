@@ -6,7 +6,6 @@ import 'package:mocktail/mocktail.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:narracity/features/catalog/data/scenarios_repository.dart';
 import 'package:narracity/features/catalog/subfeatures/details/presentation/bottom_blur.dart';
-import 'package:network_image_mock/network_image_mock.dart';
 
 import 'package:narracity/features/catalog/subfeatures/details/presentation/details_screen.dart';
 import 'package:narracity/features/catalog/subfeatures/details/presentation/background_image.dart';
@@ -57,7 +56,7 @@ void main() {
     });
 
     testWidgets('renders Horizontal Layout when screen is short (<= 540)', (tester) async {
-      await mockNetworkImagesFor(() async {
+      await mockNetworkImages(() async {
         tester.view.physicalSize = const Size(800, 400);
         tester.view.devicePixelRatio = 1;
         
