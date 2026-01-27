@@ -5,7 +5,7 @@ import 'package:narracity/features/catalog/data/scenarios_cache.dart';
 import 'package:narracity/features/catalog/data/scenarios_repository.dart';
 import 'package:narracity/features/catalog/data/scenarios_storage.dart';
 
-import '../../utils/test_factory.dart';
+import '../../../utils/test_factory.dart';
 
 void main() {
   late ScenariosRepository repository;
@@ -44,7 +44,7 @@ void main() {
     );
   });
 
-  group('ScenariosRepository Integration Tests', () {
+  group('ScenariosRepository', () {
     test('loadAll merges sources with priority Cache > Remote > Local', () async {
       final result = await repository.loadAll();
 

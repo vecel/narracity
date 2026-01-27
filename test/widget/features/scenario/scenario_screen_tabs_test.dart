@@ -9,7 +9,7 @@ import 'package:narracity/features/scenario/presentation/scenario_screen.dart';
 import 'package:narracity/features/catalog/data/scenarios_repository.dart';
 import 'package:narracity/features/scenario/domain/dsl_scenario.dart';
 
-import '../../utils/test_factory.dart';
+import '../../../utils/test_factory.dart';
 
 void main() {
   late ScenariosRepository mockRepository;

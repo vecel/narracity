@@ -29,7 +29,8 @@ class TestFactory {
     String location = 'Location',
     String distance = 'Distance',
     String duration = 'Duration',
-    List<ScenarioNode> nodes = const []
+    List<ScenarioNode> nodes = const [],
+    String startNodeId = ''
   }) {
     final mock = MockScenario();
 
@@ -41,6 +42,7 @@ class TestFactory {
     when(() => mock.distance).thenReturn(distance);
     when(() => mock.image).thenReturn(image);
     when(() => mock.nodes).thenReturn(nodes);
+    when(() => mock.startNodeId).thenReturn(startNodeId);
 
     final json = {
       'id': id,
@@ -50,7 +52,8 @@ class TestFactory {
       'duration': duration,
       'distance': distance,
       'image': image,
-      'nodes': nodes
+      'nodes': nodes,
+      'startNodeId': startNodeId
     };
 
     when(() => mock.toJson()).thenReturn(json);

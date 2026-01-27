@@ -8,6 +8,8 @@ import 'package:narracity/features/scenario/presentation/cubit/navigation_cubit.
 import 'package:narracity/features/scenario/presentation/cubit/scenario_cubit.dart';
 import 'package:narracity/features/scenario/presentation/cubit/scenario_state.dart';
 
+import '../../../utils/test_factory.dart';
+
 class MockNavigationCubit extends Mock implements NavigationCubit {}
 
 void main() {
@@ -25,13 +27,13 @@ void main() {
       elements: [thankText, byeText]
     );
 
-    final scenario = [startNode, endNode];
-
     late MockNavigationCubit mockNavigationCubit;
     late ScenarioCubit cubit;
+    late Scenario scenario;
 
     setUp(() {
       mockNavigationCubit = MockNavigationCubit();
+      scenario = TestFactory.createMockScenario(nodes: [startNode, endNode], startNodeId: 'start');
 
       when(() => mockNavigationCubit.state).thenReturn(NavigationState.initial());
 

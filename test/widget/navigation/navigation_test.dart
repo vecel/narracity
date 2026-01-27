@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:narracity/features/catalog/data/scenarios_repository.dart';
 import 'package:narracity/features/catalog/presentation/catalog_screen.dart';
 import 'package:narracity/features/catalog/subfeatures/details/presentation/details_screen.dart';
 import 'package:narracity/features/home/welcome_screen.dart';
+import 'package:narracity/features/scenario/domain/dsl_elements.dart';
 import 'package:narracity/features/scenario/domain/dsl_scenario.dart';
 import 'package:narracity/features/scenario/presentation/scenario_screen.dart';
 import 'package:narracity/features/scenario/subfeatures/map/presentation/map_factory.dart';
@@ -22,9 +24,20 @@ void main() {
   late Scenario mockScenario;
   late DefaultCacheManager mockCacheManager;
 
+  setUpAll(() {
+    registerFallbackValue(TestFactory.createMockScenario());
+  });
+
   setUp(() {
     mockLocationService = TestFactory.createMockLocationService();
-    mockScenario = TestFactory.createMockScenario(); 
+    mockScenario = TestFactory.createMockScenario(
+      nodes: [
+        ScenarioNode(id: 'test', elements: [
+          TextElement(text: 'test')
+        ])
+      ],
+      startNodeId: 'test'
+    ); 
     mockRepository = TestFactory.createMockScenariosRepository(scenarios: [mockScenario]);
     mockCacheManager = TestFactory.createMockCacheManager();
 
@@ -84,14 +97,8 @@ void main() {
         expect(find.byType(DetailsScreen), findsOneWidget);
 
         await tester.tap(find.byIcon(Icons.play_arrow));
-        await tester.pump(Duration(seconds: 5));
-
-        // if (find.byType(ErrorWidget).evaluate().isNotEmpty) {
-        //   final error = tester.widget<ErrorWidget>(find.byType(ErrorWidget));
-        //   print("🚨 APP CRASHED! Error: ${error.message}");
-        // } else if (find.byType(DetailsScreen).evaluate().isNotEmpty) {
-        //   print("⚠️ NAVIGATION FAILED: Still on DetailsScreen.");
-        // }
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 500));
 
         expect(find.byType(ScenarioScreen), findsOneWidget);
 
