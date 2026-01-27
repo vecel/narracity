@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:narracity/features/scenario/domain/dsl_elements.dart';
 import 'package:narracity/features/scenario/subfeatures/map/presentation/map_factory.dart';
 import 'package:narracity/features/scenario/subfeatures/map/services/location_service.dart';
 import 'package:network_image_mock/network_image_mock.dart';
@@ -16,8 +18,19 @@ void main() {
   late Scenario mockScenario;
   late LocationService mockLocationService;
 
+  setUpAll(() {
+    registerFallbackValue(TestFactory.createMockScenario());
+  });
+
   setUp(() {
-    mockScenario = TestFactory.createMockScenario();
+    mockScenario = TestFactory.createMockScenario(
+      nodes: [
+        ScenarioNode(id: 'test', elements: [
+          TextElement(text: 'test')
+        ])
+      ],
+      startNodeId: 'test'
+    );
     mockRepository = TestFactory.createMockScenariosRepository(scenarios: [mockScenario]);
     mockLocationService = TestFactory.createMockLocationService();
 
@@ -45,7 +58,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         
         await tester.pumpWidget(createTestApp());
-        await tester.pumpAndSettle();
+        await tester.pump();
 
         final mapIconFinder = find.byIcon(Icons.map);
         expect(mapIconFinder, findsOneWidget);
