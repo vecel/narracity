@@ -6,6 +6,7 @@ import 'package:narracity/features/catalog/data/scenarios_api.dart';
 import 'package:narracity/features/catalog/data/scenarios_cache.dart';
 import 'package:narracity/features/catalog/data/scenarios_repository.dart';
 import 'package:narracity/features/catalog/data/scenarios_storage.dart';
+import 'package:narracity/features/scenario/domain/dsl_elements.dart';
 import 'package:narracity/features/scenario/domain/dsl_scenario.dart';
 import 'package:narracity/features/scenario/subfeatures/map/services/location_service.dart';
 
@@ -52,13 +53,21 @@ class TestFactory {
       'duration': duration,
       'distance': distance,
       'image': image,
-      'nodes': nodes,
       'startNodeId': startNodeId
     };
 
     when(() => mock.toJson()).thenReturn(json);
 
     return mock;
+  }
+
+  static List<ScenarioNode> createDummyNodes({
+    required List<String> ids
+  }) {
+    return ids.map((id) => ScenarioNode(
+      id: id, 
+      elements: [TextElement(text: 'text_$id')]
+    )).toList();
   }
 
   static LocationService createMockLocationService() {

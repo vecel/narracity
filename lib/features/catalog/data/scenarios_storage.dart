@@ -11,28 +11,12 @@ class ScenariosStorage {
   static const _nodesDirectory = 'nodes';
   static final _log = Logger('ScenariosStorage');
 
-  Future<Directory> _getAppDirectory() async {
-    final appDirectory = await getApplicationDocumentsDirectory();
-    final scenariosDirectory = Directory('${appDirectory.path}/$_directory');
-
-    if (!await scenariosDirectory.exists()) {
-      scenariosDirectory.create();
-    }
-
-    return scenariosDirectory;
-  }
-
   Future<void> save(Scenario scenario) async {
     final scenarioDirectory = await _getScenarioDirectory(scenario.id);
-    if (!await scenarioDirectory.exists()) {
-      _log.info('Creating directory for scenario with id ${scenario.id}');
-      scenarioDirectory.createSync();
-    }
+    await _createDirectoryIfDoesNotExist(scenarioDirectory);
 
     final nodesDirectory = Directory('${scenarioDirectory.path}/$_nodesDirectory');
-    if (!await nodesDirectory.exists()) {
-      nodesDirectory.createSync();
-    }
+    await _createDirectoryIfDoesNotExist(nodesDirectory);
 
     final data = scenario.toJson();
     final json = jsonEncode(data);
@@ -51,11 +35,13 @@ class ScenariosStorage {
 
   Future<Scenario?> load(String id) async {
     final directory = await _getScenarioDirectory(id);
+    if (!await directory.exists()) {
+      return null;
+    }
     final scenario = await _loadScenarioFromDirectory(directory);
     return scenario;
   }
 
-  // TODO: Add test for the method
   Future<List<Scenario>> loadAll() async {
     final result = <Scenario>[];
     final scenariosDirectory = await _getAppDirectory();
@@ -69,6 +55,20 @@ class ScenariosStorage {
     }
 
     return result;
+  }
+
+  Future<void> _createDirectoryIfDoesNotExist(Directory directory) async {
+    if (await directory.exists()) return;
+    await directory.create();
+  }
+
+  Future<Directory> _getAppDirectory() async {
+    final appDirectory = await getApplicationDocumentsDirectory();
+    final scenariosDirectory = Directory('${appDirectory.path}/$_directory');
+
+    await _createDirectoryIfDoesNotExist(scenariosDirectory);
+
+    return scenariosDirectory;
   }
 
   Future<Directory> _getScenarioDirectory(String id) async {
