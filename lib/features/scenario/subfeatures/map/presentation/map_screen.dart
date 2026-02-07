@@ -8,8 +8,6 @@ import 'package:narracity/features/scenario/presentation/cubit/scenario_cubit.da
 import 'package:narracity/features/scenario/presentation/cubit/scenario_state.dart';
 import 'package:narracity/features/scenario/subfeatures/map/presentation/map_factory.dart';
 
-// TODO: Change initial map center to previously left map center
-
 class MapScreen extends StatelessWidget {
   const MapScreen({super.key});
 
@@ -17,9 +15,7 @@ class MapScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MapCubit, MapState>(
       builder: (context, state) {
-
         final cubit = context.read<MapCubit>();
-
         return switch (state) {
           MapInitial() => _LodaingView(),
           MapPermissionDenied() => _PermissionDeniedView(

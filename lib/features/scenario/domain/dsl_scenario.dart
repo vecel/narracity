@@ -2,6 +2,8 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:narracity/features/scenario/domain/dsl_elements.dart';
 import 'package:narracity/utils/json_serializer.dart';
 
+import 'package:todo_annotations/todo_annotation.dart';
+
 part 'dsl_scenario.g.dart';
 
 // TODO: Add AddPolygonTrigger
@@ -13,6 +15,7 @@ part 'dsl_scenario.g.dart';
 
 // TODO: Change type field type from String to enum
 
+@Todo('Change type field type from String to Enum')
 @JsonSerializable(createFactory: false, explicitToJson: true)
 class Scenario {
   const Scenario({

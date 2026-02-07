@@ -18,16 +18,16 @@ class CatalogScreen extends StatelessWidget {
         scenariosRepository: context.read<ScenariosRepository>()
       )..load(),
       child: Scaffold(
-        appBar: BaseAppBar(title: 'Catalog', backRoute: '/'),
+        appBar: _CatalogAppBar(),
         backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
-        body: const _CatalogView()
+        body: _CatalogBody()
       ),
     );
   }
 }
 
-class _CatalogView extends StatelessWidget {
-  const _CatalogView();
+class _CatalogBody extends StatelessWidget {
+  const _CatalogBody();
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,11 @@ class _CatalogView extends StatelessWidget {
         CatalogError(:final message, :final isConnectionError) => _ErrorView(message, isConnectionError),
       },
     );
-  } 
+  }
+}
+
+class _CatalogAppBar extends BaseAppBar {
+  const _CatalogAppBar(): super(title: 'Catalog', backRoute: '/');
 }
 
 class _LodaingView extends StatelessWidget {

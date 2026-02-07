@@ -20,7 +20,6 @@ class DetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return ScenarioLoader(
       id: id,
       builder: (scenario) => BlocProvider<DetailsCubit>(
@@ -28,15 +27,15 @@ class DetailsScreen extends StatelessWidget {
         child: Scaffold(
           floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
           floatingActionButton: _FloatingActionButton(id),
-          body: _DetailsView(scenario)
+          body: _DetailsBody(scenario)
         ),
       ),
     );
   }
 }
 
-class _DetailsView extends StatelessWidget {
-  const _DetailsView(this.scenario);
+class _DetailsBody extends StatelessWidget {
+  const _DetailsBody(this.scenario);
 
   final Scenario scenario;
 

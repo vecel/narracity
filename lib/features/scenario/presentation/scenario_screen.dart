@@ -65,9 +65,9 @@ class ScenarioScreen extends StatelessWidget {
           ], 
           child: BlocBuilder<NavigationCubit, NavigationState>(
             builder: (context, state) => Scaffold(
-              appBar: BaseAppBar(title: scenario.title, backRoute: '/details/$id'),
-              bottomNavigationBar: _NavigationBar(state: state),
-              body: _ScenarioView(selectedIndex: state.index)
+              appBar: _ScenarioAppBar(scenario.title, scenario.id),
+              bottomNavigationBar: _ScenarioNavBar(state: state),
+              body: _ScenarioBody(pageIndex: state.index)
             )
           )
         )
@@ -76,8 +76,13 @@ class ScenarioScreen extends StatelessWidget {
   }
 }
 
-class _NavigationBar extends StatelessWidget {
-  const _NavigationBar({required this.state});
+class _ScenarioAppBar extends BaseAppBar {
+  const _ScenarioAppBar(String title, String id) 
+    : super(title: title, backRoute: '/details/$id');
+}
+
+class _ScenarioNavBar extends StatelessWidget {
+  const _ScenarioNavBar({required this.state});
 
   final NavigationState state;
 
@@ -93,15 +98,15 @@ class _NavigationBar extends StatelessWidget {
   }
 }
 
-class _ScenarioView extends StatelessWidget {
-  const _ScenarioView({required this.selectedIndex});
+class _ScenarioBody extends StatelessWidget {
+  const _ScenarioBody({required this.pageIndex});
 
-  final int selectedIndex;
+  final int pageIndex;
 
   @override
   Widget build(BuildContext context) {
     return IndexedStack(
-      index: selectedIndex,
+      index: pageIndex,
       children: const [
         StoryScreen(),
         MapScreen(),
