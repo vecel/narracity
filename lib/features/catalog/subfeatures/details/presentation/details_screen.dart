@@ -11,8 +11,6 @@ import 'package:narracity/features/scenario/domain/dsl_scenario.dart';
 import 'package:narracity/keys.dart';
 import 'package:narracity/shared_widgets/scenario_loader.dart';
 
-// TODO: Test showing a snack bar
-
 class DetailsScreen extends StatelessWidget {
   const DetailsScreen({super.key, required this.id});
 
@@ -45,7 +43,8 @@ class _DetailsBody extends StatelessWidget {
       listener: (context, state) {
         if (state is DetailsScenarioDownloaded) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
+            SnackBar(
+              key: keys.detailsScreen.snackBar,
               content: Text('Scenario saved!')
             )
           );

@@ -7,6 +7,7 @@ import 'package:narracity/features/scenario/subfeatures/map/presentation/cubit/m
 import 'package:narracity/features/scenario/presentation/cubit/scenario_cubit.dart';
 import 'package:narracity/features/scenario/presentation/cubit/scenario_state.dart';
 import 'package:narracity/features/scenario/subfeatures/map/presentation/map_factory.dart';
+import 'package:narracity/keys.dart';
 
 class MapScreen extends StatelessWidget {
   const MapScreen({super.key});
@@ -165,6 +166,7 @@ class _MapView extends StatelessWidget {
           child: Container(
             margin: const EdgeInsets.all(16),
             child: MapFactory.build(
+              key: keys.mapScreen.mapWidget,
               options: MapOptions(
                 initialCenter: position.latLng,
                 initialZoom: 16,

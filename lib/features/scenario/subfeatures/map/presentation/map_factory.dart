@@ -14,6 +14,7 @@ class MapFactory {
   }
 
   static Widget build({
+    Key? key,
     required MapOptions options,
     required List<Widget> children
   }) {
@@ -23,6 +24,7 @@ class MapFactory {
     }
 
     return FlutterMap(
+      key: key,
       options: options,
       children: children
     );
