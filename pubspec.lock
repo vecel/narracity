@@ -1269,15 +1269,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.2"
-  todo_annotations:
-    dependency: "direct main"
-    description:
-      path: "packages/todo_annotations"
-      ref: main
-      resolved-ref: fdbb21c569aee4c8af3f79f73e4747a4780b9ba5
-      url: "https://github.com/vecel/dart-todo-tool.git"
-    source: git
-    version: "1.0.0"
   tuple:
     dependency: transitive
     description:

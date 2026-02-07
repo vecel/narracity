@@ -2,20 +2,17 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:narracity/features/scenario/domain/dsl_elements.dart';
 import 'package:narracity/utils/json_serializer.dart';
 
-import 'package:todo_annotations/todo_annotation.dart';
-
 part 'dsl_scenario.g.dart';
 
-// TODO: Add AddPolygonTrigger
-// TODO: Easier button removal after use/trigger
-// TODO: Easier notifications sending
-// TODO: Add default polygon style
-// TODO: Add text styling (headings, center, bold etc.)
-// TODO: Add button styling
+// Consider making these changes to DSL:
+// (1) Add AddPolygonTrigger
+// (2) Easier button removal after use/trigger
+// (3) Easier notifications sending
+// (4) Add default polygon style
+// (5) Add text styling (headings, center, bold etc.)
+// (6) Add custom button styling
+// (7) Change type field type from String to Enum
 
-// TODO: Change type field type from String to enum
-
-@Todo('Change type field type from String to Enum')
 @JsonSerializable(createFactory: false, explicitToJson: true)
 class Scenario {
   const Scenario({

@@ -29,11 +29,6 @@ dependencies:
   path_provider: ^2.1.5
   json_annotation: ^4.9.0
   path: ^1.9.1
-  todo_annotations:
-    git:
-      url: https://github.com/vecel/dart-todo-tool.git
-      path: packages/todo_annotations
-      ref: main
 
 dev_dependencies:
   flutter_test:
