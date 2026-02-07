@@ -15,4 +15,8 @@ class ScenarioRunning extends ScenarioState {
   List<StoryElement> get story => elements.whereType<StoryElement>().toList();
 } 
 
+class ScenarioError extends ScenarioState {
+  ScenarioError({required this.message});
+  final String message;
+}
 class ScenarioFinished extends ScenarioState {}

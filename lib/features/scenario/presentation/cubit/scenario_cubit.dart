@@ -5,15 +5,12 @@ import 'package:narracity/features/scenario/domain/dsl_triggers.dart';
 import 'package:narracity/features/scenario/presentation/cubit/navigation_cubit.dart';
 import 'package:narracity/features/scenario/presentation/cubit/scenario_state.dart';
 
-class ScenarioCubit extends Cubit<ScenarioRunning> {
+class ScenarioCubit extends Cubit<ScenarioState> {
   ScenarioCubit({required this.scenario, required this.navigationCubit}): super(ScenarioRunning(elements: [])) {
-    // TODO: Add state ScenarioError
     try {
       load(scenario.startNodeId);
     } catch (e) {
-      emit(ScenarioRunning(elements: [
-        TextElement(text: 'Error: $e.')
-      ]));
+      emit(ScenarioError(message: e.toString()));
     }
   }
 
@@ -30,6 +27,7 @@ class ScenarioCubit extends Cubit<ScenarioRunning> {
   }
 
   void handleTrigger(ScenarioTrigger trigger) {
+    _ensureStateIsScenarioRunning();
     if (trigger.triggered) return;
 
     switch (trigger) {
@@ -37,7 +35,7 @@ class ScenarioCubit extends Cubit<ScenarioRunning> {
         load(id);
       }
       case AppendElementsTrigger(:final elements): {
-        final updated = List<ScenarioElement>.from(state.elements)..addAll(elements);
+        final updated = List<ScenarioElement>.from((state as ScenarioRunning).elements)..addAll(elements);
         emit(ScenarioRunning(elements: updated));
       }
       case WithStoryNotificationTrigger(:final trigger): {
@@ -58,7 +56,14 @@ class ScenarioCubit extends Cubit<ScenarioRunning> {
   }
 
   void removeElement(ScenarioElement element) {
-    final updated = List<ScenarioElement>.from(state.elements)..remove(element);
+    _ensureStateIsScenarioRunning();
+    final updated = List<ScenarioElement>.from((state as ScenarioRunning).elements)..remove(element);
     emit(ScenarioRunning(elements: updated));
+  }
+
+  void _ensureStateIsScenarioRunning() {
+    if (state is! ScenarioRunning) {
+      emit(ScenarioError(message: 'Cannot handle trigger for scenario with state not equal to ScenarioRunning'));
+    }
   }
 }

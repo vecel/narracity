@@ -67,7 +67,7 @@ class ScenarioScreen extends StatelessWidget {
             builder: (context, state) => Scaffold(
               appBar: _ScenarioAppBar(scenario.title, scenario.id),
               bottomNavigationBar: _ScenarioNavBar(state: state),
-              body: _ScenarioBody(pageIndex: state.index)
+              body: _ScenarioBody(tabIndex: state.index)
             )
           )
         )
@@ -99,19 +99,49 @@ class _ScenarioNavBar extends StatelessWidget {
 }
 
 class _ScenarioBody extends StatelessWidget {
-  const _ScenarioBody({required this.pageIndex});
+  const _ScenarioBody({required this.tabIndex});
 
-  final int pageIndex;
+  final int tabIndex;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ScenarioCubit, ScenarioState>(
+      builder: (context, state) => switch(state) {
+        ScenarioRunning() => _SuccessView(tabIndex: tabIndex),
+        ScenarioError(:final message) => _ErrorView(message: message),
+        ScenarioFinished() => _ErrorView(message: 'Something went wrong, go back to details screen')
+      },
+    );
+  }
+}
+
+class _SuccessView extends StatelessWidget {
+  const _SuccessView({required this.tabIndex});
+
+  final int tabIndex;
 
   @override
   Widget build(BuildContext context) {
     return IndexedStack(
-      index: pageIndex,
+      index: tabIndex,
       children: const [
         StoryScreen(),
         MapScreen(),
         Center(child: Text('Journal')),
       ],
+    );
+  }
+}
+
+class _ErrorView extends StatelessWidget {
+  const _ErrorView({required this.message});
+
+  final String message;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(message),
     );
   }
 }

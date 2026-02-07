@@ -6,6 +6,7 @@ import 'package:logging/logging.dart';
 
 import 'package:narracity/features/scenario/domain/dsl_elements.dart';
 import 'package:narracity/features/scenario/presentation/cubit/scenario_cubit.dart';
+import 'package:narracity/features/scenario/presentation/cubit/scenario_state.dart';
 import 'package:narracity/features/scenario/subfeatures/map/presentation/cubit/map_cubit.dart';
 import 'package:narracity/features/scenario/subfeatures/map/presentation/cubit/map_state.dart';
 import 'package:narracity/utils/geometry_helper.dart';
@@ -40,6 +41,7 @@ class GeofenceCubit extends Cubit<GeofenceState> {
     _scenarioSubsription = _scenarioCubit.stream.listen((state) {
       final mapState = _mapCubit.state;
       if (mapState is! MapReady) return;
+      if (state is! ScenarioRunning) return;
       final position = mapState.position.latLng;
       final polygons = state.polygonElements;
       _update(position, polygons);
@@ -48,9 +50,11 @@ class GeofenceCubit extends Cubit<GeofenceState> {
 
   void _subscribeToMapCubitStream() {
     _mapSubscription = _mapCubit.stream.listen((state) {
+      final scenarioState = _scenarioCubit.state;
       if (state is! MapReady) return;
+      if (scenarioState is! ScenarioRunning) return;
       final position = state.position.latLng;
-      final polygons = _scenarioCubit.state.polygonElements;
+      final polygons = scenarioState.polygonElements;
       _update(position, polygons);
     });
   }

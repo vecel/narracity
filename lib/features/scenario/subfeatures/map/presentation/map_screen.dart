@@ -160,7 +160,7 @@ class _MapView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ScenarioCubit, ScenarioRunning>(
+    return BlocBuilder<ScenarioCubit, ScenarioState>(
       builder: (context, state) {
         return Center(
           child: Container(
@@ -184,7 +184,7 @@ class _MapView extends StatelessWidget {
                     ),
                   ),
                 ),
-                PolygonLayer(polygons: state.polygons),
+                PolygonLayer(polygons: (state as ScenarioRunning).polygons),
                 LocationMarkerLayer(position: position),
                 const SimpleAttributionWidget(
                   source: Text('OpenStreetMap contributors'),

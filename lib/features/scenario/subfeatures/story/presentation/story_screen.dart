@@ -9,13 +9,13 @@ class StoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ScenarioCubit, ScenarioRunning>(
+    return BlocBuilder<ScenarioCubit, ScenarioState>(
       builder: (context, state) {
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: ListView.separated(
             separatorBuilder: (context, index) => SizedBox(height: 8),
-            itemCount: state.story.length,
+            itemCount: (state as ScenarioRunning).story.length,
             itemBuilder: (context, index)  => _StoryItem(element: state.story[index])
           ),
         );

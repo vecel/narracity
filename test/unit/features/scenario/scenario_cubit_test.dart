@@ -43,9 +43,15 @@ void main() {
       );
     });
 
+    tearDown(() {
+      cubit.close();
+    });
+
     test('first node is loaded', () {
-      expect(cubit.state.elements.length, 1);
-      expect(cubit.state.elements, [welcomeText]);
+      final state = cubit.state;
+      expect(state, isA<ScenarioRunning>());
+      expect((state as ScenarioRunning).elements.length, 1);
+      expect(state.elements, [welcomeText]);
     });
 
     blocTest('proceed trigger is handled correctly', 
