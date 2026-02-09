@@ -133,6 +133,9 @@ On each pull and push request the following operations are performed:
 3. Unit tests. If any test fails, the pipeline is stopped.
 4. Application APK build and upload.
 
+### Demo Film
+![Demo film of Narracity application](https://github.com/user-attachments/assets/677c06f6-3b07-456c-886d-3a220ef9ccaa)
+
 ---
 
 *This is a project created for Programming Mobile Apps  With Flutter Course at Warsaw University of Technology 2025/26.*
