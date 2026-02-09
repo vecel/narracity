@@ -1,7 +1,10 @@
 # Narracity
 
-## Initial Documentation
-
+<details>
+    <summary>
+        <h2>Initial Documentation</h2>
+    </summary>
+    
 ### Description
 
 A Narracity is an application that enhace sightseeing experience. It offers various narrator-leaded scenarios. They can be used to create sightseeing city tours, role playing games or onboarding trips.
@@ -27,6 +30,9 @@ A Narracity is an application that enhace sightseeing experience. It offers vari
 - The zone to be reached is displayed on the map.
 - My location is being updated on the map.
 - My "play character" can get specific scenario related items, thoughts or skills in journal.
+
+
+</details>
 
 ## Final documentation
 
