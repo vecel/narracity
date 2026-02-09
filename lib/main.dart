@@ -1,12 +1,10 @@
 import 'dart:developer' as developer;
-import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:narracity/example.dart';
 import 'package:narracity/features/catalog/data/scenarios_api.dart';
 import 'package:narracity/features/catalog/data/scenarios_repository.dart';
 import 'package:narracity/features/scenario/subfeatures/map/services/location_service.dart';
@@ -22,31 +20,6 @@ void main() async {
     developer.log('[${record.level.name}] [${record.time}]: ${record.message}', name: record.loggerName);
   });
 
-  if (Platform.isAndroid) {
-    runAppOnAndroid();
-  }
-
-  if (Platform.isLinux) {
-    runAppOnLinux();
-  }
-}
-
-void runAppOnLinux() {
-  final mockApi = MockScenariosApi();
-  when(() => mockApi.loadAll()).thenAnswer((_) async => Future.value([warsawUniversityOfTechnologyScenario]));
-
-  runApp(MultiRepositoryProvider(
-    providers: [
-      RepositoryProvider(create: (context) => ScenariosRepository(
-        api: mockApi,
-      )),
-      RepositoryProvider(create: (context) => LocationService())
-    ],
-    child: const MyApp(),
-  ));
-}
-
-void runAppOnAndroid() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform

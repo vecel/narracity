@@ -3,6 +3,10 @@ import 'package:narracity/features/scenario/domain/dsl_elements.dart';
 import 'package:narracity/features/scenario/domain/dsl_scenario.dart';
 import 'package:narracity/features/scenario/domain/dsl_triggers.dart';
 
+/// This file contains example scenario presented in demo.
+/// It shows, how the scenario is defined using Dart language support
+/// as well as IDE autocompletion and so on.
+
 final _facultyChoice = MultiButtonElement(
   buttons: [
     ButtonElement(text: 'MiNI', trigger: ProceedTrigger(id: 'mini')),

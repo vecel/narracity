@@ -18,7 +18,9 @@ class ScenarioLoader extends StatelessWidget {
           return builder(snapshot.data!);
         }
         if (snapshot.hasError) {
-          // TODO: Add Error page
+          return Center(
+            child: Text('Unexpected error occured while loading the scenario with id $id. Please restart the application.'),
+          );
         }
         return Center(
           child: CircularProgressIndicator(),
