@@ -134,7 +134,12 @@ On each pull and push request the following operations are performed:
 4. Application APK build and upload.
 
 ### Demo Film
-![Demo film of Narracity application](https://github.com/user-attachments/assets/677c06f6-3b07-456c-886d-3a220ef9ccaa)
+
+<div align="center">
+  <video src="https://github.com/user-attachments/assets/677c06f6-3b07-456c-886d-3a220ef9ccaa" width="350" controls>
+  </video>
+</div>
+
 
 ---
 
